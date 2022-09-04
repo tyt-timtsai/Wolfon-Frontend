@@ -1,5 +1,5 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 import LiveViewer from './page/liveViewer';
@@ -8,6 +8,7 @@ import constants from './global/constants';
 
 function App() {
   const socket = io(constants.SOCKET_URL);
+  useEffect(() => () => socket.disconnect(), [socket]);
   return (
     <Routes>
       <Route
