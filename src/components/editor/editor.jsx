@@ -92,9 +92,7 @@ function Editor({
       setVersion((prev) => [...prev, { version: newTag }]);
     });
     socket.on('getCode', (id) => {
-      console.log('viewer get code');
       console.log(id);
-      console.log(editor.current.editor.getValue());
       socket.emit('passCode', editor.current.editor.getValue());
     });
   }, [socket]);
