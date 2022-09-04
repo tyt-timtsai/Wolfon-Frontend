@@ -3,7 +3,7 @@ import axios from 'axios';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import Editor from '../components/editor/editor';
-import Streamer from '../components/stream_video/streamer';
+import Streamer from '../components/stream/streamer';
 import constants from '../global/constants';
 
 function LiveStreamer({ socket }) {
@@ -78,9 +78,6 @@ function LiveStreamer({ socket }) {
   return (
     <div>
       <Header />
-      {/* <header className="App-header">
-        Live Streaming
-      </header> */}
       <main>
         <Streamer
           socket={socket}
@@ -88,7 +85,7 @@ function LiveStreamer({ socket }) {
           localVideo={localVideo}
           setIsStreaming={setIsStreaming}
         />
-        <button type="button" id="screenshot-button" onClick={screenShot}> 直播畫面截圖 </button>
+        <button type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </button>
         <div id="viewers">
           {viewers.map((viewer) => (<button type="button" value={viewer} onClick={getViewerCode}>{viewers.indexOf(viewer)}</button>))}
         </div>
@@ -96,7 +93,7 @@ function LiveStreamer({ socket }) {
           Tag :
           <input type="text" name="tag" id="tag" value={tag} onChange={editTag} />
         </label>
-        <button type="button" className="editor-btn" id="tagBtn" onClick={addTag}>Add tag</button>
+        <button type="button" className="editor-btn" id="tag-btn" onClick={addTag}>Add tag</button>
         <Editor
           socket={socket}
           room={room}

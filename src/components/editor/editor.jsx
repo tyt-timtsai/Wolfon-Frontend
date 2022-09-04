@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import axios from 'axios';
+import {
+  FormControl, Button, Select, MenuItem, InputLabel,
+} from '@mui/material';
+import './editor.css';
 
 import constants from '../../global/constants';
 
@@ -98,25 +102,14 @@ function Editor({
   }, [socket]);
 
   return (
-    <div>
-      <select name="language" id="language" defaultValue={mode} onChange={changeMode}>
-        <option value="javascript">Javascript</option>
-        <option value="python">Python</option>
-        <option value="golang">Golang</option>
-      </select>
-      <select name="version" id="version" onChange={changeVersion}>
-        <option value="">- choose version</option>
-        {version.map((ver) => (
-          <option key={ver.version} value={ver.version}>{ver.version}</option>
-        ))}
-      </select>
-      <button type="button" onClick={compile}>Run</button>
+    <div id="editor-container">
       <AceEditor
         ref={editor}
         mode={mode}
         theme="tomorrow"
         name="code-editor"
         className="editor"
+        width="100%"
         value={code}
         defaultValue={'//Javascript\nconsole.log(\'Hello Javascript!);'}
         onChange={editCode}
@@ -139,6 +132,8 @@ function Editor({
         theme="tomorrow"
         name="code-terminal"
         className="editor"
+        height="215px"
+        width="100%"
         readOnly
         value={terminal}
         defaultValue=""
@@ -152,6 +147,39 @@ function Editor({
           copyWithEmptySelection: true,
         }}
       />
+      <div id="editor-btn-container">
+        <FormControl className="editor-selector" size="small">
+          <InputLabel id="language-label">Language</InputLabel>
+          <Select
+            name="language"
+            id="language"
+            labelId="language-label"
+            label="Language"
+            defaultValue={mode}
+            onChange={changeMode}
+          >
+            <option value="javascript">Javascript</option>
+            <option value="python">Python</option>
+            <option value="golang">Golang</option>
+          </Select>
+        </FormControl>
+        <FormControl className="editor-selector" size="small">
+          <InputLabel id="version-label">Version</InputLabel>
+          <Select
+            name="version"
+            id="version"
+            labelId="language-label"
+            label="Version"
+            onChange={changeVersion}
+          >
+            {/* <option value="">- choose version</option> */}
+            {version.map((ver) => (
+              <MenuItem key={ver.version} value={ver.version}>{ver.version}</MenuItem>
+            ))}
+          </Select>
+        </FormControl>
+        <Button id="run-btn" variant="contained" size="small" type="button" onClick={compile}>Run</Button>
+      </div>
     </div>
   );
 }

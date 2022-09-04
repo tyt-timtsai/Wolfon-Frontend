@@ -1,0 +1,29 @@
+#editor-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 770px;
+    width: 600px;
+}
+
+#editor-btn-container {
+    margin-top: 10px;
+    display: grid;
+    height: 40px;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: flex-end;
+}
+
+.editor-selector{
+    width: 200px;
+}
+
+#run-btn {
+    height: 40px;
+    width: 100%;
+}
+
+div .editor {
+    border: 1px solid rgb(147, 147, 147);
+}

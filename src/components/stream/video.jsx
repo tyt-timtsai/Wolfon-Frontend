@@ -1,7 +1,6 @@
-import React, {
-  // useState,
-  useEffect, useRef,
-} from 'react';
+import React, { useEffect, useRef } from 'react';
+import { Button } from '@mui/material';
+import './video.css';
 
 // let socket;
 function Video({ socket, room }) {
@@ -103,11 +102,11 @@ function Video({ socket, room }) {
   /**
  * 初始化
  */
-  async function init() {
+  const init = async () => {
     initPeerConnection();
     connectIO();
     sendSDP(true);
-  }
+  };
 
   useEffect(() => {
     console.log('start');
@@ -116,16 +115,15 @@ function Video({ socket, room }) {
   }, [socket]);
 
   return (
-    <section className="video-container">
-      <button type="button" onClick={init}>連接直播</button>
+    <section id="video-container">
       <video
         ref={localVideo}
-        width="1080px"
+        width="1280"
         height="720px"
         style={{
           backgroundColor: 'black',
         }}
-        id="localVideo"
+        id="video"
         muted
         autoPlay
         playsInline
@@ -133,6 +131,7 @@ function Video({ socket, room }) {
       >
         Your browser does not support the video tag.
       </video>
+      <Button variant="contained" id="video-btn" type="button" onClick={init}>連接直播</Button>
     </section>
   );
 }
