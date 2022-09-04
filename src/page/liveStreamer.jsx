@@ -2,18 +2,22 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
-import Editor from '../components/code_editor/editor';
+import Editor from '../components/editor/editor';
 import Streamer from '../components/stream_video/streamer';
 import constants from '../global/constants';
 
 function LiveStreamer({ socket }) {
   const room = 'room1';
+  const [isStreaming, setIsStreaming] = useState(false);
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);
   const [code, setCode] = useState("//Javascript\nconsole.log('Hello Javascript!');");
   const [tag, setTag] = useState('');
   const [viewers, setViewers] = useState([]);
+  const [screenshots, setScreenshots] = useState([]);
   const editor = useRef();
+  const canvasRef = useRef();
+  const localVideo = useRef();
 
   const editTag = (e) => {
     setTag(e.target.value);
@@ -43,6 +47,19 @@ function LiveStreamer({ socket }) {
     socket.emit('getCode', e.target.value, socket.id);
   };
 
+  // Create Screenshot on stream
+  const screenShot = () => {
+    if (isStreaming) {
+      const scale = 0.2;
+      const video = localVideo.current;
+      const canvas = canvasRef.current;
+      canvas.width = video.videoWidth * scale;
+      canvas.height = video.videoHeight * scale;
+      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+      setScreenshots((prev) => [...prev, { src: canvas.toDataURL('image/png') }]);
+    }
+  };
+
   useEffect(() => {
     socket.on('viewer', (id) => {
       console.log(id);
@@ -61,15 +78,17 @@ function LiveStreamer({ socket }) {
   return (
     <div>
       <Header />
-      <header className="App-header">
+      {/* <header className="App-header">
         Live Streaming
-      </header>
+      </header> */}
       <main>
-        <button type="button" id="screenshot-button"> 直播畫面截圖 </button>
         <Streamer
           socket={socket}
           room={room}
+          localVideo={localVideo}
+          setIsStreaming={setIsStreaming}
         />
+        <button type="button" id="screenshot-button" onClick={screenShot}> 直播畫面截圖 </button>
         <div id="viewers">
           {viewers.map((viewer) => (<button type="button" value={viewer} onClick={getViewerCode}>{viewers.indexOf(viewer)}</button>))}
         </div>
@@ -90,7 +109,18 @@ function LiveStreamer({ socket }) {
           editor={editor}
         />
       </main>
-      <img id="screenshot-img" src="" alt="screenshot" />
+      <canvas ref={canvasRef} />
+      <div id="screenShot-container">
+        {screenshots.map((screenshot) => (
+          screenshot.src
+            ? (
+              <button key={screenshots.indexOf(screenshot)} type="button">
+                <img src={screenshot.src} className="screenshots-img" alt="screenshot" />
+              </button>
+            )
+            : null
+        ))}
+      </div>
       <Footer />
     </div>
   );

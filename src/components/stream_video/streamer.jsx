@@ -1,14 +1,12 @@
-import React, {
-  // useState,
-  useEffect, useRef,
-} from 'react';
+import React, { useEffect } from 'react';
 // import axios from 'axios';
 
 // let socket;
-function Streamer({ socket, room }) {
+function Streamer({
+  socket, room, localVideo, setIsStreaming,
+}) {
   let localStream;
   const PCs = {};
-  const localVideo = useRef();
 
   // ===================== 連線相關 =====================
 
@@ -130,6 +128,7 @@ function Streamer({ socket, room }) {
   async function init() {
     await createStream();
     connectIO();
+    setIsStreaming(true);
   }
   useEffect(() => {
     console.log('socket');

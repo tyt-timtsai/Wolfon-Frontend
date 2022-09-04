@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
-import Editor from '../components/code_editor/editor';
+import Editor from '../components/editor/editor';
 import Video from '../components/stream_video/video';
 
 function LiveViewer({ socket }) {
@@ -13,9 +13,9 @@ function LiveViewer({ socket }) {
   return (
     <div>
       <Header />
-      <header className="App-header">
+      {/* <header className="App-header">
         Live Streaming
-      </header>
+      </header> */}
       <main>
         <Video
           socket={socket}
