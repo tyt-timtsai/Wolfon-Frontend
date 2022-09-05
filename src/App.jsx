@@ -2,8 +2,8 @@ import './App.css';
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
-import LiveViewer from './page/liveViewer';
-import LiveStreamer from './page/liveStreamer';
+import LiveViewer from './page/viewer';
+import LiveStreamer from './page/streamer';
 import constants from './global/constants';
 
 function App() {
@@ -13,21 +13,17 @@ function App() {
     <Routes>
       <Route
         element={(
-          <div className="App">
-            <LiveViewer
-              socket={socket}
-            />
-          </div>
+          <LiveViewer
+            socket={socket}
+          />
         )}
         path="/live/viewer"
       />
       <Route
         element={(
-          <div className="App">
-            <LiveStreamer
-              socket={socket}
-            />
-          </div>
+          <LiveStreamer
+            socket={socket}
+          />
         )}
         path="/live/streamer"
       />

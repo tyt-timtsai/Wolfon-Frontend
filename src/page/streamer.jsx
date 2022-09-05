@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { Button } from '@mui/material';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import Editor from '../components/editor/editor';
-import Streamer from '../components/stream_video/streamer';
+import Streamer from '../components/video/streamer';
 import constants from '../global/constants';
+import './streamer.css';
 
 function LiveStreamer({ socket }) {
   const room = 'room1';
@@ -78,37 +80,36 @@ function LiveStreamer({ socket }) {
   return (
     <div>
       <Header />
-      {/* <header className="App-header">
-        Live Streaming
-      </header> */}
-      <main>
+      <section id="streamer-container">
         <Streamer
           socket={socket}
           room={room}
           localVideo={localVideo}
           setIsStreaming={setIsStreaming}
+          screenShot={screenShot}
         />
-        <button type="button" id="screenshot-button" onClick={screenShot}> 直播畫面截圖 </button>
         <div id="viewers">
           {viewers.map((viewer) => (<button type="button" value={viewer} onClick={getViewerCode}>{viewers.indexOf(viewer)}</button>))}
         </div>
-        <label htmlFor="tag" aria-controls="tag">
-          Tag :
-          <input type="text" name="tag" id="tag" value={tag} onChange={editTag} />
-        </label>
-        <button type="button" className="editor-btn" id="tagBtn" onClick={addTag}>Add tag</button>
-        <Editor
-          socket={socket}
-          room={room}
-          mode={mode}
-          setMode={setMode}
-          version={version}
-          setVersion={setVersion}
-          code={code}
-          setCode={setCode}
-          editor={editor}
-        />
-      </main>
+        <div id="streamer-video">
+          <label htmlFor="tag" aria-controls="tag">
+            Tag :
+            <input type="text" name="tag" id="tag" value={tag} onChange={editTag} />
+          </label>
+          <Button type="button" className="editor-btn" id="tag-btn" onClick={addTag}>Add tag</Button>
+          <Editor
+            socket={socket}
+            room={room}
+            mode={mode}
+            setMode={setMode}
+            version={version}
+            setVersion={setVersion}
+            code={code}
+            setCode={setCode}
+            editor={editor}
+          />
+        </div>
+      </section>
       <canvas ref={canvasRef} />
       <div id="screenShot-container">
         {screenshots.map((screenshot) => (

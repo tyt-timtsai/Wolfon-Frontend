@@ -2,7 +2,8 @@ import React, { useState, useRef } from 'react';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import Editor from '../components/editor/editor';
-import Video from '../components/stream_video/video';
+import Video from '../components/video/video';
+import './viewer.css';
 
 function LiveViewer({ socket }) {
   const room = 'room1';
@@ -13,10 +14,7 @@ function LiveViewer({ socket }) {
   return (
     <div>
       <Header />
-      {/* <header className="App-header">
-        Live Streaming
-      </header> */}
-      <main>
+      <div id="viewer-container">
         <Video
           socket={socket}
           room={room}
@@ -32,7 +30,7 @@ function LiveViewer({ socket }) {
           setCode={setCode}
           editor={editor}
         />
-      </main>
+      </div>
       <Footer />
     </div>
   );

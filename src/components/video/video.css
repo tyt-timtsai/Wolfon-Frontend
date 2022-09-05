@@ -1,0 +1,12 @@
+#video-container {
+    height: 770px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-end;
+}
+
+#video-btn {
+    height: 40px;
+    width: 120px;
+}

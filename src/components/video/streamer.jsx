@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
-// import axios from 'axios';
+import { Button } from '@mui/material';
+import './streamer.css';
 
 // let socket;
 function Streamer({
-  socket, room, localVideo, setIsStreaming,
+  socket, room, localVideo, setIsStreaming, screenShot,
 }) {
   let localStream;
   const PCs = {};
+  let stream;
 
   // ===================== 連線相關 =====================
 
@@ -19,7 +21,17 @@ function Streamer({
       video: true,
     };
     // const stream = await navigator.mediaDevices.getUserMedia(constraints)
-    const stream = await navigator.mediaDevices.getDisplayMedia(constraints);
+    stream = await navigator.mediaDevices.getDisplayMedia(constraints);
+    localStream = stream;
+    localVideo.current.srcObject = stream;
+  }
+
+  async function createCameraStream() {
+    const constraints = {
+      audio: false,
+      video: true,
+    };
+    stream = await navigator.mediaDevices.getUserMedia(constraints);
     localStream = stream;
     localVideo.current.srcObject = stream;
   }
@@ -125,11 +137,17 @@ function Streamer({
   /**
  * 初始化
  */
-  async function init() {
+  const init = async () => {
     await createStream();
     connectIO();
     setIsStreaming(true);
-  }
+  };
+
+  const initCamera = async () => {
+    await createCameraStream();
+    connectIO();
+    setIsStreaming(true);
+  };
   useEffect(() => {
     console.log('socket');
     // socket = io('ws://localhost:3000');
@@ -138,10 +156,9 @@ function Streamer({
 
   return (
     <section className="video-container">
-      <button type="button" onClick={init}>開始直播</button>
       <video
         ref={localVideo}
-        width="480px"
+        width="560px"
         height="auto"
         style={{
           backgroundColor: 'black',
@@ -154,6 +171,9 @@ function Streamer({
       >
         Your browser does not support the video tag.
       </video>
+      <Button variant="contained" type="button" onClick={init}>開始直播</Button>
+      <Button variant="contained" type="button" onClick={initCamera}>開啟鏡頭</Button>
+      <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
     </section>
   );
 }
