@@ -12,11 +12,12 @@
     display: grid;
     height: 40px;
     grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
     align-items: flex-end;
 }
 
 .editor-selector{
-    width: 200px;
+    width: 190px;
 }
 
 #run-btn {

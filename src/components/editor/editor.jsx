@@ -172,7 +172,6 @@ function Editor({
             label="Version"
             onChange={changeVersion}
           >
-            {/* <option value="">- choose version</option> */}
             {version.map((ver) => (
               <MenuItem key={ver.version} value={ver.version}>{ver.version}</MenuItem>
             ))}

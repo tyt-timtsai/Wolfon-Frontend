@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import Editor from '../components/editor/editor';
-import Video from '../components/stream/video';
+import Video from '../components/video/video';
 import './viewer.css';
 
 function LiveViewer({ socket }) {
