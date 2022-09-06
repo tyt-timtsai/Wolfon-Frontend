@@ -21,7 +21,7 @@ function Editor({
   socket, room, mode, setMode, version, setVersion, code, setCode, editor,
 }) {
   const [terminal, setTerminal] = useState();
-  // const editor = useRef();
+  const [select, setSelect] = useState('');
 
   // Change programming language
   const changeMode = (e) => {
@@ -47,6 +47,7 @@ function Editor({
       axios.get(`${constants.SERVER_URL}/api/v1/code/${room}?tag=${e.target.value}`)
         .then((res) => {
           setCode(res.data.code);
+          setSelect(e.target.value);
         })
         .catch((err) => console.log(err));
     }
@@ -99,6 +100,7 @@ function Editor({
       console.log(id);
       socket.emit('passCode', editor.current.editor.getValue());
     });
+    return (() => socket.close());
   }, [socket]);
 
   return (
@@ -155,12 +157,12 @@ function Editor({
             id="language"
             labelId="language-label"
             label="Language"
-            defaultValue={mode}
+            value={mode}
             onChange={changeMode}
           >
-            <option value="javascript">Javascript</option>
-            <option value="python">Python</option>
-            <option value="golang">Golang</option>
+            <MenuItem value="javascript">Javascript</MenuItem>
+            <MenuItem value="python">Python</MenuItem>
+            <MenuItem value="golang">Golang</MenuItem>
           </Select>
         </FormControl>
         <FormControl className="editor-selector" size="small">
@@ -170,6 +172,7 @@ function Editor({
             id="version"
             labelId="language-label"
             label="Version"
+            value={select}
             onChange={changeVersion}
           >
             {version.map((ver) => (

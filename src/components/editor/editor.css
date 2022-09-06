@@ -4,7 +4,8 @@
     justify-content: center;
     align-items: center;
     height: 770px;
-    width: 600px;
+    /* width: 600px; */
+    width: 100%;
 }
 
 #editor-btn-container {

@@ -112,6 +112,7 @@ function Video({ socket, room }) {
     console.log('start');
     // socket = io('ws://localhost:3000');
     // socket = io('wss://timtsai.website');
+    return (() => socket.close());
   }, [socket]);
 
   return (

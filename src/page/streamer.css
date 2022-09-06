@@ -1,5 +1,52 @@
 #streamer-container{
+    padding: 0 10px;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
+    /* align-content: space-between; */
+    align-items: flex-start;
+    height: 75vh;
+    width: 100vw;
+}
+
+/* Video Layout */
+#streamer-video-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     align-items: center;
+    width: 30vw;
+}
+
+#streamer-video {
+    margin: 0;
+    padding: 0;
+    width: 30vw;
+}
+
+#localVideo{
+    width: 100%;
+}
+
+/* Video List */
+#viewers-list {
+    padding: 10px;
+    width: 100%;
+    height: 100%;
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    grid-auto-rows: auto;
+    gap: 5px;
+}
+
+/* Editor Layout */
+#streamer-editor{
+    padding: 0 10px;
+    width: 100%;
+    height: 100%;
+}
+
+/* Chat room Layout */
+#editor-chatroom {
+    min-width: 20vw;
+    height: 83%;
 }

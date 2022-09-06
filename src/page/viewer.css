@@ -5,3 +5,12 @@
     justify-content: space-between;
     align-items: center;
 }
+
+#viewer-chatroom {
+    margin-left: 400px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50vh;
+    width: 25vw;
+}

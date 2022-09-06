@@ -4,6 +4,7 @@ import { Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 import LiveViewer from './page/viewer';
 import LiveStreamer from './page/streamer';
+import Login from './page/login';
 import constants from './global/constants';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         )}
         path="/live/viewer"
       />
+
       <Route
         element={(
           <LiveStreamer
@@ -26,6 +28,15 @@ function App() {
           />
         )}
         path="/live/streamer"
+      />
+
+      <Route
+        element={(
+          <Login
+            socket={socket}
+          />
+        )}
+        path="/user/login"
       />
     </Routes>
   );

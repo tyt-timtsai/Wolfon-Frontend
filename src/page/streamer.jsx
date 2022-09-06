@@ -1,10 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { Button } from '@mui/material';
+import {
+  Button, TextField, ImageList, ImageListItem,
+} from '@mui/material';
 import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import Editor from '../components/editor/editor';
 import Streamer from '../components/video/streamer';
+import Chatroom from '../components/chatroom/chatroom';
 import constants from '../global/constants';
 import './streamer.css';
 
@@ -81,22 +84,24 @@ function LiveStreamer({ socket }) {
     <div>
       <Header />
       <section id="streamer-container">
-        <Streamer
-          socket={socket}
-          room={room}
-          localVideo={localVideo}
-          setIsStreaming={setIsStreaming}
-          screenShot={screenShot}
-        />
-        <div id="viewers">
-          {viewers.map((viewer) => (<button type="button" value={viewer} onClick={getViewerCode}>{viewers.indexOf(viewer)}</button>))}
+        <div id="streamer-video-container">
+          <Streamer
+            socket={socket}
+            room={room}
+            localVideo={localVideo}
+            setIsStreaming={setIsStreaming}
+            screenShot={screenShot}
+          />
+          <div id="viewers-list">
+            {viewers.map((viewer) => (
+              <Button variant="contained" type="button" value={viewer} key={viewers.indexOf(viewer)} onClick={getViewerCode}>{viewers.indexOf(viewer)}</Button>
+            ))}
+          </div>
         </div>
-        <div id="streamer-video">
-          <label htmlFor="tag" aria-controls="tag">
-            Tag :
-            <input type="text" name="tag" id="tag" value={tag} onChange={editTag} />
-          </label>
-          <Button type="button" className="editor-btn" id="tag-btn" onClick={addTag}>Add tag</Button>
+
+        <div id="streamer-editor">
+          <TextField label="Tag" size="small" variant="outlined" type="text" name="tag" id="tag" value={tag} onChange={editTag} />
+          <Button variant="contained" type="button" className="editor-btn" id="tag-btn" onClick={addTag}>Add tag</Button>
           <Editor
             socket={socket}
             room={room}
@@ -109,19 +114,26 @@ function LiveStreamer({ socket }) {
             editor={editor}
           />
         </div>
+
+        <div id="editor-chatroom">
+          <Chatroom
+            socket={socket}
+            room={room}
+          />
+        </div>
       </section>
       <canvas ref={canvasRef} />
-      <div id="screenShot-container">
+      <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164} id="screenShot-container">
         {screenshots.map((screenshot) => (
           screenshot.src
             ? (
-              <button key={screenshots.indexOf(screenshot)} type="button">
-                <img src={screenshot.src} className="screenshots-img" alt="screenshot" />
-              </button>
+              <ImageListItem key={screenshots.indexOf(screenshot)}>
+                <img src={screenshot.src} className="screenshots-img" alt="screenshot" loading="lazy" />
+              </ImageListItem>
             )
             : null
         ))}
-      </div>
+      </ImageList>
       <Footer />
     </div>
   );
