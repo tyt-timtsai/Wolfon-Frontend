@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 import { Button } from '@mui/material';
-import './streamer.css';
 
 // let socket;
 function Streamer({
@@ -112,8 +111,6 @@ function Streamer({
         sdpMLineIndex: data.label,
         candidate: data.candidate,
       });
-      console.log(id);
-      console.log(candidate);
       await PCs[id].addIceCandidate(candidate);
     });
 
@@ -152,17 +149,14 @@ function Streamer({
     console.log('socket');
     // socket = io('ws://localhost:3000');
     // socket = io('wss://timtsai.website');
+    return (() => socket.close());
   }, [socket]);
 
   return (
-    <section className="video-container">
+    <section id="streamer-video">
       <video
         ref={localVideo}
-        width="560px"
         height="auto"
-        style={{
-          backgroundColor: 'black',
-        }}
         id="localVideo"
         muted
         autoPlay
