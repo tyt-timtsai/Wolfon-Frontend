@@ -2,16 +2,17 @@ import './App.css';
 import React, { useEffect } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
-import LiveViewer from './page/viewer';
-import LiveStreamer from './page/streamer';
-import Login from './page/login';
+import LiveViewer from './page/live/viewer';
+import LiveStreamer from './page/live/streamer';
+import Login from './page/user/login';
+import NewPost from './page/post/new_post';
 import constants from './global/constants';
 
 function App() {
   const socket = io(constants.SOCKET_URL);
   useEffect(() => () => socket.disconnect(), [socket]);
   return (
-    <Routes>
+    <Routes id="App">
       <Route
         element={(
           <LiveViewer
@@ -37,6 +38,15 @@ function App() {
           />
         )}
         path="/user/login"
+      />
+
+      <Route
+        element={(
+          <NewPost
+            socket={socket}
+          />
+        )}
+        path="/post/create"
       />
     </Routes>
   );

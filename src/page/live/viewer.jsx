@@ -1,9 +1,9 @@
 import React, { useState, useRef } from 'react';
-import Header from '../components/header/header';
-// import Footer from '../components/footer/footer';
-import Editor from '../components/editor/editor';
-import Video from '../components/video/video';
-import Chatroom from '../components/chatroom/chatroom';
+import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
+import Editor from '../../components/editor/editor';
+import Video from '../../components/video/video';
+import Chatroom from '../../components/chatroom/chatroom';
 import './viewer.css';
 
 function LiveViewer({ socket }) {
@@ -38,7 +38,7 @@ function LiveViewer({ socket }) {
           room={room}
         />
       </div>
-      {/* <Footer /> */}
+      <Footer />
     </div>
   );
 }

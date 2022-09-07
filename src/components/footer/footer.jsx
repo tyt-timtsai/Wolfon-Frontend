@@ -1,7 +1,13 @@
 import React from 'react';
+import { Paper } from '@mui/material';
+import './footer.css';
 
 function Footer() {
-  return <h1> Footer </h1>;
+  return (
+    <Paper id="footer-container" elevation={3}>
+      <p>footer</p>
+    </Paper>
+  );
 }
 
 export default Footer;

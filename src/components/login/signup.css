@@ -1,0 +1,33 @@
+#signup-container {
+    height: 100%;
+    /* width: 100%; */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#sign-logo{
+    height: 3rem;
+    width: auto;
+}
+
+#signup-paper{
+    padding: 10px 25px;
+    height: 30rem;
+    width: 24rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#signup-input-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.signup-inputs {
+    width: 100%;
+}

@@ -3,12 +3,12 @@ import axios from 'axios';
 import {
   Button, TextField, ImageList, ImageListItem,
 } from '@mui/material';
-import Header from '../components/header/header';
-import Footer from '../components/footer/footer';
-import Editor from '../components/editor/editor';
-import Streamer from '../components/video/streamer';
-import Chatroom from '../components/chatroom/chatroom';
-import constants from '../global/constants';
+import Header from '../../components/header/header';
+import Footer from '../../components/footer/footer';
+import Editor from '../../components/editor/editor';
+import Streamer from '../../components/video/streamer';
+import Chatroom from '../../components/chatroom/chatroom';
+import constants from '../../global/constants';
 import './streamer.css';
 
 function LiveStreamer({ socket }) {
