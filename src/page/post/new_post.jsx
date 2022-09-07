@@ -1,14 +1,9 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import Header from '../../components/header/header';
+import CreatePost from '../../components/post/create';
 import Footer from '../../components/footer/footer';
 
-function CreatePost() {
-  const [text, setText] = useState('text');
-
-  const onclick = () => {
-    setText(text + 1);
-  };
-
+function NewPost() {
   useEffect(() => {
     console.log('start useEffect');
     let a = false;
@@ -18,16 +13,14 @@ function CreatePost() {
       a = true;
       console.log(a);
     });
-  }, [text]);
+  }, []);
   return (
-    <div>
+    <div id="new-post-container">
       <Header />
-      <h1>Posts</h1>
-      <p>{text}</p>
-      <button type="button" onClick={onclick}>change text</button>
+      <CreatePost />
       <Footer />
     </div>
   );
 }
 
-export default CreatePost;
+export default NewPost;

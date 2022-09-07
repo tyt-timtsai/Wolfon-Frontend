@@ -5,7 +5,7 @@ import io from 'socket.io-client';
 import LiveViewer from './page/live/viewer';
 import LiveStreamer from './page/live/streamer';
 import Login from './page/user/login';
-import CreatePost from './page/post/create_post';
+import NewPost from './page/post/new_post';
 import constants from './global/constants';
 
 function App() {
@@ -42,7 +42,7 @@ function App() {
 
       <Route
         element={(
-          <CreatePost
+          <NewPost
             socket={socket}
           />
         )}
