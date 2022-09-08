@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   Paper,
@@ -15,10 +16,11 @@ import constants from '../../global/constants';
 import './signin.css';
 
 function signIn() {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({
-    email: '',
-    password: '',
-    confirm: '',
+    email: 'sam22@gmail.com',
+    password: 'sam22',
+    confirm: 'sam22',
     showPassword: false,
   });
 
@@ -50,13 +52,14 @@ function signIn() {
       axios.post(`${constants.SERVER_URL}/api/v1/user/signin`, { data: userData })
         .then((res) => {
           console.log(res);
-          window.localStorage.setItem('JWT', res.data.data);
           setUserData({
             email: userData.email,
             password: '',
             confirm: '',
             showPassword: false,
           });
+          window.localStorage.setItem('JWT', res.data.data);
+          navigate('/user/profile');
         })
         .catch((err) => console.log(err))
     );
