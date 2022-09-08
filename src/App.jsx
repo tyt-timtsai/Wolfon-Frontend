@@ -5,6 +5,7 @@ import io from 'socket.io-client';
 import LiveViewer from './page/live/viewer';
 import LiveStreamer from './page/live/streamer';
 import Login from './page/user/login';
+import Profile from './components/login/profile';
 import NewPost from './page/post/new_post';
 import constants from './global/constants';
 
@@ -38,6 +39,15 @@ function App() {
           />
         )}
         path="/user/login"
+      />
+
+      <Route
+        element={(
+          <Profile
+            socket={socket}
+          />
+        )}
+        path="/user/profile"
       />
 
       <Route
