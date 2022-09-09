@@ -26,6 +26,7 @@ function SignUp() {
   });
 
   const handleChange = (prop) => (e) => {
+    console.log(prop);
     setUserData({ ...userData, [prop]: e.target.value });
   };
 

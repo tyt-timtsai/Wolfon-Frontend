@@ -5,7 +5,7 @@ import './header.css';
 function Header() {
   return (
     <Paper id="header-container" elevation={3}>
-      <a href="/live/viewer" id="logo-container">
+      <a href="/" id="logo-container">
         <img src="/wolf-emblem.png" alt="logo" id="logo-img" />
         <p id="logo-text">
           Wolf
@@ -23,8 +23,14 @@ function Header() {
         <a href="/user/login">
           <Button type="button">login</Button>
         </a>
+        <a href="/user/profile">
+          <Button type="button">Profile</Button>
+        </a>
         <a href="/post/create">
           <Button type="button">new Post</Button>
+        </a>
+        <a href="/search">
+          <Button type="button">Search</Button>
         </a>
       </div>
     </Paper>
