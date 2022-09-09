@@ -3,8 +3,11 @@ import './chatroom.css';
 import {
   Button, TextField, List, ListItem, ListItemAvatar, Avatar, ListItemText,
 } from '@mui/material';
+import axios from 'axios';
+import constants from '../../global/constants';
 
 function Chatroom({ socket, room }) {
+  const [userData, setUserData] = useState();
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const messagesList = useRef();
@@ -18,6 +21,20 @@ function Chatroom({ socket, room }) {
     socket.emit('chat message', { id: socket.id, msg: message });
     setMessage('');
   };
+
+  useEffect(() => {
+    axios.get(`${constants.SERVER_URL}/api/v1/user`, {
+      headers: {
+        authorization: window.localStorage.getItem('JWT'),
+      },
+    })
+      .then((res) => {
+        setUserData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, []);
 
   useEffect(() => {
     if (messagesList.current) {
@@ -44,7 +61,7 @@ function Chatroom({ socket, room }) {
               <Avatar alt="avatar" />
             </ListItemAvatar>
             <ListItemText
-              primary={`User Name : ${data.id}`}
+              primary={userData.name}
               secondary={data.msg}
               sx={{ display: 'inline' }}
               component="span"

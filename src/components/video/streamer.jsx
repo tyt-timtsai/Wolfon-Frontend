@@ -30,6 +30,17 @@ function Streamer({
       audio: false,
       video: true,
     };
+
+    // const constraints = {
+    //   video: {
+    //     cursor: "always"
+    //   },
+    //   audio: {
+    //     echoCancellation: true,
+    //     noiseSuppression: true,
+    //     sampleRate: 44100
+    //   }
+    // }
     stream = await navigator.mediaDevices.getUserMedia(constraints);
     localStream = stream;
     localVideo.current.srcObject = stream;
@@ -134,13 +145,23 @@ function Streamer({
   /**
  * 初始化
  */
+  const stop = async () => {
+    if (localVideo.current.srcObject != null) {
+      const tracks = localVideo.current.srcObject.getTracks();
+      tracks.forEach((track) => track.stop());
+      localVideo.current.srcObject = null;
+    }
+  };
+
   const init = async () => {
+    await stop();
     await createStream();
     connectIO();
     setIsStreaming(true);
   };
 
   const initCamera = async () => {
+    await stop();
     await createCameraStream();
     connectIO();
     setIsStreaming(true);
@@ -166,6 +187,7 @@ function Streamer({
         Your browser does not support the video tag.
       </video>
       <Button variant="contained" type="button" onClick={init}>開始直播</Button>
+      <Button variant="contained" type="button" onClick={stop}>關閉畫面</Button>
       <Button variant="contained" type="button" onClick={initCamera}>開啟鏡頭</Button>
       <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
     </section>
