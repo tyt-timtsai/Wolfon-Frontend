@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import constants from '../../global/constants';
 
-function Profile({ socket }) {
+function UserProfile() {
+  const navigate = useNavigate();
   const [userData, setUserData] = useState({});
+
+  const logout = () => {
+    window.localStorage.removeItem('JWT');
+    navigate('/');
+  };
 
   useEffect(() => {
     axios.get(`${constants.SERVER_URL}/api/v1/user`, {
@@ -11,7 +18,6 @@ function Profile({ socket }) {
         authorization: `Bearer ${window.localStorage.getItem('JWT')}`,
       },
     }).then((res) => {
-      console.log(res);
       //   const { data } = res.data;
       //   setUserData({
       //     id: data.id,
@@ -32,18 +38,45 @@ function Profile({ socket }) {
     }).catch((err) => {
       console.log('Fetch profile error : ', err);
     });
-    return (() => socket.disconnect());
   }, []);
-  useEffect(() => {
-    console.log(userData);
-  }, [userData]);
 
   return (
     <div>
-      <h1>Profile page</h1>
-      <p>{userData.name}</p>
+      <h1>
+        Profile page |
+        {' '}
+        {userData.name}
+      </h1>
+      <button type="button" onClick={logout}>Logout</button>
+      <h2>{userData.name}</h2>
+      <p>{userData.email}</p>
+      <p>{userData.posts}</p>
+      <p>{userData.community}</p>
+      <p>{userData.friends}</p>
+      <p>{userData.photo}</p>
+      <ul>
+        {userData.pending_friends ? (
+          <li key={userData.pending_friends}>
+            pending_friends :
+            {' '}
+            {userData.pending_friends}
+            <button type="button">Confirm</button>
+            <button type="button">Reject</button>
+          </li>
+        ) : null}
+      </ul>
+      <ul>
+        {userData.apply_friends ? (
+          <li key={userData.apply_friends}>
+            apply_friends :
+            {' '}
+            {userData.apply_friends}
+            <button type="button">Cancel</button>
+          </li>
+        ) : null}
+      </ul>
     </div>
   );
 }
 
-export default Profile;
+export default UserProfile;
