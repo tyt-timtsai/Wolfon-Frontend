@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import {
-  Button, TextField, ImageList, ImageListItem,
+  Button, ImageList, ImageListItem,
 } from '@mui/material';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -23,10 +23,7 @@ function LiveStreamer({ socket }) {
   const editor = useRef();
   const canvasRef = useRef();
   const localVideo = useRef();
-
-  const editTag = (e) => {
-    setTag(e.target.value);
-  };
+  const isStreamer = true;
 
   const addTag = () => {
     const content = editor.current.editor.getValue();
@@ -91,6 +88,10 @@ function LiveStreamer({ socket }) {
             localVideo={localVideo}
             setIsStreaming={setIsStreaming}
             screenShot={screenShot}
+            tag={tag}
+            setTag={setTag}
+            addTag={addTag}
+            isStreamer={isStreamer}
           />
           <div id="viewers-list">
             {viewers.map((viewer) => (
@@ -100,8 +101,6 @@ function LiveStreamer({ socket }) {
         </div>
 
         <div id="streamer-editor">
-          <TextField label="Tag" size="small" variant="outlined" type="text" name="tag" id="tag" value={tag} onChange={editTag} />
-          <Button variant="contained" type="button" className="editor-btn" id="tag-btn" onClick={addTag}>Add tag</Button>
           <Editor
             socket={socket}
             room={room}
@@ -112,6 +111,7 @@ function LiveStreamer({ socket }) {
             code={code}
             setCode={setCode}
             editor={editor}
+            isStreamer={isStreamer}
           />
         </div>
 

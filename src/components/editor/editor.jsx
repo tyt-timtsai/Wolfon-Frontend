@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import axios from 'axios';
 import {
-  FormControl, Button, Select, MenuItem, InputLabel,
+  FormControl, Button, Select, MenuItem, InputLabel, TextField,
 } from '@mui/material';
 import './editor.css';
 
@@ -18,7 +18,19 @@ import 'ace-builds/src-noconflict/ext-language_tools';
 
 // ============== code 編輯器 ===============
 function Editor({
-  socket, room, mode, setMode, version, setVersion, code, setCode, editor,
+  socket,
+  room,
+  mode,
+  setMode,
+  version,
+  setVersion,
+  code,
+  setCode,
+  editor,
+  isStreamer,
+  tag,
+  setTag,
+  addTag,
 }) {
   const [terminal, setTerminal] = useState();
   const [select, setSelect] = useState('');
@@ -63,6 +75,10 @@ function Editor({
         });
       })
       .catch(((err) => console.log(err)));
+  };
+
+  const editTag = (e) => {
+    setTag(e.target.value);
   };
 
   // ============== 程式編譯 ===============
@@ -150,6 +166,13 @@ function Editor({
         }}
       />
       <div id="editor-btn-container">
+        {isStreamer ? (
+          <div id="tag-container">
+            <TextField label="Tag" size="small" variant="outlined" type="text" name="tag" id="tag" value={tag} onChange={editTag} />
+            <Button variant="contained" type="button" className="editor-btn" id="tag-btn" onClick={addTag}>Add tag</Button>
+          </div>
+        ) : null }
+
         <FormControl className="editor-selector" size="small">
           <InputLabel id="language-label">Language</InputLabel>
           <Select
