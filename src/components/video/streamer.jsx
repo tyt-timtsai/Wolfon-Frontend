@@ -1,11 +1,11 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button } from '@mui/material';
 
 // let socket;
 function Streamer({
   socket, room, localVideo, setIsStreaming, screenShot,
 }) {
-  let localStream;
+  const [localStream, setLocalStream] = useState();
   const PCs = {};
   let stream;
 
@@ -21,7 +21,8 @@ function Streamer({
     };
     // const stream = await navigator.mediaDevices.getUserMedia(constraints)
     stream = await navigator.mediaDevices.getDisplayMedia(constraints);
-    localStream = stream;
+    // localStream = stream;
+    setLocalStream(stream);
     localVideo.current.srcObject = stream;
   }
 
@@ -42,7 +43,8 @@ function Streamer({
     //   }
     // }
     stream = await navigator.mediaDevices.getUserMedia(constraints);
-    localStream = stream;
+    // localStream = stream;
+    setLocalStream(stream);
     localVideo.current.srcObject = stream;
   }
 
@@ -143,9 +145,48 @@ function Streamer({
   }
 
   /**
- * 初始化
- */
-  const stop = async () => {
+   * 直播功能
+   */
+  const buffer = [];
+  let mediaRecorder;
+  const startRecord = () => {
+    const options = {
+      mimeType: 'video/webm;codecs=vp9',
+    };
+
+    if (!MediaRecorder.isTypeSupported(options.mimeType)) {
+      console.error(`${options.mimeType} is not supported!`);
+      return;
+    }
+
+    try {
+      mediaRecorder = new MediaRecorder(localStream, options);
+    } catch (err) {
+      console.error('Failed to create MediaRecorder:', err);
+      return;
+    }
+
+    mediaRecorder.ondataavailable = (e) => {
+      if (e && e.data && e.data.size > 0) {
+        buffer.push(e.data);
+      }
+    };
+    mediaRecorder.start(10);
+    console.log(mediaRecorder.state);
+    console.log('recorder started');
+  };
+
+  // 停止錄影
+  const stopRecord = () => {
+    mediaRecorder.stop();
+    console.log(mediaRecorder.state);
+    console.log('recorder stopped');
+  };
+
+  const stopStream = async () => {
+    if (mediaRecorder) {
+      stopRecord();
+    }
     if (localVideo.current.srcObject != null) {
       const tracks = localVideo.current.srcObject.getTracks();
       tracks.forEach((track) => track.stop());
@@ -153,19 +194,23 @@ function Streamer({
     }
   };
 
+  /**
+ * 初始化
+ */
   const init = async () => {
-    await stop();
+    await stopStream();
     await createStream();
     connectIO();
     setIsStreaming(true);
   };
 
   const initCamera = async () => {
-    await stop();
+    await stopStream();
     await createCameraStream();
     connectIO();
     setIsStreaming(true);
   };
+
   useEffect(() => {
     console.log('socket');
     // socket = io('ws://localhost:3000');
@@ -187,9 +232,11 @@ function Streamer({
         Your browser does not support the video tag.
       </video>
       <Button variant="contained" type="button" onClick={init}>開始直播</Button>
-      <Button variant="contained" type="button" onClick={stop}>關閉畫面</Button>
+      <Button variant="contained" type="button" onClick={stopStream}>關閉畫面</Button>
       <Button variant="contained" type="button" onClick={initCamera}>開啟鏡頭</Button>
       <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
+      <Button variant="contained" type="button" onClick={startRecord}>開始錄影</Button>
+      <Button variant="contained" type="button" onClick={stopRecord}>停止錄影</Button>
     </section>
   );
 }
