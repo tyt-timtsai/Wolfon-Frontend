@@ -1,11 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { Button } from '@mui/material';
+// import axios from 'axios';
 
 // let socket;
 function Streamer({
   socket, room, localVideo, setIsStreaming, screenShot,
 }) {
   const [localStream, setLocalStream] = useState();
+  const [record, setRecord] = useState();
+  const [file, setFile] = useState();
+  const download = useRef();
   const PCs = {};
   let stream;
 
@@ -158,33 +162,60 @@ function Streamer({
       console.error(`${options.mimeType} is not supported!`);
       return;
     }
-
-    try {
-      mediaRecorder = new MediaRecorder(localStream, options);
-    } catch (err) {
-      console.error('Failed to create MediaRecorder:', err);
-      return;
-    }
-
-    mediaRecorder.ondataavailable = (e) => {
-      if (e && e.data && e.data.size > 0) {
-        buffer.push(e.data);
+    if (localStream) {
+      try {
+        mediaRecorder = new MediaRecorder(localStream, options);
+      } catch (err) {
+        console.error('Failed to create MediaRecorder:', err);
+        return;
       }
-    };
-    mediaRecorder.start(10);
-    console.log(mediaRecorder.state);
-    console.log('recorder started');
+
+      mediaRecorder.ondataavailable = (e) => {
+        if (e && e.data && e.data.size > 0) {
+          buffer.push(e.data);
+        }
+      };
+      mediaRecorder.start(10);
+      console.log(mediaRecorder.state);
+      console.log('recorder started');
+    } else {
+      console.log('Please start streaming first.');
+    }
+  };
+
+  // 下載錄影
+  const downloadRecord = () => {
+    console.log(buffer);
+    const blob = new Blob(buffer, { type: 'video/webm' });
+    const url = window.URL.createObjectURL(blob);
+    console.log(url);
+
+    setRecord({
+      href: url,
+      filename: 'record.webm',
+    });
+
+    setTimeout(() => {
+      console.log(download.current);
+      download.current.click();
+    }, 1000);
   };
 
   // 停止錄影
   const stopRecord = () => {
-    mediaRecorder.stop();
-    console.log(mediaRecorder.state);
-    console.log('recorder stopped');
+    if (mediaRecorder) {
+      mediaRecorder.stop();
+      console.log(mediaRecorder.state);
+      console.log('recorder stopped');
+      downloadRecord();
+    } else {
+      console.log('Video is not recording.');
+    }
   };
 
+  // 停止直播
   const stopStream = async () => {
-    if (mediaRecorder) {
+    if (mediaRecorder && mediaRecorder.state === 'recording') {
       stopRecord();
     }
     if (localVideo.current.srcObject != null) {
@@ -192,6 +223,16 @@ function Streamer({
       tracks.forEach((track) => track.stop());
       localVideo.current.srcObject = null;
     }
+  };
+
+  const uploadVideo = (e) => {
+    e.preventDefault();
+    console.log(file);
+  };
+
+  const handleUpload = (e) => {
+    console.log(e.target.files[0]);
+    setFile(e.target.files[0]);
   };
 
   /**
@@ -237,6 +278,13 @@ function Streamer({
       <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
       <Button variant="contained" type="button" onClick={startRecord}>開始錄影</Button>
       <Button variant="contained" type="button" onClick={stopRecord}>停止錄影</Button>
+      {record ? (
+        <a ref={download} href={record.href} download={record.filename} style={{ display: 'none' }}>Download</a>
+      ) : null}
+      <form onSubmit={uploadVideo}>
+        <input type="file" name="video" id="upload" onChange={handleUpload} />
+        <button type="submit">Submit</button>
+      </form>
     </section>
   );
 }
