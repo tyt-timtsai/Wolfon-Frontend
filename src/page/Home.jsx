@@ -4,6 +4,7 @@ import Header from '../components/header/header';
 import Footer from '../components/footer/footer';
 import PostButton from './post/Post_button';
 import constants from '../global/constants';
+import './home.css';
 
 function Home() {
   // Home
@@ -20,19 +21,20 @@ function Home() {
   }, []);
 
   return (
-    <div>
+    <>
       <Header />
       <div id="home-container">
-        <h1>Home</h1>
-        {posts.map((post) => (
-          <PostButton
-            key={post.id}
-            post={post}
-          />
-        ))}
+        <div id="posts-container">
+          {posts.map((post) => (
+            <PostButton
+              key={post.id}
+              post={post}
+            />
+          ))}
+        </div>
       </div>
       <Footer />
-    </div>
+    </>
   );
 }
 
