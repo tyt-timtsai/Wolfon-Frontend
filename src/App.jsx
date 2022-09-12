@@ -56,7 +56,7 @@ function App() {
             room={room}
           />
         )}
-        path="/live/viewer"
+        path="/live/:id"
       />
 
       <Route
