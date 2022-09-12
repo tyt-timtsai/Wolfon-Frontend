@@ -129,6 +129,7 @@ function LiveStreamer({ socket, room, setRoom }) {
             setCode={setCode}
             editor={editor}
             isStreamer={isStreamer}
+            setTag={setTag}
           />
         </div>
 

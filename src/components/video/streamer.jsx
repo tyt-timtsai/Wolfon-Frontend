@@ -9,7 +9,8 @@ function Streamer({
   const [localStream, setLocalStream] = useState();
   const [record, setRecord] = useState();
   const [file, setFile] = useState();
-  // const [uploader, setUploader] = useState();
+  const [mediaRecorder, setMediaRecorder] = useState();
+  const [chunks, setChunks] = useState([]);
   const download = useRef();
   const PCs = {};
   let stream;
@@ -65,9 +66,6 @@ function Streamer({
     const peerConn = new RTCPeerConnection(configuration);
 
     // 增加本地串流
-    // localStream.getTracks().forEach((track) => {
-    //   peerConn.addTrack(track, localStream);
-    // });
     stream.getTracks().forEach((track) => {
       peerConn.addTrack(track, stream);
     });
@@ -154,9 +152,9 @@ function Streamer({
   /**
    * 直播功能
    */
-  const buffer = [];
-  let mediaRecorder;
+  // 開始錄影
   const startRecord = () => {
+    let recorder;
     const options = {
       mimeType: 'video/webm;codecs=vp9',
     };
@@ -167,19 +165,24 @@ function Streamer({
     }
     if (localStream) {
       try {
-        mediaRecorder = new MediaRecorder(localStream, options);
+        // mediaRecorder = new MediaRecorder(localStream, options);
+        recorder = new MediaRecorder(localStream, options);
+        setMediaRecorder(recorder);
       } catch (err) {
         console.error('Failed to create MediaRecorder:', err);
         return;
       }
 
-      mediaRecorder.ondataavailable = (e) => {
+      // mediaRecorder.ondataavailable = (e) => {
+      recorder.ondataavailable = (e) => {
         if (e && e.data && e.data.size > 0) {
-          buffer.push(e.data);
+          setChunks((prev) => [...prev, e.data]);
         }
       };
-      mediaRecorder.start(10);
-      console.log(mediaRecorder.state);
+      // mediaRecorder.start(10);
+      recorder.start(10);
+      // console.log(mediaRecorder.state);
+      console.log(recorder.state);
       console.log('recorder started');
     } else {
       console.log('Please start streaming first.');
@@ -188,32 +191,25 @@ function Streamer({
 
   // 下載錄影
   const downloadRecord = async (blob) => {
-    // console.log(buffer);
-    // const blob = new Blob(buffer, { type: 'video/webm' });
     const url = window.URL.createObjectURL(blob);
-    // console.log(url);
 
     setRecord({
       href: url,
       filename: 'record.webm',
     });
-
-    // setTimeout(() => {
-    //   console.log(download.current);
-    //   download.current.click();
-    // }, 1000);
-
-    // 產生檔案
+    setChunks('1');
   };
+
   // 停止錄影
   const stopRecord = () => {
+    console.log('in stopRecord', mediaRecorder);
     if (mediaRecorder) {
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
       console.log('recorder stopped');
-      const blob = new Blob(buffer, { type: 'video/webm' });
+      // const blob = new Blob(buffer, { type: 'video/webm' });
+      const blob = new Blob(chunks, { type: 'video/webm' });
       downloadRecord(blob);
-      // initS3MultipartUpload(blob);
       setFile(blob);
     } else {
       console.log('Video is not recording.');
@@ -234,7 +230,6 @@ function Streamer({
 
   // 結束直播時上傳錄影
   useEffect(() => {
-    console.log(room);
     if (file) {
       const option = {
         fileName: `${room}/record`,
@@ -289,6 +284,10 @@ function Streamer({
     connectIO();
     setIsStreaming(true);
   };
+
+  useEffect(() => {
+    console.log(localStream);
+  }, [localStream]);
 
   useEffect(() => {
     console.log('socket');

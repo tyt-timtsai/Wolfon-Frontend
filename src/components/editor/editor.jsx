@@ -67,6 +67,7 @@ function Editor({
 
   // Get all version tag
   const getVersion = () => {
+    console.log(room);
     axios.get(`${constants.SERVER_URL}/api/v1/code/${room}`)
       .then((res) => {
         setVersion([]);
@@ -104,7 +105,7 @@ function Editor({
   // fetch version first
   useEffect(() => {
     getVersion();
-  }, []);
+  }, [room]);
 
   // Websocket interact on code
   useEffect(() => {
@@ -168,8 +169,25 @@ function Editor({
       <div id="editor-btn-container">
         {isStreamer ? (
           <div id="tag-container">
-            <TextField label="Tag" size="small" variant="outlined" type="text" name="tag" id="tag" value={tag} onChange={editTag} />
-            <Button variant="contained" type="button" className="editor-btn" id="tag-btn" onClick={addTag}>Add tag</Button>
+            <TextField
+              label="Tag"
+              size="small"
+              variant="outlined"
+              type="text"
+              name="tag"
+              id="tag"
+              value={tag}
+              onChange={editTag}
+            />
+            <Button
+              variant="contained"
+              type="button"
+              className="editor-btn"
+              id="tag-btn"
+              onClick={addTag}
+            >
+              Add tag
+            </Button>
           </div>
         ) : null }
 
