@@ -3,7 +3,8 @@ import { Button } from '@mui/material';
 import './video.css';
 
 // let socket;
-function Video({ socket, room }) {
+function Video({ socket }) {
+  const room = 'room1';
   let peerConn;
   const localVideo = useRef();
 

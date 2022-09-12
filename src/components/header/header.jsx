@@ -17,7 +17,7 @@ function Header() {
         <a href="/live/streamer">
           <Button type="button">Streamer</Button>
         </a>
-        <a href="/live/viewer">
+        <a href="/live/room1">
           <Button type="button">Viewer</Button>
         </a>
         <a href="/user/login">

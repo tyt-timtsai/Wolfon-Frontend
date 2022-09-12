@@ -11,8 +11,8 @@ import Chatroom from '../../components/chatroom/chatroom';
 import constants from '../../global/constants';
 import './streamer.css';
 
-function LiveStreamer({ socket }) {
-  const room = 'room1';
+function LiveStreamer({ socket, room, setRoom }) {
+  // const room = 'room1';
   const [isStreaming, setIsStreaming] = useState(false);
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);
@@ -61,6 +61,23 @@ function LiveStreamer({ socket }) {
       setScreenshots((prev) => [...prev, { src: canvas.toDataURL('image/png') }]);
     }
   };
+
+  async function signRoom() {
+    const data = 'Hello';
+    const result = await axios.post(`${constants.SERVER_URL}/api/v1/live`, data, {
+      headers: {
+        authorization: `Bearer ${window.localStorage.getItem('JWT')}`,
+      },
+    });
+    const roomId = result.data.liveData.room_id;
+    console.log(roomId);
+    // setRoom(roomId);
+    setRoom('room1');
+  }
+
+  useEffect(() => {
+    signRoom();
+  }, []);
 
   useEffect(() => {
     socket.on('viewer', (id) => {
@@ -112,6 +129,7 @@ function LiveStreamer({ socket }) {
             setCode={setCode}
             editor={editor}
             isStreamer={isStreamer}
+            setTag={setTag}
           />
         </div>
 
