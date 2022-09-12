@@ -6,8 +6,7 @@ import Video from '../../components/video/video';
 import Chatroom from '../../components/chatroom/chatroom';
 import './viewer.css';
 
-function LiveViewer({ socket }) {
-  const room = 'room1';
+function LiveViewer({ socket, room }) {
   const editor = useRef();
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);

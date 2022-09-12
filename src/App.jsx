@@ -1,10 +1,11 @@
 import './App.css';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Routes, Route } from 'react-router-dom';
 import io from 'socket.io-client';
 import constants from './global/constants';
 import Home from './page/Home';
 import Search from './page/Search';
+import LiveList from './page/live/LiveList';
 import LiveViewer from './page/live/Viewer';
 import LiveStreamer from './page/live/Streamer';
 import Login from './page/user/Login';
@@ -15,6 +16,8 @@ import Community from './page/community/Community';
 
 function App() {
   const socket = io(constants.SOCKET_URL);
+  const [room, setRoom] = useState();
+  // useEffect(() => setRoom('room1'));
   useEffect(() => () => socket.disconnect(), [socket]);
   return (
     <Routes id="App">
@@ -38,8 +41,19 @@ function App() {
 
       <Route
         element={(
+          <LiveList
+            socket={socket}
+            room={room}
+          />
+        )}
+        path="/live"
+      />
+
+      <Route
+        element={(
           <LiveViewer
             socket={socket}
+            room={room}
           />
         )}
         path="/live/viewer"
@@ -49,6 +63,8 @@ function App() {
         element={(
           <LiveStreamer
             socket={socket}
+            room={room}
+            setRoom={setRoom}
           />
         )}
         path="/live/streamer"

@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Button } from '@mui/material';
-// import axios from 'axios';
+import Uploader from '../../global/uploader';
 
 // let socket;
 function Streamer({
@@ -9,6 +9,7 @@ function Streamer({
   const [localStream, setLocalStream] = useState();
   const [record, setRecord] = useState();
   const [file, setFile] = useState();
+  // const [uploader, setUploader] = useState();
   const download = useRef();
   const PCs = {};
   let stream;
@@ -20,34 +21,32 @@ function Streamer({
  */
   async function createStream() {
     const constraints = {
-      audio: false,
-      video: true,
+      video: {
+        cursor: 'always',
+      },
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        sampleRate: 44100,
+      },
     };
-    // const stream = await navigator.mediaDevices.getUserMedia(constraints)
     stream = await navigator.mediaDevices.getDisplayMedia(constraints);
-    // localStream = stream;
     setLocalStream(stream);
     localVideo.current.srcObject = stream;
   }
 
   async function createCameraStream() {
     const constraints = {
-      audio: false,
-      video: true,
+      video: {
+        cursor: 'always',
+      },
+      audio: {
+        echoCancellation: true,
+        noiseSuppression: true,
+        sampleRate: 44100,
+      },
     };
-
-    // const constraints = {
-    //   video: {
-    //     cursor: "always"
-    //   },
-    //   audio: {
-    //     echoCancellation: true,
-    //     noiseSuppression: true,
-    //     sampleRate: 44100
-    //   }
-    // }
     stream = await navigator.mediaDevices.getUserMedia(constraints);
-    // localStream = stream;
     setLocalStream(stream);
     localVideo.current.srcObject = stream;
   }
@@ -66,8 +65,11 @@ function Streamer({
     const peerConn = new RTCPeerConnection(configuration);
 
     // 增加本地串流
-    localStream.getTracks().forEach((track) => {
-      peerConn.addTrack(track, localStream);
+    // localStream.getTracks().forEach((track) => {
+    //   peerConn.addTrack(track, localStream);
+    // });
+    stream.getTracks().forEach((track) => {
+      peerConn.addTrack(track, stream);
     });
 
     // 找尋到 ICE 候選位置後，送去 Server 與另一位配對
@@ -135,6 +137,7 @@ function Streamer({
       console.log('收到 offer');
       const pc = initPeerConnection();
       PCs[id] = pc;
+      console.log(pc);
       // 設定對方的配置
       await pc.setRemoteDescription(desc);
 
@@ -184,30 +187,34 @@ function Streamer({
   };
 
   // 下載錄影
-  const downloadRecord = () => {
-    console.log(buffer);
-    const blob = new Blob(buffer, { type: 'video/webm' });
+  const downloadRecord = async (blob) => {
+    // console.log(buffer);
+    // const blob = new Blob(buffer, { type: 'video/webm' });
     const url = window.URL.createObjectURL(blob);
-    console.log(url);
+    // console.log(url);
 
     setRecord({
       href: url,
       filename: 'record.webm',
     });
 
-    setTimeout(() => {
-      console.log(download.current);
-      download.current.click();
-    }, 1000);
-  };
+    // setTimeout(() => {
+    //   console.log(download.current);
+    //   download.current.click();
+    // }, 1000);
 
+    // 產生檔案
+  };
   // 停止錄影
   const stopRecord = () => {
     if (mediaRecorder) {
       mediaRecorder.stop();
       console.log(mediaRecorder.state);
       console.log('recorder stopped');
-      downloadRecord();
+      const blob = new Blob(buffer, { type: 'video/webm' });
+      downloadRecord(blob);
+      // initS3MultipartUpload(blob);
+      setFile(blob);
     } else {
       console.log('Video is not recording.');
     }
@@ -225,6 +232,37 @@ function Streamer({
     }
   };
 
+  // 結束直播時上傳錄影
+  useEffect(() => {
+    console.log(room);
+    if (file) {
+      const option = {
+        fileName: `${room}/record`,
+        file,
+      };
+
+      let percentage;
+
+      const upload = new Uploader(option);
+
+      upload
+        .onProgress(({ percentage: newPercentage }) => {
+          // to avoid the same percentage to be logged twice
+          if (newPercentage !== percentage) {
+            percentage = newPercentage;
+            console.log(`${percentage}%`);
+          }
+        })
+        .onError((error) => {
+          setFile(undefined);
+          console.error(error);
+        });
+
+      upload.start();
+    }
+  }, [file]);
+
+  // 上傳影片
   const uploadVideo = (e) => {
     e.preventDefault();
     console.log(file);
