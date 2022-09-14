@@ -1,0 +1,25 @@
+.home-sidebar {
+    margin-top: 30px;
+    width: 30%;
+    box-sizing: border-box;
+}
+
+#home-left-sidebar {
+    margin-bottom: 30px;
+    padding: 15px 10px;
+    height: 180px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#sidebar-list {
+    width: 100%;
+}
+
+#sidebar-avatar {
+    margin-bottom: 20px;
+    width: 80px;
+    height: 80px;
+}

@@ -1,12 +1,12 @@
 import React from 'react';
-import { Paper } from '@mui/material';
+import { Box } from '@mui/material';
 import './footer.css';
 
 function Footer() {
   return (
-    <Paper id="footer-container" elevation={3}>
-      <p>footer</p>
-    </Paper>
+    <Box id="footer-container" sx={{ flexGrow: 1 }}>
+      <p>&copy; 2022 Wolfon. All rights reserved. </p>
+    </Box>
   );
 }
 

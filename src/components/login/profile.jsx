@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
+import { Button } from '@mui/material';
 import constants from '../../global/constants';
 
+import './profile.css';
+
 function UserProfile() {
-  const navigate = useNavigate();
   const [userData, setUserData] = useState({});
 
-  const logout = () => {
-    window.localStorage.removeItem('JWT');
-    navigate('/');
+  const cancelApply = () => {
+    console.log('cancel');
   };
 
   useEffect(() => {
@@ -18,22 +18,6 @@ function UserProfile() {
         authorization: `Bearer ${window.localStorage.getItem('JWT')}`,
       },
     }).then((res) => {
-      //   const { data } = res.data;
-      //   setUserData({
-      //     id: data.id,
-      //     name: data.name,
-      //     email: data.email,
-      //     created: data.created_dt,
-      //     friends: data.friends,
-      //     fellows: data.fellows,
-      //     fellowers: data.fellowers,
-      //     community: data.community,
-      //     posts: data.posts,
-      //     likePosts: data.like_posts,
-      //     fellowPosts: data.fellow_posts,
-      //     applyFriends: data.apply_friends,
-      //   });
-
       setUserData(res.data.data);
     }).catch((err) => {
       console.log('Fetch profile error : ', err);
@@ -41,27 +25,48 @@ function UserProfile() {
   }, []);
 
   return (
-    <div>
+    <div id="profile-container">
       <h1>
-        Profile page |
+        Profile page
+      </h1>
+      <h2>
+        name :
         {' '}
         {userData.name}
-      </h1>
-      <button type="button" onClick={logout}>Logout</button>
-      <h2>{userData.name}</h2>
-      <p>{userData.email}</p>
-      <p>{userData.posts}</p>
-      <p>{userData.community}</p>
-      <p>{userData.friends}</p>
-      <p>{userData.photo}</p>
+      </h2>
+      <p>
+        email :
+        {' '}
+        {userData.email}
+      </p>
+      <p>
+        psots :
+        {' '}
+        {userData.posts}
+      </p>
+      <p>
+        community :
+        {' '}
+        {userData.community}
+      </p>
+      <p>
+        friends :
+        {' '}
+        {userData.friends}
+      </p>
+      <p>
+        photo :
+        {' '}
+        {userData.photo}
+      </p>
       <ul>
-        {userData.pending_friends ? (
+        {userData.pending_friends > 0 ? (
           <li key={userData.pending_friends}>
             pending_friends :
             {' '}
             {userData.pending_friends}
-            <button type="button">Confirm</button>
-            <button type="button">Reject</button>
+            <Button type="button">Confirm</Button>
+            <Button type="button">Reject</Button>
           </li>
         ) : null}
       </ul>
@@ -71,7 +76,7 @@ function UserProfile() {
             apply_friends :
             {' '}
             {userData.apply_friends}
-            <button type="button">Cancel</button>
+            <Button type="button" onClick={cancelApply}>Cancel</Button>
           </li>
         ) : null}
       </ul>

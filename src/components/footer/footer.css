@@ -1,10 +1,14 @@
 #footer-container {
-    /* padding-left: 50px; */
-    width: 100vw;
-    height: 3rem;
-    position: sticky;
-    bottom: 0;
+    margin-top: 20px;
+    width: var(--main-content-width);
+    height: 3.5rem;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
+    /* color: aliceblue; */
+    color: rgb(40, 44, 47);
+    text-align: center;
+    /* border-top: 4px solid aliceblue; */
+    border-top: 1px solid rgb(221, 221, 221);
+    /* background-color: rgb(255, 255, 255, 0.1); */
 }

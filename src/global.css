@@ -1,0 +1,39 @@
+/* Global Variables */
+:root {
+    --main-content-width: 60vw;
+    /* --main-background-color:rgb(2,0,36); */
+    --main-background-color: #ffffff;
+    /* --main-background-color: #ebc473; */
+    /* --main-background-color: #0f388e; */
+    /* --main-background-gradient:linear-gradient(135deg, rgba(2,75,91,1) 0%, rgba(12,18,68,1) 50%, rgba(0,0,0,1) 100%); */
+    /* --main-background-gradient:linear-gradient(135deg, rgba(208,178,194,1) 0%, rgba(210,214,242,1) 50%, rgba(255,255,255,1) 100%); */
+    --main-background-gradient:linear-gradient(135deg, rgba(208,178,194,0.4920343137254902) 0%, rgba(255,255,255,1) 49%, rgba(210,214,242,0.5704656862745099) 100%);
+    --main-color: #d2d6f2;
+    --main-transition: 0.2s linear;
+}
+
+/* Global id */
+#root {
+    background: var(--main-background-color);
+    background: var(--main-background-gradient);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Source Code Pro', monospace;
+}
+
+/* Global Class */
+.full-width-btn {
+    width: 100%;
+}
+
+.hover-underline {
+    transition: var(--main-transition);
+}
+
+.hover-underline:hover {
+    border-bottom: 2px solid var(--main-color);
+    transform: translateY(-5px);
+}

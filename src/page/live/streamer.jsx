@@ -95,7 +95,7 @@ function LiveStreamer({ socket, room, setRoom }) {
     console.log('start');
   }, []);
   return (
-    <div>
+    <>
       <Header />
       <section id="streamer-container">
         <div id="streamer-video-container">
@@ -130,6 +130,7 @@ function LiveStreamer({ socket, room, setRoom }) {
             editor={editor}
             isStreamer={isStreamer}
             setTag={setTag}
+            addTag={addTag}
           />
         </div>
 
@@ -153,7 +154,7 @@ function LiveStreamer({ socket, room, setRoom }) {
         ))}
       </ImageList>
       <Footer />
-    </div>
+    </>
   );
 }
 
