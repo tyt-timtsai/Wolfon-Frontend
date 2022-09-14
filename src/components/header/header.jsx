@@ -1,39 +1,59 @@
 import React from 'react';
-import { Paper, Button } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { Box, Button } from '@mui/material';
 import './header.css';
 
 function Header() {
+  const navigate = useNavigate();
+
+  const JWT = window.localStorage.getItem('JWT');
+  const logout = () => {
+    window.localStorage.removeItem('JWT');
+    navigate('/');
+  };
   return (
-    <Paper id="header-container" elevation={3}>
-      <a href="/" id="logo-container">
-        <img src="/wolf-emblem.png" alt="logo" id="logo-img" />
-        <p id="logo-text">
-          Wolf
-          {' '}
-          <span id="logo-span">on</span>
-        </p>
-      </a>
-      <div id="header-links">
-        <a href="/live/streamer">
-          <Button type="button">Streamer</Button>
+    <div id="header-container">
+      <Box id="header-container-box" elevation={3} sx={{ flexGrow: 1 }}>
+        <a href="/" id="logo-container">
+          <img src="/wolf-emblem.png" alt="logo" id="logo-img" />
+          <div id="logo-text">
+            Wolf
+            {' '}
+            <div id="logo-span" />
+            n
+          </div>
         </a>
-        <a href="/live/room1">
-          <Button type="button">Viewer</Button>
-        </a>
-        <a href="/user/login">
-          <Button type="button">login</Button>
-        </a>
-        <a href="/user/profile">
-          <Button type="button">Profile</Button>
-        </a>
-        <a href="/post/create">
-          <Button type="button">new Post</Button>
-        </a>
-        <a href="/search">
-          <Button type="button">Search</Button>
-        </a>
-      </div>
-    </Paper>
+        <div id="header-links">
+          <a href="/live" className="hover-underline">
+            <Button type="button">Live List</Button>
+          </a>
+          <a href="/live/streamer" className="hover-underline">
+            <Button type="button">Streamer</Button>
+          </a>
+          <a href="/live/room1" className="hover-underline">
+            <Button type="button">Viewer</Button>
+          </a>
+          <a href="/search" className="hover-underline">
+            <Button type="button">Search</Button>
+          </a>
+          { JWT ? (
+            <>
+              <a href="/post/create" className="hover-underline">
+                <Button type="button">new Post</Button>
+              </a>
+              <a href="/user/profile" className="hover-underline">
+                <Button type="button">Profile</Button>
+              </a>
+              <Button type="button" color="error" onClick={logout}>Logout</Button>
+            </>
+          ) : (
+            <a href="/user/login" className="hover-underline">
+              <Button type="button">login</Button>
+            </a>
+          )}
+        </div>
+      </Box>
+    </div>
   );
 }
 

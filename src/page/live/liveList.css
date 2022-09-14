@@ -1,0 +1,16 @@
+#live-list-container {
+    margin-top: 20px;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+#live-list-item-container {
+    width: var(--main-content-width);
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}

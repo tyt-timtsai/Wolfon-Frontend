@@ -1,16 +1,29 @@
 #home-container {
     margin: auto;
-    width: 50vw;
-    height: 100vh;
+    width: var(--main-content-width);
+    min-height: 100vh;
     display: flex;
     justify-content: center;
     align-items: flex-start;
+    gap: 15px;
 }
 
+/* Sidebar */
+.home-sidebar {
+    margin-top: 30px;
+    width: 30%;
+    /* background-color: aliceblue; */
+}
+
+#home-right-sidebar {
+    margin-top: 150px;
+    height: 900px;
+}
+
+/* Posts */
 #posts-container {
     margin-top: 30px;
     width: 100%;
-    /* height: 100px; */
     display: flex;
     flex-direction: column;
     justify-content: center;

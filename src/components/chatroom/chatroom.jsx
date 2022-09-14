@@ -18,7 +18,7 @@ function Chatroom({ socket, room }) {
 
   const snedMessage = (e) => {
     e.preventDefault();
-    socket.emit('chat message', { id: socket.id, msg: message });
+    socket.emit('chat message', { id: socket.id, name: userData.name, msg: message });
     setMessage('');
   };
 
@@ -61,7 +61,7 @@ function Chatroom({ socket, room }) {
               <Avatar alt="avatar" />
             </ListItemAvatar>
             <ListItemText
-              primary={userData.name}
+              primary={data.name}
               secondary={data.msg}
               sx={{ display: 'inline' }}
               component="span"

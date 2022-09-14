@@ -17,7 +17,7 @@ export default class Uploader {
     this.uploadedParts = [];
     this.fileId = null;
     this.fileKey = null;
-    this.url = null;
+    this.room = null;
     this.onProgressFn = () => {};
     this.onErrorFn = () => {};
   }
@@ -122,6 +122,7 @@ export default class Uploader {
         fileId: this.fileId,
         fileKey: this.fileKey,
         parts: this.uploadedParts,
+        roomId: this.room,
       };
 
       const completeResult = await axios.post(`${constants.SERVER_URL}/api/v1/live/complete`, completeUploadData);

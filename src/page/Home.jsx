@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import Header from '../components/header/header';
+import Sidebar from '../components/sidebar/sidebar';
 import Footer from '../components/footer/footer';
 import PostButton from './post/Post_button';
 import constants from '../global/constants';
@@ -24,13 +25,17 @@ function Home() {
     <>
       <Header />
       <div id="home-container">
+        <Sidebar />
         <div id="posts-container">
-          {posts.map((post) => (
+          {posts.reverse().map((post) => (
             <PostButton
               key={post.id}
               post={post}
             />
           ))}
+        </div>
+        <div className="home-sidebar" id="home-right-sidebar">
+          sidebar
         </div>
       </div>
       <Footer />

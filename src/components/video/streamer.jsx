@@ -239,6 +239,7 @@ function Streamer({
       let percentage;
 
       const upload = new Uploader(option);
+      upload.room = room;
 
       upload
         .onProgress(({ percentage: newPercentage }) => {
