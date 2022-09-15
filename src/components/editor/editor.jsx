@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import axios from 'axios';
 import {
-  FormControl, Button, Select, MenuItem, InputLabel, TextField,
+  FormControl, Button, Select, MenuItem, InputLabel, TextField, FormGroup, FormControlLabel, Switch,
 } from '@mui/material';
 import './editor.css';
 
@@ -80,10 +80,22 @@ function Editor({
       axios.get(`${constants.SERVER_URL}/api/v1/code/${room}`)
         .then((res) => {
           setVersion([]);
+          console.log(res.data.tags[1].child);
+          const tags = [];
           res.data.tags.forEach((data) => {
-            console.log(data);
-            setVersion((prev) => [...prev, { version: data.tag }]);
+            if (!data.from) {
+              tags.push({ version: data.tag });
+              if (data.child) {
+                console.log(data.tag);
+                data.child.forEach((child) => {
+                  console.log(child);
+                  tags.push({ version: child, from: data.tag });
+                });
+              }
+            }
           });
+          console.log(tags);
+          setVersion(tags);
         })
         .catch(((err) => console.log(err)));
     }
@@ -121,8 +133,7 @@ function Editor({
   // Websocket interact on code
   useEffect(() => {
     socket.on('addTag', (newTag) => {
-      console.log(newTag);
-      setVersion((prev) => [...prev, { version: newTag }]);
+      setVersion((prev) => [...prev, { version: newTag.tag }]);
     });
     socket.on('getCode', (id) => {
       console.log(id);
@@ -180,7 +191,17 @@ function Editor({
       <div id="editor-btn-container">
         {isStreamer ? (
           <div id="tag-container">
-            <input type="checkbox" name="isFrom" id="is-from" onChange={() => setIsFrom(!isFrom)} />
+            <FormGroup>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={isFrom}
+                    onChange={() => setIsFrom(!isFrom)}
+                  />
+              )}
+                label="使用複層"
+              />
+            </FormGroup>
             <TextField
               label="Tag"
               size="small"
@@ -229,7 +250,16 @@ function Editor({
             onChange={changeVersion}
           >
             {version.map((ver) => (
-              <MenuItem key={ver.version} value={ver.version}>{ver.version}</MenuItem>
+              ver.from ? (
+                <MenuItem
+                  key={ver.version}
+                  value={ver.version}
+                >
+                  {ver.version}
+                </MenuItem>
+              ) : (
+                <MenuItem key={ver.version} value={ver.version} style={{ backgroundColor: '#1a4d7b', color: '#fff' }}>{ver.version}</MenuItem>
+              )
             ))}
           </Select>
         </FormControl>

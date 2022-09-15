@@ -40,7 +40,7 @@ function LiveStreamer({ socket, room, setRoom }) {
     if (tag && content) {
       axios.post(`${constants.SERVER_URL}/api/v1/code/${room}`, newTag)
         .then((res) => {
-          socket.emit('addTag', tag);
+          socket.emit('addTag', newTag);
           console.log(res);
         })
         .catch((err) => {
