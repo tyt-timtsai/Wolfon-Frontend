@@ -18,6 +18,8 @@ function LiveStreamer({ socket, room, setRoom }) {
   const [version, setVersion] = useState([]);
   const [code, setCode] = useState("//Javascript\nconsole.log('Hello Javascript!');");
   const [tag, setTag] = useState('');
+  const [from, setFrom] = useState('');
+  const [isFrom, setIsFrom] = useState(false);
   const [viewers, setViewers] = useState([]);
   const [screenshots, setScreenshots] = useState([]);
   const editor = useRef();
@@ -27,12 +29,16 @@ function LiveStreamer({ socket, room, setRoom }) {
 
   const addTag = () => {
     const content = editor.current.editor.getValue();
+    const newTag = {
+      language: mode,
+      tag,
+      code: content,
+    };
+    if (isFrom) {
+      newTag.from = from || null;
+    }
     if (tag && content) {
-      axios.post(`${constants.SERVER_URL}/api/v1/code/${room}`, {
-        language: mode,
-        tag,
-        code: content,
-      })
+      axios.post(`${constants.SERVER_URL}/api/v1/code/${room}`, newTag)
         .then((res) => {
           socket.emit('addTag', tag);
           console.log(res);
@@ -131,6 +137,9 @@ function LiveStreamer({ socket, room, setRoom }) {
             isStreamer={isStreamer}
             setTag={setTag}
             addTag={addTag}
+            setFrom={setFrom}
+            isFrom={isFrom}
+            setIsFrom={setIsFrom}
           />
         </div>
 
