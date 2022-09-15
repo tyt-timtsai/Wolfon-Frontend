@@ -1,6 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
+import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import './header.css';
 
 function Header() {
@@ -23,7 +24,13 @@ function Header() {
             n
           </div>
         </a>
+
         <div id="header-links">
+          <a href="/search">
+            <Button type="button" size="small">
+              <SearchRoundedIcon fontSize="medium" />
+            </Button>
+          </a>
           <a href="/live" className="hover-underline">
             <Button type="button">Live List</Button>
           </a>
@@ -32,9 +39,6 @@ function Header() {
           </a>
           <a href="/live/room1" className="hover-underline">
             <Button type="button">Viewer</Button>
-          </a>
-          <a href="/search" className="hover-underline">
-            <Button type="button">Search</Button>
           </a>
           { JWT ? (
             <>

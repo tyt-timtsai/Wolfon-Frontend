@@ -31,9 +31,14 @@ function Editor({
   tag,
   setTag,
   addTag,
+  setFrom,
+  isFrom,
+  setIsFrom,
 }) {
   const [terminal, setTerminal] = useState();
   const [select, setSelect] = useState('');
+  // eslint-disable-next-line no-case-declarations, max-len
+  // const twosum = 'var twoSum = function(nums, target) {\nvar map = {};\nfor(var i = 0 ; i < nums.length ; i++){\nvar v = nums[i];\nfor(var j = i+1 ; j < nums.length ; j++ ){\nif(  nums[i] + nums[j]  == target ){\nreturn [i,j];\n}}}};\nconst result = twoSum([3,4,5,6,7,8], 12)\n console.log(result);';
 
   // Change programming language
   const changeMode = (e) => {
@@ -47,7 +52,9 @@ function Editor({
         setCode('# Python\nprint(\'Hello Python!\')');
         break;
       default:
+
         setCode("//Javascript\nconsole.log('Hello Javascript!');");
+        // setCode(twosum);
         break;
     }
   };
@@ -58,8 +65,9 @@ function Editor({
     if (e.target.value) {
       axios.get(`${constants.SERVER_URL}/api/v1/code/${room}?tag=${e.target.value}`)
         .then((res) => {
-          setCode(res.data.code);
+          setCode(res.data.tags[0].code);
           setSelect(e.target.value);
+          setFrom(e.target.value);
         })
         .catch((err) => console.log(err));
     }
@@ -68,14 +76,17 @@ function Editor({
   // Get all version tag
   const getVersion = () => {
     console.log(room);
-    axios.get(`${constants.SERVER_URL}/api/v1/code/${room}`)
-      .then((res) => {
-        setVersion([]);
-        res.data.forEach((data) => {
-          setVersion((prev) => [...prev, { version: data.tag }]);
-        });
-      })
-      .catch(((err) => console.log(err)));
+    if (room != null) {
+      axios.get(`${constants.SERVER_URL}/api/v1/code/${room}`)
+        .then((res) => {
+          setVersion([]);
+          res.data.tags.forEach((data) => {
+            console.log(data);
+            setVersion((prev) => [...prev, { version: data.tag }]);
+          });
+        })
+        .catch(((err) => console.log(err)));
+    }
   };
 
   const editTag = (e) => {
@@ -130,7 +141,7 @@ function Editor({
         className="editor"
         width="100%"
         value={code}
-        defaultValue={'//Javascript\nconsole.log(\'Hello Javascript!);'}
+        defaultValue={"//Javascript\nconsole.log('Hello Javascript!');"}
         onChange={editCode}
         placeholder={`Programming language : ${mode}`}
         editorProps={{ $blockScrolling: true }}
@@ -169,6 +180,7 @@ function Editor({
       <div id="editor-btn-container">
         {isStreamer ? (
           <div id="tag-container">
+            <input type="checkbox" name="isFrom" id="is-from" onChange={() => setIsFrom(!isFrom)} />
             <TextField
               label="Tag"
               size="small"
