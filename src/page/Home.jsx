@@ -3,7 +3,7 @@ import axios from 'axios';
 import Header from '../components/header/header';
 import Sidebar from '../components/sidebar/sidebar';
 import Footer from '../components/footer/footer';
-import PostButton from './post/Post_button';
+import PostList from '../components/post/Post_list';
 import constants from '../global/constants';
 import './home.css';
 
@@ -28,7 +28,7 @@ function Home() {
         <Sidebar />
         <div id="posts-container">
           {posts.reverse().map((post) => (
-            <PostButton
+            <PostList
               key={post.id}
               post={post}
             />
