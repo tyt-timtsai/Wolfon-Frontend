@@ -4,6 +4,7 @@ import { useLocation } from 'react-router-dom';
 import constants from '../../global/constants';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
+import './post.css';
 
 function Post() {
   const location = useLocation();
