@@ -31,7 +31,7 @@
     margin-left: 20px;
     font-size: 30px;
     font-weight: 500;
-    color: #1d1d20;
+    color: var(--main-color);
     display: flex;
     align-items: center;
 }
@@ -41,7 +41,7 @@
     width: 14px;
     height: 14px;
     border-radius: 50%;
-    background-color: rgb(237, 10, 55);
+    background-color: var(--main-record-color);
 }
 
 #header-links {

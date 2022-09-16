@@ -3,11 +3,12 @@ import { useNavigate } from 'react-router-dom';
 import {
   Card, CardActions, CardContent, Button, Typography,
 } from '@mui/material';
+import './post_list.css';
 
 function PostButton({ post }) {
   const navigate = useNavigate();
   return (
-    <Card sx={{ minWidth: 275 }} key={post.id}>
+    <Card className="post-list-cards" sx={{ minWidth: 275 }} key={post.id}>
       <CardContent>
         <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
           {post.subtitle}

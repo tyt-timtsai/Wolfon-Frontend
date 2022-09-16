@@ -1,18 +1,13 @@
 import React, { useState } from 'react';
-import axios from 'axios';
 import parser from 'html-react-parser';
 import { TextField, Button } from '@mui/material';
-import constants from '../../global/constants';
 import Tiptap from './TipTap';
 import './create.css';
 
-function CreatePost() {
+function CreatePost({
+  post, setPost, postPost, setContent,
+}) {
   const [preview, setPreview] = useState(false);
-  const [post, setPost] = useState({
-    title: '',
-    subtitle: '',
-    content: '',
-  });
 
   const handleInputChange = (prop) => (e) => {
     setPost({ ...post, [prop]: e.target.value });
@@ -20,16 +15,6 @@ function CreatePost() {
 
   const handlePreview = () => {
     setPreview(!preview);
-  };
-
-  const postPost = () => {
-    axios.post(`${constants.SERVER_URL}/api/v1/post`, { data: post }, {
-      headers: {
-        authorization: window.localStorage.getItem('JWT'),
-      },
-    })
-      .then((res) => console.log(res))
-      .catch((err) => console.log(err));
   };
 
   return (
@@ -58,8 +43,7 @@ function CreatePost() {
         />
       </div>
       <Tiptap
-        post={post}
-        setPost={setPost}
+        setContent={setContent}
       />
       <div id="create-post-button-container">
         <Button type="button" variant={preview ? 'contained' : 'outlined'} onClick={handlePreview}>{preview ? 'Close' : 'Preview'}</Button>
@@ -67,8 +51,10 @@ function CreatePost() {
       </div>
       { preview
         ? (
-          <div className="ProseMirror">
-            {parser(post.content)}
+          <div id="preview-container">
+            <div className="ProseMirror">
+              {parser(post.content)}
+            </div>
           </div>
         )
         : null }

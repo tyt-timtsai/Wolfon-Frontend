@@ -5,7 +5,7 @@ import Underline from '@tiptap/extension-underline';
 import MenuBar from './MenuBar';
 import './tiptap.css';
 
-function TipTap({ post, setPost }) {
+function TipTap({ setContent }) {
   const editor = useEditor({
     extensions: [
       StarterKit,
@@ -44,7 +44,9 @@ function TipTap({ post, setPost }) {
     // eslint-disable-next-line no-shadow
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
-      setPost({ ...post, content: html });
+      // eslint-disable-next-line quote-props, no-useless-computed-key
+      // setPost({ ...post, ['content']: html });
+      setContent(html);
     },
   });
 

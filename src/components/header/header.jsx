@@ -2,6 +2,8 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Button } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
+// import AdjustIcon from '@mui/icons-material/Adjust';
+// import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import './header.css';
 
 function Header() {

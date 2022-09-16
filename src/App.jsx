@@ -12,7 +12,7 @@ import LiveStreamer from './page/live/streamer';
 import Login from './page/user/login';
 import Profile from './page/user/profile';
 import Post from './page/post/Post';
-import NewPost from './page/post/New_post';
+import NewPost from './page/post/new_post';
 import Community from './page/community/Community';
 
 function App() {
