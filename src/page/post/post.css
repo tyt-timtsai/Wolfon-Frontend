@@ -12,10 +12,12 @@
     font-family: 'Source Code Pro', monospace;
     width: 100%;
     padding: 20px;
+    border: 1px solid var(--border-color);
     display: flex;
     flex-direction: column;
     justify-content: center;
     gap: 10px;
+    background-color: var(--secondary-bg-color);
 }
 
 #post-detail-content h1, h3, p{
@@ -54,4 +56,10 @@
 #post-detail-author {
     padding: 15px;
     width: 300px;
+    border: 1px solid var(--border-color);
+    background-color: var(--secondary-bg-color);
+}
+
+.post-like-and-fellow {
+    color: var(--secondary-color);
 }

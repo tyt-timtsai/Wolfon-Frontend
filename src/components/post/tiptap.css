@@ -2,8 +2,11 @@
 .tiptap-editor {
   padding: 0;
   border-radius: 5px;
-  border: 2px solid #000;
+  border: 2px solid #fff;
   width: var(--main-content-width);
+  /* border: 2px solid #000; */
+  color: #fff;
+  background-color: var(--secondary-bg-color);
 }
 
 #editor-field{
@@ -18,10 +21,10 @@
 .ProseMirror {
   padding: 20px;
   box-sizing: border-box;
+  border-radius: 5px;
   width: 100%;
-  /* max-height: 50vh; */
-  /* background: var(--main-background-color); */
-  /* overflow-y: scroll ; */
+  color: #fff;
+  background: var(--secondary-bg-color);
 }
 
 .ProseMirror  > * + * {
@@ -43,13 +46,17 @@
   }
 
   .ProseMirror code {
-    background-color: rgba(#616161, 0.1);
-    color: #616161;
+    /* background-color: rgba(#616161, 0.1);
+    color: #616161; */
+    background-color: var(--main-bg-color);
+    color: #e8e8e8;
   }
 
   .ProseMirror pre {
-    background: #0D0D0D;
-    color: #FFF;
+    background: var(--main-bg-color);
+    color: var(--main-content-color);
+    /* background: #FFF;
+    color: #0D0D0D; */
     font-family: 'JetBrainsMono', monospace;
     padding: 0.75rem 1rem;
     border-radius: 0.5rem;
@@ -58,7 +65,7 @@
       color: inherit;
       padding: 0;
       background: none;
-      font-size: 0.8rem;
+      font-size: 0.85rem;
     }
 
   .ProseMirror img {
@@ -68,12 +75,15 @@
 
   .ProseMirror blockquote {
     padding-left: 1rem;
-    border-left: 2px solid #616161;
-    color:  #616161;
+    /* border-left: 2px solid #616161; */
+    /* color:  #616161; */
+    border-left: 2px solid #e8e8e8;
+    color:  #e8e8e8;
   }
 
   .ProseMirror hr {
     border: none;
-    border-top: 2px solid rgba(#0D0D0D, 0.1);
+    /* border-top: 2px solid rgba(#0D0D0D, 0.1); */
+    border-top: 2px solid rgba(#d9d9d9, 0.1);
     margin: 2rem 0;
   }

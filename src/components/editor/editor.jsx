@@ -32,6 +32,7 @@ function Editor({
   setTag,
   addTag,
   setFrom,
+  from,
   isFrom,
   setIsFrom,
 }) {
@@ -45,6 +46,9 @@ function Editor({
     const language = e.target.value;
     setMode(language);
     switch (language) {
+      case 'javascript':
+        setCode('"//Javascript\nconsole.log("Hello Javascript!");');
+        break;
       case 'golang':
         setCode('// Golang\npackage main\nimport "fmt"\n\nfunc main(){\n    fmt.Println("Hello Golang!") \n}');
         break;
@@ -52,8 +56,7 @@ function Editor({
         setCode('# Python\nprint(\'Hello Python!\')');
         break;
       default:
-
-        setCode("//Javascript\nconsole.log('Hello Javascript!');");
+        setCode('');
         // setCode(twosum);
         break;
     }
@@ -67,9 +70,14 @@ function Editor({
         .then((res) => {
           setCode(res.data.tags[0].code);
           setSelect(e.target.value);
-          setFrom(e.target.value);
         })
         .catch((err) => console.log(err));
+    }
+  };
+
+  const handleUpperTag = (e) => {
+    if (e.target.value) {
+      setFrom(e.target.value);
     }
   };
 
@@ -147,7 +155,7 @@ function Editor({
       <AceEditor
         ref={editor}
         mode={mode}
-        theme="tomorrow"
+        theme="tomorrow_night_bright"
         name="code-editor"
         className="editor"
         width="100%"
@@ -170,7 +178,7 @@ function Editor({
       />
       <AceEditor
         mode="text"
-        theme="tomorrow"
+        theme="tomorrow_night_bright"
         name="code-terminal"
         className="editor"
         height="215px"
@@ -198,10 +206,42 @@ function Editor({
                     checked={isFrom}
                     onChange={() => setIsFrom(!isFrom)}
                   />
-              )}
+                )}
                 label="使用複層"
+                labelPlacement="end"
               />
             </FormGroup>
+            <FormControl className="editor-selector" size="small">
+              <InputLabel id="upper-tag-label">上層 Tag</InputLabel>
+              <Select
+                name="upper-version"
+                id="upper-version"
+                labelId="language-label"
+                label="Version"
+                value={from}
+                onChange={handleUpperTag}
+              >
+                {version.map((ver) => (
+                  ver.from ? (
+                    <MenuItem
+                      key={ver.version}
+                      value={ver.version}
+                    >
+                      {ver.version}
+                    </MenuItem>
+                  ) : (
+                    <MenuItem
+                      key={ver.version}
+                      value={ver.version}
+                      style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
+                    >
+                      {ver.version}
+                    </MenuItem>
+                  )
+                ))}
+              </Select>
+            </FormControl>
+
             <TextField
               label="Tag"
               size="small"
@@ -219,51 +259,60 @@ function Editor({
               id="tag-btn"
               onClick={addTag}
             >
-              Add tag
+              新增標籤
             </Button>
           </div>
         ) : null }
 
-        <FormControl className="editor-selector" size="small">
-          <InputLabel id="language-label">Language</InputLabel>
-          <Select
-            name="language"
-            id="language"
-            labelId="language-label"
-            label="Language"
-            value={mode}
-            onChange={changeMode}
-          >
-            <MenuItem value="javascript">Javascript</MenuItem>
-            <MenuItem value="python">Python</MenuItem>
-            <MenuItem value="golang">Golang</MenuItem>
-          </Select>
-        </FormControl>
-        <FormControl className="editor-selector" size="small">
-          <InputLabel id="version-label">Version</InputLabel>
-          <Select
-            name="version"
-            id="version"
-            labelId="language-label"
-            label="Version"
-            value={select}
-            onChange={changeVersion}
-          >
-            {version.map((ver) => (
-              ver.from ? (
-                <MenuItem
-                  key={ver.version}
-                  value={ver.version}
-                >
-                  {ver.version}
-                </MenuItem>
-              ) : (
-                <MenuItem key={ver.version} value={ver.version} style={{ backgroundColor: '#1a4d7b', color: '#fff' }}>{ver.version}</MenuItem>
-              )
-            ))}
-          </Select>
-        </FormControl>
-        <Button id="run-btn" variant="contained" size="small" type="button" onClick={compile}>Run</Button>
+        <div id="editor-btns">
+          <FormControl className="editor-selector" size="small">
+            <InputLabel id="language-label">Language</InputLabel>
+            <Select
+              name="language"
+              id="language"
+              labelId="language-label"
+              label="Language"
+              value={mode}
+              onChange={changeMode}
+            >
+              <MenuItem value="javascript">Javascript</MenuItem>
+              <MenuItem value="python">Python</MenuItem>
+              <MenuItem value="golang">Golang</MenuItem>
+              <MenuItem value="markdown">Markdown</MenuItem>
+            </Select>
+          </FormControl>
+          <FormControl className="editor-selector" size="small">
+            <InputLabel id="version-label">Version</InputLabel>
+            <Select
+              name="version"
+              id="version"
+              labelId="language-label"
+              label="Version"
+              value={select}
+              onChange={changeVersion}
+            >
+              {version.map((ver) => (
+                ver.from ? (
+                  <MenuItem
+                    key={ver.version}
+                    value={ver.version}
+                  >
+                    {ver.version}
+                  </MenuItem>
+                ) : (
+                  <MenuItem
+                    key={ver.version}
+                    value={ver.version}
+                    style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
+                  >
+                    {ver.version}
+                  </MenuItem>
+                )
+              ))}
+            </Select>
+          </FormControl>
+          <Button id="run-btn" variant="contained" size="small" type="button" onClick={compile}>Run</Button>
+        </div>
       </div>
     </div>
   );

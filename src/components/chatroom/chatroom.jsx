@@ -18,8 +18,10 @@ function Chatroom({ socket, room }) {
 
   const snedMessage = (e) => {
     e.preventDefault();
-    socket.emit('chat message', { id: socket.id, name: userData.name, msg: message });
-    setMessage('');
+    if (message) {
+      socket.emit('chat message', { id: socket.id, name: userData.name, msg: message });
+      setMessage('');
+    }
   };
 
   useEffect(() => {
@@ -53,7 +55,6 @@ function Chatroom({ socket, room }) {
 
   return (
     <div id="chatroom-container">
-      <h1> Chatroom </h1>
       <List id="messages-list" ref={messagesList}>
         {messages.map((data) => (
           <ListItem key={Math.random()} alignItems="flex-start" value={data.msg}>
@@ -62,11 +63,11 @@ function Chatroom({ socket, room }) {
             </ListItemAvatar>
             <ListItemText
               primary={data.name}
-              secondary={data.msg}
-              sx={{ display: 'inline' }}
+              secondary={<p className="chatroom-message">{data.msg}</p>}
+              sx={{ display: 'inline', color: '#fff' }}
               component="span"
               variant="body2"
-              color="text.primary"
+              color="#fff"
             />
           </ListItem>
         ))}

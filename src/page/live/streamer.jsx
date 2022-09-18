@@ -22,6 +22,7 @@ function LiveStreamer({ socket, room, setRoom }) {
   const [isFrom, setIsFrom] = useState(false);
   const [viewers, setViewers] = useState([]);
   const [screenshots, setScreenshots] = useState([]);
+  const [isShow, setIsShow] = useState(true);
   const editor = useRef();
   const canvasRef = useRef();
   const localVideo = useRef();
@@ -81,6 +82,21 @@ function LiveStreamer({ socket, room, setRoom }) {
     setRoom('room1');
   }
 
+  const handleShow = () => {
+    setIsShow(!isShow);
+    // switch (prop) {
+    //   case 'video':
+    //     setIsShowVideo(!isShowVideo);
+    //     break;
+    //   case 'chat':
+    //     setIsShowChat(!isShowChat);
+    //     break;
+    //   default:
+
+    //     break;
+    // }
+  };
+
   useEffect(() => {
     signRoom();
   }, []);
@@ -104,22 +120,31 @@ function LiveStreamer({ socket, room, setRoom }) {
     <>
       <Header />
       <section id="streamer-container">
-        <div id="streamer-video-container">
-          <Streamer
-            socket={socket}
-            room={room}
-            localVideo={localVideo}
-            setIsStreaming={setIsStreaming}
-            screenShot={screenShot}
-            tag={tag}
-            setTag={setTag}
-            addTag={addTag}
-            isStreamer={isStreamer}
-          />
-          <div id="viewers-list">
-            {viewers.map((viewer) => (
-              <Button variant="contained" type="button" value={viewer} key={viewers.indexOf(viewer)} onClick={getViewerCode}>{viewers.indexOf(viewer)}</Button>
-            ))}
+        <button id="streamer-hide-btn" type="button" onClick={handleShow}>{isShow ? 'HIDE VIDEO & CHAT' : 'SHOW VIDEO & CHAT' }</button>
+        <div id="streamer-header-container" style={isShow ? { display: 'flex' } : { display: 'none' }}>
+          <div id="streamer-video-container">
+            <Streamer
+              socket={socket}
+              room={room}
+              localVideo={localVideo}
+              setIsStreaming={setIsStreaming}
+              screenShot={screenShot}
+              tag={tag}
+              setTag={setTag}
+              addTag={addTag}
+              isStreamer={isStreamer}
+            />
+            <div id="viewers-list">
+              {viewers.map((viewer) => (
+                <Button variant="contained" type="button" value={viewer} key={viewers.indexOf(viewer)} onClick={getViewerCode}>{viewers.indexOf(viewer)}</Button>
+              ))}
+            </div>
+          </div>
+          <div id="editor-chatroom">
+            <Chatroom
+              socket={socket}
+              room={room}
+            />
           </div>
         </div>
 
@@ -138,17 +163,12 @@ function LiveStreamer({ socket, room, setRoom }) {
             setTag={setTag}
             addTag={addTag}
             setFrom={setFrom}
+            from={from}
             isFrom={isFrom}
             setIsFrom={setIsFrom}
           />
         </div>
 
-        <div id="editor-chatroom">
-          <Chatroom
-            socket={socket}
-            room={room}
-          />
-        </div>
       </section>
       <canvas ref={canvasRef} />
       <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164} id="screenShot-container">

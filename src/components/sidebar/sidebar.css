@@ -1,3 +1,5 @@
+@import '../../global.css';
+
 .home-sidebar {
     margin-top: 30px;
     width: 30%;
@@ -7,11 +9,13 @@
 #home-left-sidebar {
     margin-bottom: 30px;
     padding: 15px 10px;
+    border: 1px solid var(--border-color);
     height: 180px;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
+    background-color: var(--secondary-bg-color);
 }
 
 #sidebar-list {
@@ -22,4 +26,38 @@
     margin-bottom: 20px;
     width: 80px;
     height: 80px;
+}
+
+.sidebar-links {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.sidebar-link {
+    padding: 2px;
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 15px;
+    cursor: pointer;
+}
+
+.sidebar-link:hover {
+    background-color: var(--main-color);
+    transition: var(--main-transition);
+}
+
+.sidebar-link:hover p {
+    color: var(--secondary-bg-color);
+}
+
+.sidebar-link:hover {
+    color: var(--secondary-bg-color);
 }

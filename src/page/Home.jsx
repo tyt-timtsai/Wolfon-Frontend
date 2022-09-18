@@ -10,11 +10,23 @@ import './home.css';
 function Home() {
   // Home
   const [posts, setPosts] = useState([]);
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     axios.get(`${constants.SERVER_URL}/api/v1/post/all`)
       .then((res) => {
         setPosts(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    axios.get(constants.PROFILE_API, {
+      headers: {
+        authorization: window.localStorage.getItem('JWT'),
+      },
+    })
+      .then((res) => {
+        setUserData(res.data.data);
       })
       .catch((err) => {
         console.log(err);
@@ -25,7 +37,9 @@ function Home() {
     <>
       <Header />
       <div id="home-container">
-        <Sidebar />
+        <Sidebar
+          userData={userData}
+        />
         <div id="posts-container">
           {posts.reverse().map((post) => (
             <PostList
@@ -34,9 +48,9 @@ function Home() {
             />
           ))}
         </div>
-        <div className="home-sidebar" id="home-right-sidebar">
+        {/* <div className="home-sidebar" id="home-right-sidebar">
           sidebar
-        </div>
+        </div> */}
       </div>
       <Footer />
     </>

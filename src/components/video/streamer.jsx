@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useRef } from 'react';
 import { Button } from '@mui/material';
+import Stack from '@mui/material/Stack';
+import CircularProgress from '@mui/material/CircularProgress';
 import Uploader from '../../global/uploader';
 
 // let socket;
@@ -11,6 +13,7 @@ function Streamer({
   const [file, setFile] = useState();
   const [mediaRecorder, setMediaRecorder] = useState();
   const [chunks, setChunks] = useState([]);
+  const [progress, setProgress] = useState(0);
   const download = useRef();
   const PCs = {};
   let stream;
@@ -153,7 +156,7 @@ function Streamer({
    * 直播功能
    */
   // 開始錄影
-  const startRecord = () => {
+  const startRecord = async () => {
     let recorder;
     const options = {
       mimeType: 'video/webm;codecs=vp9',
@@ -246,6 +249,7 @@ function Streamer({
           // to avoid the same percentage to be logged twice
           if (newPercentage !== percentage) {
             percentage = newPercentage;
+            setProgress(percentage);
             console.log(`${percentage}%`);
           }
         })
@@ -259,15 +263,15 @@ function Streamer({
   }, [file]);
 
   // 上傳影片
-  const uploadVideo = (e) => {
-    e.preventDefault();
-    console.log(file);
-  };
+  // const uploadVideo = (e) => {
+  //   e.preventDefault();
+  //   console.log(file);
+  // };
 
-  const handleUpload = (e) => {
-    console.log(e.target.files[0]);
-    setFile(e.target.files[0]);
-  };
+  // const handleUpload = (e) => {
+  //   console.log(e.target.files[0]);
+  //   setFile(e.target.files[0]);
+  // };
 
   /**
  * 初始化
@@ -276,7 +280,8 @@ function Streamer({
     await stopStream();
     await createStream();
     connectIO();
-    setIsStreaming(true);
+    await setIsStreaming(true);
+    startRecord();
   };
 
   const initCamera = async () => {
@@ -288,6 +293,9 @@ function Streamer({
 
   useEffect(() => {
     console.log(localStream);
+    if (localStream) {
+      startRecord();
+    }
   }, [localStream]);
 
   useEffect(() => {
@@ -310,19 +318,29 @@ function Streamer({
       >
         Your browser does not support the video tag.
       </video>
-      <Button variant="contained" type="button" onClick={init}>開始直播</Button>
-      <Button variant="contained" type="button" onClick={stopStream}>關閉畫面</Button>
-      <Button variant="contained" type="button" onClick={initCamera}>開啟鏡頭</Button>
-      <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
-      <Button variant="contained" type="button" onClick={startRecord}>開始錄影</Button>
-      <Button variant="contained" type="button" onClick={stopRecord}>停止錄影</Button>
-      {record ? (
-        <a ref={download} href={record.href} download={record.filename} style={{ display: 'none' }}>Download</a>
-      ) : null}
-      <form onSubmit={uploadVideo}>
+      <div id="streamer-video-btns">
+        {/* {record ? ( */}
+        <Stack spacing={2} direction="row">
+          <CircularProgress variant="determinate" value={progress} />
+          {progress}
+        </Stack>
+        {/* ) : null} */}
+        <Button variant="contained" type="button" onClick={init}>開始直播</Button>
+        <Button variant="contained" type="button" onClick={initCamera}>開啟鏡頭</Button>
+        <Button variant="contained" type="button" onClick={stopStream}>結束直播</Button>
+        <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
+        {/* <Button variant="contained" type="button" onClick={startRecord}>開始錄影</Button> */}
+        {/* <Button variant="contained" type="button" onClick={stopRecord}>停止錄影</Button> */}
+        {record ? (
+          <a id="stream-download" ref={download} href={record.href} download={record.filename} style={{ display: 'block' }}>Download</a>
+        ) : null}
+
+        {/* <form onSubmit={uploadVideo}>
         <input type="file" name="video" id="upload" onChange={handleUpload} />
         <button type="submit">Submit</button>
-      </form>
+      </form> */}
+      </div>
+
     </section>
   );
 }

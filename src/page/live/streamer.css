@@ -1,52 +1,115 @@
 #streamer-container{
-    padding: 0 10px;
+    /* padding: 0 10px; */
     display: flex;
+    flex-direction: column;
     justify-content: space-between;
-    /* align-content: space-between; */
     align-items: flex-start;
     height: 75vh;
-    width: 100vw;
+    width: var(--main-content-width);
+}
+
+/* Streamer Header */
+#streamer-header-container {
+    margin-bottom: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    /* height: 600px; */
+    min-height: 600px;
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+}
+
+#streamer-hide-btn {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    padding: 10px 0;
+    border: 0;
+    width: 100%;
+    height: 40px;
+    background-color: transparent;
+    color: var(--main-color);
+    cursor: pointer;
+    transition: var(--main-transition);
+}
+
+#streamer-hide-btn:hover {
+    background-color: var(--secondary-color);
+    color: var(--main-bg-color);
 }
 
 /* Video Layout */
 #streamer-video-container{
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
     align-items: center;
-    width: 30vw;
 }
 
 #streamer-video {
     margin: 0;
     padding: 0;
-    width: 30vw;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-content: space-between;
+    justify-content: center;
+}
+
+#streamer-video-btns {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 10px;
 }
 
 #localVideo{
     width: 100%;
 }
 
+#stream-download {
+    padding: 10px 15px;
+    border-radius: 5px;
+    width: min-content;
+    text-decoration: none;
+    background-color: #0288d1;
+    color: var(--main-color);
+}
+
+#stream-download:hover {
+    background-color: #017bbc;
+    transition: var(--main-transition);
+}
+
 /* Video List */
 #viewers-list {
+    margin-top: 15px;
     padding: 10px;
+    border: 2px solid var(--border-color);
+    border-radius: 5px;
+    box-sizing: border-box;
     width: 100%;
     height: 100%;
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-auto-rows: auto;
     gap: 5px;
+    overflow-y: scroll;
+    scroll-behavior: smooth;
 }
 
 /* Editor Layout */
 #streamer-editor{
-    padding: 0 10px;
     width: 100%;
     height: 100%;
 }
 
 /* Chat room Layout */
 #editor-chatroom {
-    min-width: 20vw;
-    height: 83%;
+    width: 100%;
+    height: 100%;
 }
+
