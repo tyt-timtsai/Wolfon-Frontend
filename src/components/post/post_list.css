@@ -1,3 +1,10 @@
 .post-list-cards {
-    background-color: var(--secondary-background-color);
+    cursor: pointer;
+    border: 1px solid var(--border-color);
+}
+
+.post-list-cards:hover {
+    transform: scale(1.02);
+    border: 1px solid #fff;
+    transition: var(--main-transition);
 }

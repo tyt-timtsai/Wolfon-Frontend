@@ -1,55 +1,75 @@
 import React from 'react';
 import {
-  Paper, List, ListItemButton, ListItemText, ListItemIcon, Avatar,
+  Paper, ListItemIcon, Avatar,
 } from '@mui/material';
 import { Settings } from '@mui/icons-material';
 import './sidebar.css';
 
-function Sidebar() {
+function Sidebar({ userData }) {
   return (
     <div className="home-sidebar">
-      <Paper elevation={2} sx={{ maxWidth: 256 }} id="home-left-sidebar">
-        <Avatar alt="User" id="sidebar-avatar" />
-      </Paper>
+      { userData ? (
+        <Paper elevation={2} sx={{ maxWidth: 256 }} id="home-left-sidebar">
+          <Avatar alt="User" id="sidebar-avatar" />
+          <div id="sidebar-user-info">
+            <p>{userData.name}</p>
 
-      <List component="nav" aria-label="main mailbox folders" id="sidebar-list">
-        <ListItemButton
-          key="Friend"
-          sx={{ py: 0, minHeight: 32, color: 'black' }}
-        >
-          <ListItemIcon sx={{ color: 'black' }}>
+            { userData.likes.length > 0
+              ? (
+                <p>
+                  likes :
+                  {' '}
+                  {userData.likes.length}
+                </p>
+              ) : (
+                null
+              )}
+            { userData.fellowers.length > 0
+              ? (
+                <p>
+                  fellowers :
+                  {' '}
+                  {userData.fellowers.length}
+                </p>
+              ) : (
+                null
+              )}
+
+            <p>
+              JOINED :
+              {' '}
+              {userData.created_dt}
+            </p>
+          </div>
+        </Paper>
+      ) : null}
+
+      <div className="sidebar-links">
+        <div className="sidebar-link">
+          <ListItemIcon sx={{ color: '#fff' }}>
             <Settings />
           </ListItemIcon>
-          <ListItemText
-            primary="Friend"
-            primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
-          />
-        </ListItemButton>
-        <ListItemButton
-          key="Post"
-          sx={{ py: 0, minHeight: 32, color: 'black' }}
-        >
-          <ListItemIcon sx={{ color: 'black' }}>
+          <p> LIVE</p>
+        </div>
+        <div className="sidebar-link">
+          <ListItemIcon sx={{ color: '#fff' }}>
             <Settings />
           </ListItemIcon>
-          <ListItemText
-            primary="Post"
-            primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
-          />
-        </ListItemButton>
-        <ListItemButton
-          key="Community"
-          sx={{ py: 0, minHeight: 32, color: 'black' }}
-        >
-          <ListItemIcon sx={{ color: 'black' }}>
+          <p> FRIEND</p>
+        </div>
+        <div className="sidebar-link">
+          <ListItemIcon sx={{ color: '#fff' }}>
             <Settings />
           </ListItemIcon>
-          <ListItemText
-            primary="Community"
-            primaryTypographyProps={{ fontSize: 14, fontWeight: 'medium' }}
-          />
-        </ListItemButton>
-      </List>
+          <p> POST</p>
+        </div>
+        <div className="sidebar-link">
+          <ListItemIcon sx={{ color: '#fff' }} className="sidebar-link-icon">
+            <Settings />
+          </ListItemIcon>
+          <p> COMMUNITY</p>
+        </div>
+      </div>
     </div>
   );
 }

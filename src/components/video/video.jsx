@@ -1,11 +1,14 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Button } from '@mui/material';
 import './video.css';
+import axios from 'axios';
+import constants from '../../global/constants';
 
 // let socket;
-function Video({ socket }) {
+function Video({ socket, isConnect, setIsConnect }) {
   const room = 'room1';
   let peerConn;
+  const [userData, setUserData] = useState('');
   const localVideo = useRef();
 
   // ===================== 連線相關 =====================
@@ -13,7 +16,7 @@ function Video({ socket }) {
  * 連線 socket.io
  */
   function connectIO() {
-    socket.emit('join', room);
+    socket.emit('join', room, userData.name);
 
     socket.on('answer', async (desc) => {
       console.log('收到 answer');
@@ -107,12 +110,31 @@ function Video({ socket }) {
     initPeerConnection();
     connectIO();
     sendSDP(true);
+    setIsConnect(true);
   };
+
+  // 取得使用者資料
+
+  function getProfile() {
+    axios.get(`${constants.PROFILE_API}`, {
+      headers: {
+        authorization: window.localStorage.getItem('JWT'),
+      },
+    })
+      .then((res) => {
+        console.log(res.data);
+        setUserData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   useEffect(() => {
     console.log('start');
     // socket = io('ws://localhost:3000');
     // socket = io('wss://timtsai.website');
+    getProfile();
     return (() => socket.close());
   }, [socket]);
 
@@ -120,8 +142,7 @@ function Video({ socket }) {
     <section id="video-container">
       <video
         ref={localVideo}
-        width="1280"
-        height="720px"
+        height="auto"
         style={{
           backgroundColor: 'black',
         }}
@@ -133,7 +154,15 @@ function Video({ socket }) {
       >
         Your browser does not support the video tag.
       </video>
-      <Button variant="contained" id="video-btn" type="button" onClick={init}>連接直播</Button>
+      <Button
+        variant="contained"
+        id="video-btn"
+        type="button"
+        onClick={init}
+        style={isConnect ? { display: 'none' } : { display: 'block' }}
+      >
+        連接直播
+      </Button>
     </section>
   );
 }

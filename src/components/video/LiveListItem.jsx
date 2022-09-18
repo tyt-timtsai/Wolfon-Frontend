@@ -31,7 +31,11 @@ function LiveListItem({ live }) {
           <Avatar sx={{ bgcolor: blue[500] }} aria-label="User avatar" />
         )}
         title={live.streamer}
-        subheader="September 14, 2016"
+        subheader={(
+          <Typography variant="caption" align="center" sx={{ color: 'var(--main-content-color)' }}>
+            September 14, 2016
+          </Typography>
+)}
       />
       <CardMedia
         component={live.video_url ? 'video' : 'img'}

@@ -21,7 +21,7 @@ function MenuBar({ editor }) {
 
   return (
     <div id="menu-bar-container">
-      <div>
+      <div id="menu-bar-buttons">
         <button
           type="button"
           onClick={() => editor.chain().focus().toggleBold().run()}

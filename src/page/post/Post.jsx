@@ -87,7 +87,7 @@ function Post() {
     console.log(result);
     const postData = result.data.data;
     setPost(postData.post);
-    serAuthor(postData.user);
+    serAuthor(postData.userData);
     setLikes(postData.post.likes.length);
     setFellowers(postData.post.fellowers.length);
     return postData;
@@ -113,74 +113,70 @@ function Post() {
   }
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     initPost();
   }, []);
-
-  useEffect(() => {
-    console.log(like);
-    console.log(fellow);
-  }, [like, fellow]);
 
   return (
     <>
       <Header />
-      {post ? (
-        <div id="post-detail-container">
-          <div id="post-details">
-            <div className="post-detail-icons">
-              <Checkbox
-                icon={<FavoriteBorder />}
-                checked={like}
-                checkedIcon={<Favorite sx={{ color: '#F50057' }} />}
-                onChange={handleChange('like')}
-              />
-              <p>{like}</p>
-              <p>
-                {likes}
-              </p>
-            </div>
-            <div className="post-detail-icons">
-              <Checkbox
-                icon={<BookmarkBorderIcon />}
-                checked={fellow}
-                checkedIcon={<BookmarkIcon />}
-                onChange={handleChange('fellow')}
-              />
-              <p>{fellow}</p>
-              <p>
-                {fellowers}
-              </p>
-            </div>
-          </div>
-
-          <Paper elevation={6} id="post-detail-content">
-            <div id="post-detail-content-header">
-              <h1>{post.title}</h1>
-              <h3>{post.subtitle}</h3>
-              <p>
-                post on :
-                {' '}
-                {post.created_dt}
-              </p>
-              <p>
-                update :
-                {' '}
-                {post.updated_dt}
-              </p>
+      <div id="post-detail-container">
+        {post ? (
+          <>
+            <div id="post-details">
+              <div className="post-detail-icons">
+                <Checkbox
+                  icon={<FavoriteBorder sx={{ color: '#fff' }} />}
+                  checked={like}
+                  checkedIcon={<Favorite sx={{ color: '#F50057' }} />}
+                  onChange={handleChange('like')}
+                />
+                <p className="post-like-and-fellow">
+                  {likes}
+                </p>
+              </div>
+              <div className="post-detail-icons">
+                <Checkbox
+                  icon={<BookmarkBorderIcon sx={{ color: '#fff' }} />}
+                  checked={fellow}
+                  checkedIcon={<BookmarkIcon />}
+                  onChange={handleChange('fellow')}
+                />
+                <p className="post-like-and-fellow">
+                  {fellowers}
+                </p>
+              </div>
             </div>
 
-            <div className="ProseMirror">
-              {parser(post.content)}
-            </div>
+            <Paper elevation={6} id="post-detail-content">
+              <div id="post-detail-content-header">
+                <h1>{post.title}</h1>
+                <h3>{post.subtitle}</h3>
+                <p>
+                  post on :
+                  {' '}
+                  {post.created_dt}
+                </p>
+                <p>
+                  update :
+                  {' '}
+                  {post.updated_dt}
+                </p>
+              </div>
 
-          </Paper>
+              <div className="ProseMirror">
+                {parser(post.content)}
+              </div>
 
-          <Paper elevation={6} id="post-detail-author">
-            <p>{author.name}</p>
-            <p>{author.created_dt}</p>
-          </Paper>
-        </div>
-      ) : <p> Not Found</p>}
+            </Paper>
+
+            <Paper elevation={6} id="post-detail-author">
+              <p>{author.name}</p>
+              <p>{author.created_dt}</p>
+            </Paper>
+          </>
+        ) : <p> Not Found</p>}
+      </div>
       <Footer />
     </>
   );

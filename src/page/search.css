@@ -14,13 +14,18 @@
 
 #search-form {
     margin-top: 50px;
-    width: 35%;
+    width: 390px;
+    border-radius: 5px;
     display: flex;
+    justify-content: space-between;
+    background-color: var(--link-color);
+
 }
-/* 
+
 #search-tabs {
-    width: 35%;
-} */
+    border-radius: 5px;
+    background-color: var(--link-color);
+}
 
 #search-icon {
     width: 35px;
@@ -28,9 +33,11 @@
 }
 
 #search-result-container {
+    margin-top: 40px;
     width: 100%;
     display: grid;
     justify-items: center;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+    color: var(--main-color);
 }

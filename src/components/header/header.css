@@ -1,17 +1,22 @@
 #header-container {
-    width: var(--main-content-width);
+    position: sticky;
+    top: 0;
     height: 4rem;
+    width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
+    background-color: var(--secondary-bg-color);
+    z-index: 99;
 }
 
 #header-container-box {
-    max-width: 100%;
+    width: var(--main-content-width);
     height: 100%;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    border-bottom: 1px solid var(--main-bg-color);
 }
 
 #logo-container {
@@ -22,13 +27,13 @@
 }
 
 #logo-img {
+    margin-right: 20px;
     height: 2rem;
     /* width: auto; */
 }
 
 #logo-text {
     margin: 0;
-    margin-left: 20px;
     font-size: 30px;
     font-weight: 500;
     color: var(--main-color);
@@ -53,4 +58,17 @@
 
 #header-links a {
     text-decoration: none;
+}
+
+#header-link-btn {
+    color: var(--link-color);
+}
+
+.hover-underline {
+    transition: var(--main-transition);
+}
+
+.hover-underline:hover {
+    border-bottom: 2px solid var(--main-color);
+    transform: translateY(-5px);
 }

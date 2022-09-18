@@ -1,4 +1,5 @@
 #profile-container {
     width: var(--main-content-width);
     height: 85vh;
+    color: var(--main-color);
 }

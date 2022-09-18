@@ -55,7 +55,7 @@ function Search() {
       <div id="search-container">
         <div id="search-bar-container">
           <form action="" id="search-form" onSubmit={handleSubmit}>
-            <TextField label="Search" variant="filled" size="small" sx={{ width: '100%' }} onChange={handleInput} value={input} />
+            <TextField label="Search" variant="outlined" size="normal" sx={{ width: '100%' }} onChange={handleInput} value={input} />
             <IconButton onClick={handleSubmit}>
               <SearchRoundedIcon id="search-icon" />
             </IconButton>
