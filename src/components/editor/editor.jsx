@@ -2,7 +2,15 @@ import React, { useState, useEffect } from 'react';
 import AceEditor from 'react-ace';
 import axios from 'axios';
 import {
-  FormControl, Button, Select, MenuItem, InputLabel, TextField, FormGroup, FormControlLabel, Switch,
+  FormControl,
+  Button,
+  Select,
+  MenuItem,
+  InputLabel,
+  TextField,
+  FormGroup,
+  FormControlLabel,
+  Switch,
 } from '@mui/material';
 import './editor.css';
 
@@ -35,6 +43,7 @@ function Editor({
   from,
   isFrom,
   setIsFrom,
+  screenShot,
 }) {
   const [terminal, setTerminal] = useState();
   const [select, setSelect] = useState('');
@@ -47,7 +56,7 @@ function Editor({
     setMode(language);
     switch (language) {
       case 'javascript':
-        setCode('"//Javascript\nconsole.log("Hello Javascript!");');
+        setCode('//Javascript\nconsole.log("Hello Javascript!");');
         break;
       case 'golang':
         setCode('// Golang\npackage main\nimport "fmt"\n\nfunc main(){\n    fmt.Println("Hello Golang!") \n}');
@@ -152,53 +161,57 @@ function Editor({
 
   return (
     <div id="editor-container">
-      <AceEditor
-        ref={editor}
-        mode={mode}
-        theme="tomorrow_night_bright"
-        name="code-editor"
-        className="editor"
-        width="100%"
-        value={code}
-        defaultValue={"//Javascript\nconsole.log('Hello Javascript!');"}
-        onChange={editCode}
-        placeholder={`Programming language : ${mode}`}
-        editorProps={{ $blockScrolling: true }}
-        showPrintMargin={false}
-        showGutter={false}
-        highlightActiveLine
-        setOptions={{
-          autoScrollEditorIntoView: true,
-          copyWithEmptySelection: true,
-          enableBasicAutocompletion: true,
-          enableLiveAutocompletion: true,
-          enableSnippets: true,
-          tabSize: 2,
-        }}
-      />
-      <AceEditor
-        mode="text"
-        theme="tomorrow_night_bright"
-        name="code-terminal"
-        className="editor"
-        height="215px"
-        width="100%"
-        readOnly
-        value={terminal}
-        defaultValue=""
-        editorProps={{ $blockScrolling: false }}
-        showPrintMargin={false}
-        showGutter={false}
-        highlightActiveLine={false}
-        setOptions={{
-          selectionStyle: 'text',
-          highlightGutterLine: false,
-          copyWithEmptySelection: true,
-        }}
-      />
+      <div id="editors">
+        <AceEditor
+          ref={editor}
+          mode={mode}
+          theme="tomorrow_night_bright"
+          name="code-editor"
+          className="editor"
+          width="100%"
+          value={code}
+          defaultValue={"//Javascript\nconsole.log('Hello Javascript!');"}
+          onChange={editCode}
+          placeholder={`Programming language : ${mode}`}
+          editorProps={{ $blockScrolling: true }}
+          showPrintMargin={false}
+          showGutter={false}
+          highlightActiveLine
+          setOptions={{
+            autoScrollEditorIntoView: true,
+            copyWithEmptySelection: true,
+            enableBasicAutocompletion: true,
+            enableLiveAutocompletion: true,
+            enableSnippets: true,
+            tabSize: 2,
+          }}
+        />
+        <AceEditor
+          mode="text"
+          theme="tomorrow_night_bright"
+          name="code-terminal"
+          className="editor terminal"
+          height="215px"
+          width="100%"
+          readOnly
+          value={terminal}
+          defaultValue=""
+          editorProps={{ $blockScrolling: false }}
+          showPrintMargin={false}
+          showGutter={false}
+          highlightActiveLine={false}
+          setOptions={{
+            selectionStyle: 'text',
+            highlightGutterLine: false,
+            copyWithEmptySelection: true,
+          }}
+        />
+      </div>
       <div id="editor-btn-container">
         {isStreamer ? (
           <div id="tag-container">
+            <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
+
             <FormGroup>
               <FormControlLabel
                 control={(

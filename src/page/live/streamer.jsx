@@ -84,17 +84,6 @@ function LiveStreamer({ socket, room, setRoom }) {
 
   const handleShow = () => {
     setIsShow(!isShow);
-    // switch (prop) {
-    //   case 'video':
-    //     setIsShowVideo(!isShowVideo);
-    //     break;
-    //   case 'chat':
-    //     setIsShowChat(!isShowChat);
-    //     break;
-    //   default:
-
-    //     break;
-    // }
   };
 
   useEffect(() => {
@@ -102,9 +91,11 @@ function LiveStreamer({ socket, room, setRoom }) {
   }, []);
 
   useEffect(() => {
-    socket.on('viewer', (id) => {
+    console.log(room);
+    socket.on('viewer', (id, name) => {
       console.log(id);
-      setViewers((prev) => [...prev, id]);
+      console.log(name);
+      setViewers((prev) => [...prev, { id, name }]);
     });
 
     socket.on('passCode', (viewerCode) => {
@@ -136,7 +127,7 @@ function LiveStreamer({ socket, room, setRoom }) {
             />
             <div id="viewers-list">
               {viewers.map((viewer) => (
-                <Button variant="contained" type="button" value={viewer} key={viewers.indexOf(viewer)} onClick={getViewerCode}>{viewers.indexOf(viewer)}</Button>
+                <Button variant="contained" type="button" value={viewer.id} key={viewer.id} onClick={getViewerCode}>{viewer.name}</Button>
               ))}
             </div>
           </div>
@@ -166,6 +157,7 @@ function LiveStreamer({ socket, room, setRoom }) {
             from={from}
             isFrom={isFrom}
             setIsFrom={setIsFrom}
+            screenShot={screenShot}
           />
         </div>
 

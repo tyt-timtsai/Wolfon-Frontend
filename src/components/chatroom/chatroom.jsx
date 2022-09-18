@@ -63,7 +63,7 @@ function Chatroom({ socket, room }) {
             </ListItemAvatar>
             <ListItemText
               primary={data.name}
-              secondary={<p className="chatroom-message">{data.msg}</p>}
+              secondary={data.msg}
               sx={{ display: 'inline', color: '#fff' }}
               component="span"
               variant="body2"

@@ -6,7 +6,7 @@ import Uploader from '../../global/uploader';
 
 // let socket;
 function Streamer({
-  socket, room, localVideo, setIsStreaming, screenShot,
+  socket, room, localVideo, setIsStreaming,
 }) {
   const [localStream, setLocalStream] = useState();
   const [record, setRecord] = useState();
@@ -319,18 +319,15 @@ function Streamer({
         Your browser does not support the video tag.
       </video>
       <div id="streamer-video-btns">
-        {/* {record ? ( */}
-        <Stack spacing={2} direction="row">
-          <CircularProgress variant="determinate" value={progress} />
-          {progress}
-        </Stack>
-        {/* ) : null} */}
+        {record ? (
+          <Stack spacing={2} direction="row">
+            <CircularProgress variant="determinate" value={progress} />
+            {progress}
+          </Stack>
+        ) : null}
         <Button variant="contained" type="button" onClick={init}>開始直播</Button>
         <Button variant="contained" type="button" onClick={initCamera}>開啟鏡頭</Button>
         <Button variant="contained" type="button" onClick={stopStream}>結束直播</Button>
-        <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
-        {/* <Button variant="contained" type="button" onClick={startRecord}>開始錄影</Button> */}
-        {/* <Button variant="contained" type="button" onClick={stopRecord}>停止錄影</Button> */}
         {record ? (
           <a id="stream-download" ref={download} href={record.href} download={record.filename} style={{ display: 'block' }}>Download</a>
         ) : null}
