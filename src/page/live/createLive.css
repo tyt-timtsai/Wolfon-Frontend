@@ -10,6 +10,12 @@
     justify-content: flex-start;
     align-items: center;
     gap: 15px;
+    word-break: break-all;
+}
+
+#create-live-upload p {
+    font-size: 14px;
+
 }
 
 /* MUI */

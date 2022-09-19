@@ -3,9 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import {
   Card, CardContent, Typography,
 } from '@mui/material';
-import './post_list.css';
+import './userPostItem.css';
 
-function PostButton({ post }) {
+function UserPostItem({ post }) {
   const navigate = useNavigate();
 
   const cardStyle = {
@@ -35,11 +35,6 @@ function PostButton({ post }) {
           {post.title}
         </Typography>
         <Typography sx={typographyStyle}>
-          author :
-          {' '}
-          {post.user_id}
-        </Typography>
-        <Typography sx={typographyStyle}>
           fellowers :
           {' '}
           {post.fellowers.length}
@@ -55,18 +50,18 @@ function PostButton({ post }) {
           {post.view}
         </Typography>
         <Typography sx={typographyStyle}>
-          last update :
-          {' '}
-          {post.updated_dt.slice(0, -4)}
-        </Typography>
-        <Typography variant="body2">
           comments :
           {' '}
           {post.comments.length > 0 ? post.comments : 'No comment'}
+        </Typography>
+        <Typography variant="body2">
+          last update :
+          {' '}
+          {post.updated_dt.slice(0, -4)}
         </Typography>
       </CardContent>
     </Card>
   );
 }
 
-export default PostButton;
+export default UserPostItem;

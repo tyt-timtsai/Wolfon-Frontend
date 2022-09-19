@@ -1,0 +1,11 @@
+#user-live-card {
+    width: 100%;
+    color: var(--main-content-color);
+    /* background: rgba(255, 255, 255, 0.90); */
+    background: var(--secondary-bg-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.8px);
+    -webkit-backdrop-filter: blur(5.8px);
+    border: 1px solid var(--border-color);
+}

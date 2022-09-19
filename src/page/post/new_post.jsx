@@ -21,7 +21,10 @@ function NewPost() {
         authorization: window.localStorage.getItem('JWT'),
       },
     })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        navigate(`/post/${res.data.data.id}`);
+      })
       .catch((err) => console.log(err));
   };
 

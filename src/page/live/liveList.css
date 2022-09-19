@@ -1,14 +1,14 @@
 #live-list-container {
     margin-top: 20px;
-    width: 100vw;
+    width: 100%;
     min-height: 90vh;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
 }
 
-#live-list-item-container {
+.live-list-item-container {
     width: var(--main-content-width);
     display: grid;
     justify-items: center;

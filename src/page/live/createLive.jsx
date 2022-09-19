@@ -10,7 +10,6 @@ import {
   FormControl,
   InputLabel,
   Select,
-  Chip,
   MenuItem,
   OutlinedInput,
 } from '@mui/material';
@@ -91,24 +90,22 @@ function LiveCreate() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
-  const [selectedTag, setSelectedTag] = useState('');
+  const [language, setLanguage] = useState('');
   const [image, setImage] = useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const theme = useTheme();
-  const [tags, setTags] = useState([]);
 
   const handleInput = (e) => {
     setTitle(e.target.value);
-    console.log(e.target.value);
   };
 
   const handleChange = (e) => {
     const {
       target: { value },
     } = e;
-    setTags(
+    setLanguage(
       typeof value === 'string' ? value.split(',') : value,
     );
   };
@@ -121,7 +118,7 @@ function LiveCreate() {
   const handleCreate = async () => {
     const formData = new FormData();
     formData.append('title', title);
-    formData.append('language', selectedTag);
+    formData.append('language', language);
     formData.append('image', image);
     const header = {
       headers: {
@@ -166,29 +163,13 @@ function LiveCreate() {
               請選擇直播類型 :
             </Typography>
 
-            <Box sx={{
-              display: 'flex', flexWrap: 'wrap', gap: 0.5, marginTop: 1, marginBottom: 1,
-            }}
-            >
-              {selectedTag ? (
-                <Chip
-                  key={selectedTag}
-                  label={selectedTag}
-                  sx={selectStyle}
-                />
-              ) : null}
-            </Box>
-
             <FormControl sx={{ m: 1, width: 300 }}>
               <InputLabel sx={labelStyle} id="tag-label">直播類型</InputLabel>
               <Select
                 labelId="tag-label"
-                value={tags}
+                value={language}
                 onChange={handleChange}
                 input={<OutlinedInput id="select-multiple-chip" label="tag-label" />}
-                renderValue={(selected) => (
-                  setSelectedTag(selected)
-                )}
                 MenuProps={MenuProps}
                 sx={selectStyle}
               >
@@ -196,7 +177,7 @@ function LiveCreate() {
                   <MenuItem
                     key={name}
                     value={name}
-                    style={getStyles(name, tags, theme)}
+                    style={getStyles(name, language, theme)}
                   >
                     {name}
                   </MenuItem>

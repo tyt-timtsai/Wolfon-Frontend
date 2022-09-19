@@ -6,13 +6,18 @@ import io from 'socket.io-client';
 import constants from './global/constants';
 import Home from './page/Home';
 import Search from './page/Search';
+// Live
 import LiveList from './page/live/LiveList';
 import LiveViewer from './page/live/viewer';
 import LiveStreamer from './page/live/streamer';
+// User
 import Login from './page/user/login';
 import Profile from './page/user/profile';
+import UserAsset from './page/user/userAsset';
+// Post
 import Post from './page/post/Post';
 import NewPost from './page/post/new_post';
+// Community
 import Community from './page/community/Community';
 
 function App() {
@@ -88,6 +93,15 @@ function App() {
           />
         )}
         path="/user/profile"
+      />
+
+      <Route
+        element={(
+          <UserAsset
+            socket={socket}
+          />
+        )}
+        path="/user/asset/:id"
       />
 
       <Route

@@ -14,6 +14,7 @@ import {
 import { blue } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ShareIcon from '@mui/icons-material/Share';
+import constants from '../../global/constants';
 import './liveListItem.css';
 
 function LiveListItem({ live }) {
@@ -40,7 +41,7 @@ function LiveListItem({ live }) {
       <CardMedia
         component="img"
         height="194"
-        image={live.cover_img || 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Symbol.png'}
+        image={`${constants.SERVER_URL}/${live.cover_img}` || 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Symbol.png'}
         alt="Live theme"
       />
       <CardContent>

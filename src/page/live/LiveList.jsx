@@ -23,7 +23,7 @@ function LiveList() {
       <Header />
       <div id="live-list-container">
         <h1>LiveList</h1>
-        <div id="live-list-item-container">
+        <div className="live-list-item-container">
           {lives ? lives.reverse().map((live) => (
             <LiveListItem
               live={live}

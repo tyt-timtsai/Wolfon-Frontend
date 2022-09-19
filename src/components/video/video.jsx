@@ -5,8 +5,9 @@ import axios from 'axios';
 import constants from '../../global/constants';
 
 // let socket;
-function Video({ socket, isConnect, setIsConnect }) {
-  const room = 'room1';
+function Video({
+  socket, isConnect, setIsConnect, room,
+}) {
   let peerConn;
   const [userData, setUserData] = useState('');
   const localVideo = useRef();

@@ -15,6 +15,7 @@ function Home() {
   useEffect(() => {
     axios.get(constants.GET_ALL_POST_API)
       .then((res) => {
+        console.log(res.data.data);
         setPosts(res.data.data);
       })
       .catch((err) => {
@@ -26,6 +27,7 @@ function Home() {
       },
     })
       .then((res) => {
+        console.log(res.data.data);
         setUserData(res.data.data);
       })
       .catch((err) => {
@@ -43,7 +45,8 @@ function Home() {
         <div id="posts-container">
           {posts.reverse().map((post) => (
             <PostList
-              key={post.id}
+              // eslint-disable-next-line no-underscore-dangle
+              key={post._id}
               post={post}
             />
           ))}

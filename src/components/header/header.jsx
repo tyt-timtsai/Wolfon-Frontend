@@ -37,12 +37,6 @@ function Header() {
           <a href="/live" className="hover-underline">
             <Button sx={{ color: 'var(--link-color)' }} type="button">Live List</Button>
           </a>
-          <a href="/live/streamer" className="hover-underline">
-            <Button sx={{ color: 'var(--link-color)' }} type="button">Streamer</Button>
-          </a>
-          <a href="/live/room1" className="hover-underline">
-            <Button sx={{ color: 'var(--link-color)' }} type="button">Viewer</Button>
-          </a>
           { JWT ? (
             <>
               <LiveCreate />

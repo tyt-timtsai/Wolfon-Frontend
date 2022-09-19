@@ -1,0 +1,59 @@
+.search-user-item {
+    padding: 20px 0;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    background-color: var(--secondary-bg-color);
+}
+
+.search-user-header {
+    margin-bottom: 10px;
+    padding-bottom: 10px;
+    /* border-bottom: 1px solid var(--third-color); */
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-user-name{
+    font-size: 20px;
+}
+
+.search-user-infos {
+    margin-bottom: 20px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.search-user-text {
+    font-size: 15px;
+}
+
+.search-user-info {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+}
+
+.search-user-number {
+    font-size: 42px;
+    color: var(--main-focus-color);
+}
+
+.search-user-btn {
+    width: 150px;
+    /* height: 40px; */
+}

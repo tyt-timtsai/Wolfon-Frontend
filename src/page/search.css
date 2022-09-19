@@ -27,6 +27,10 @@
     background-color: var(--link-color);
 }
 
+#search-input {
+    color: black !important;
+}
+
 #search-icon {
     width: 35px;
     height: 35px;
@@ -41,3 +45,8 @@
     gap: 10px;
     color: var(--main-color);
 }
+
+/* MUI */
+/* .css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    background-color: var(--secondary-bg-color);
+} */

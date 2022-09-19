@@ -22,7 +22,7 @@ function Sidebar({ userData }) {
           <div id="sidebar-user-info">
             <p id="sidebar-user-name">{userData.name}</p>
 
-            { userData.likes.length > 0
+            { userData.fellowers.length > 0
               ? (
                 <p>
                   fellowers :
@@ -53,28 +53,28 @@ function Sidebar({ userData }) {
       ) : null}
 
       <div className="sidebar-links">
-        <div className="sidebar-link" onClick={() => navigate('/user/live')}>
+        <div className="sidebar-link" onClick={() => navigate('/user/asset/live')}>
           <ListItemIcon sx={{ color: '#fff' }}>
             <SmartDisplayIcon sx={{ color: 'var(--main-record-color)' }} />
           </ListItemIcon>
           <p> LIVE</p>
         </div>
 
-        <div className="sidebar-link" onClick={() => navigate('/user/post')}>
+        <div className="sidebar-link" onClick={() => navigate('/user/asset/post')}>
           <ListItemIcon sx={{ color: '#fff' }}>
             <ArticleIcon sx={{ color: 'var(--main-focus-color)' }} />
           </ListItemIcon>
           <p> POST</p>
         </div>
 
-        <div className="sidebar-link" onClick={() => navigate('/user/friend')}>
+        <div className="sidebar-link" onClick={() => navigate('/user/asset/friend')}>
           <ListItemIcon sx={{ color: '#fff' }}>
             <PeopleIcon sx={{ color: '#ffb74d' }} />
           </ListItemIcon>
           <p> FRIEND</p>
         </div>
 
-        <div className="sidebar-link" onClick={() => navigate('/user/community')}>
+        <div className="sidebar-link" onClick={() => navigate('/user/asset/community')}>
           <ListItemIcon sx={{ color: '#fff' }} className="sidebar-link-icon">
             <GroupsIcon sx={{ color: '#81c784' }} />
           </ListItemIcon>

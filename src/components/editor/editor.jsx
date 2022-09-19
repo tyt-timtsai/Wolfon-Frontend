@@ -97,22 +97,24 @@ function Editor({
       axios.get(`${constants.GET_CODE_API}/${room}`)
         .then((res) => {
           setVersion([]);
-          console.log(res.data.tags[1].child);
-          const tags = [];
-          res.data.tags.forEach((data) => {
-            if (!data.from) {
-              tags.push({ version: data.tag });
-              if (data.child) {
-                console.log(data.tag);
-                data.child.forEach((child) => {
-                  console.log(child);
-                  tags.push({ version: child, from: data.tag });
-                });
+          console.log(res.data.data);
+          if (res.data.data) {
+            const tags = [];
+            res.data.data.tags.forEach((data) => {
+              if (!data.from) {
+                tags.push({ version: data.tag });
+                if (data.child) {
+                  console.log(data.tag);
+                  data.child.forEach((child) => {
+                    console.log(child);
+                    tags.push({ version: child, from: data.tag });
+                  });
+                }
               }
-            }
-          });
-          console.log(tags);
-          setVersion(tags);
+            });
+            console.log(tags);
+            setVersion(tags);
+          }
         })
         .catch(((err) => console.log(err)));
     }
