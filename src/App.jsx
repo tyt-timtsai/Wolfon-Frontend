@@ -55,6 +55,7 @@ function App() {
           <LiveViewer
             socket={socket}
             room={room}
+            setRoom={setRoom}
           />
         )}
         path="/live/:id"
@@ -68,7 +69,7 @@ function App() {
             setRoom={setRoom}
           />
         )}
-        path="/live/streamer"
+        path="/live/streamer/:id"
       />
 
       <Route

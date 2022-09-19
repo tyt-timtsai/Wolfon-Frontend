@@ -38,9 +38,9 @@ function LiveListItem({ live }) {
 )}
       />
       <CardMedia
-        component={live.video_url ? 'video' : 'img'}
+        component="img"
         height="194"
-        image={live.video_url || 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Symbol.png'}
+        image={live.cover_img || 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Symbol.png'}
         alt="Live theme"
       />
       <CardContent>

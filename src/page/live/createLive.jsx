@@ -17,6 +17,7 @@ import {
 import { useTheme } from '@mui/material/styles';
 import './createLive.css';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import constants from '../../global/constants';
 
 const style = {
@@ -87,6 +88,7 @@ function getStyles(name, personName, theme) {
 }
 
 function LiveCreate() {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [selectedTag, setSelectedTag] = useState('');
@@ -107,7 +109,6 @@ function LiveCreate() {
       target: { value },
     } = e;
     setTags(
-      // On autofill we get a stringified value.
       typeof value === 'string' ? value.split(',') : value,
     );
   };
@@ -130,6 +131,7 @@ function LiveCreate() {
     try {
       const result = await axios.post(constants.CREATE_LIVE_API, formData, header);
       console.log(result);
+      navigate(`/live/streamer/${result.data.liveData.room_id}`);
     } catch (error) {
       console.log(error);
     }

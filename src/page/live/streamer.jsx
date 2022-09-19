@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import { useParams } from 'react-router-dom';
 import {
   Button, ImageList, ImageListItem,
 } from '@mui/material';
@@ -13,6 +14,7 @@ import './streamer.css';
 
 function LiveStreamer({ socket, room, setRoom }) {
   // const room = 'room1';
+  const params = useParams();
   const [isStreaming, setIsStreaming] = useState(false);
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);
@@ -69,25 +71,13 @@ function LiveStreamer({ socket, room, setRoom }) {
     }
   };
 
-  async function signRoom() {
-    const data = 'Hello';
-    const result = await axios.post(`${constants.SERVER_URL}/api/v1/live`, data, {
-      headers: {
-        authorization: `Bearer ${window.localStorage.getItem('JWT')}`,
-      },
-    });
-    const roomId = result.data.liveData.room_id;
-    console.log(roomId);
-    // setRoom(roomId);
-    setRoom('room1');
-  }
-
   const handleShow = () => {
     setIsShow(!isShow);
   };
 
   useEffect(() => {
-    signRoom();
+    console.log(params.id);
+    setRoom(params.id);
   }, []);
 
   useEffect(() => {
@@ -104,9 +94,6 @@ function LiveStreamer({ socket, room, setRoom }) {
     });
   }, [socket]);
 
-  useEffect(() => {
-    console.log('start');
-  }, []);
   return (
     <>
       <Header />
