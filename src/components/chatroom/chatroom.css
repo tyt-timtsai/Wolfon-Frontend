@@ -32,6 +32,9 @@
 }
 
 /* MUI */
+.css-mbfek {
+    color: var(--main-color) !important;
+}
 
 .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
     color: var(--main-color) !important;

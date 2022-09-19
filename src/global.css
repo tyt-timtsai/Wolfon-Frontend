@@ -6,12 +6,15 @@
     /* Font */
     --main-color: #F8FAFC;
     --secondary-color:rgb(212, 212, 212);
-    --third-color: #4B5563;
+    --third-color: rgb(153, 153, 157);
+    --link-color: rgb(244, 244, 245);
+
+    --main-focus-color:#0288d1;
     --main-record-color: #E11D48;
 
-    --link-color: rgb(244, 244, 245);
     /* Animation */
     --main-transition: 0.2s linear;
+    --hover-color-2:rgba(157, 199, 213, 0.3);
 
     /* Background */
     --main-bg-color: #000;

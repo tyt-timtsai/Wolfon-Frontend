@@ -10,7 +10,7 @@
     margin-bottom: 30px;
     padding: 15px 10px;
     border: 1px solid var(--border-color);
-    height: 180px;
+    height: auto;
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
@@ -23,9 +23,22 @@
 }
 
 #sidebar-avatar {
-    margin-bottom: 20px;
+    margin-bottom: 5px;
     width: 80px;
     height: 80px;
+}
+
+#sidebar-user-info {
+    margin-bottom: 10px;
+}
+
+#sidebar-user-name {
+    margin: 10px auto;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--third-color);
+    font-size: 24px;
+    font-weight: 500;
+    text-align: center;
 }
 
 .sidebar-links {
@@ -38,7 +51,9 @@
 }
 
 .sidebar-link {
-    padding: 2px;
+    padding: 5px;
+    padding-left: 10px;
+    box-sizing: border-box;
     border: 0;
     border-radius: 5px;
     width: 100%;
@@ -50,14 +65,6 @@
 }
 
 .sidebar-link:hover {
-    background-color: var(--main-color);
+    background-color: var(--hover-color-2);
     transition: var(--main-transition);
-}
-
-.sidebar-link:hover p {
-    color: var(--secondary-bg-color);
-}
-
-.sidebar-link:hover {
-    color: var(--secondary-bg-color);
 }
