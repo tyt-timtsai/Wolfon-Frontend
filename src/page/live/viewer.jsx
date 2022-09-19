@@ -1,4 +1,5 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Editor from '../../components/editor/editor';
@@ -6,9 +7,9 @@ import Video from '../../components/video/video';
 import Chatroom from '../../components/chatroom/chatroom';
 import './viewer.css';
 
-function LiveViewer({ socket }) {
-  const room = 'room1';
+function LiveViewer({ socket, room, setRoom }) {
   const editor = useRef();
+  const params = useParams();
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);
   const [code, setCode] = useState("//Javascript\nconsole.log('Hello Javascript!');");
@@ -18,6 +19,11 @@ function LiveViewer({ socket }) {
   const handleChange = () => {
     setIsComplier(!isComplier);
   };
+
+  useEffect(() => {
+    console.log(params.id);
+    setRoom(params.id);
+  }, []);
 
   return (
     <>
