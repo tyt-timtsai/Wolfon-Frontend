@@ -13,7 +13,7 @@ function Home() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
-    axios.get(`${constants.SERVER_URL}/api/v1/post/all`)
+    axios.get(constants.GET_ALL_POST_API)
       .then((res) => {
         setPosts(res.data.data);
       })

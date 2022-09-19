@@ -132,8 +132,6 @@ function Video({ socket, isConnect, setIsConnect }) {
 
   useEffect(() => {
     console.log('start');
-    // socket = io('ws://localhost:3000');
-    // socket = io('wss://timtsai.website');
     getProfile();
     return (() => socket.close());
   }, [socket]);

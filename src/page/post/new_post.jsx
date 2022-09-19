@@ -16,7 +16,7 @@ function NewPost() {
   const [content, setContent] = useState('');
 
   const postPost = () => {
-    axios.post(`${constants.SERVER_URL}/api/v1/post`, { data: post }, {
+    axios.post(constants.CREATE_POST_API, { data: post }, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },

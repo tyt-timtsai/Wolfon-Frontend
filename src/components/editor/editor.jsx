@@ -75,7 +75,7 @@ function Editor({
   // Use version tag
   const changeVersion = (e) => {
     if (e.target.value) {
-      axios.get(`${constants.SERVER_URL}/api/v1/code/${room}?tag=${e.target.value}`)
+      axios.get(`${constants.GET_VERSION_API}/${room}?tag=${e.target.value}`)
         .then((res) => {
           setCode(res.data.tags[0].code);
           setSelect(e.target.value);
@@ -94,7 +94,7 @@ function Editor({
   const getVersion = () => {
     console.log(room);
     if (room != null) {
-      axios.get(`${constants.SERVER_URL}/api/v1/code/${room}`)
+      axios.get(`${constants.GET_CODE_API}/${room}`)
         .then((res) => {
           setVersion([]);
           console.log(res.data.tags[1].child);
@@ -134,7 +134,7 @@ function Editor({
       language: mode,
       code,
     };
-    axios.post(`${constants.SERVER_URL}/api/v1/code`, data)
+    axios.post(constants.GET_CODE_API, data)
       .then((res) => {
         console.log(res.data);
         setTerminal(res.data);

@@ -25,7 +25,7 @@ function Chatroom({ socket, room }) {
   };
 
   useEffect(() => {
-    axios.get(`${constants.SERVER_URL}/api/v1/user`, {
+    axios.get(constants.PROFILE_API, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },

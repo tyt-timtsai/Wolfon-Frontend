@@ -49,7 +49,7 @@ function signIn() {
       return console.log('confirm password wrong');
     }
     return (
-      axios.post(`${constants.SERVER_URL}/api/v1/user/signin`, { data: userData })
+      axios.post(constants.SIGNIN_API, { data: userData })
         .then((res) => {
           console.log(res);
           setUserData({

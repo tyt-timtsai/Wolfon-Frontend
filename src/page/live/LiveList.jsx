@@ -9,7 +9,7 @@ import './liveList.css';
 function LiveList() {
   const [lives, setLives] = useState([]);
   useEffect(() => {
-    axios.get(`${constants.SERVER_URL}/api/v1/live`)
+    axios.get(constants.GET_LIVE_API)
       .then((res) => {
         console.log(res);
         setLives(res.data.liveData);

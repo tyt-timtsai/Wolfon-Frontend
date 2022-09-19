@@ -49,7 +49,7 @@ function SignUp() {
       return console.log('confirm password wrong');
     }
     return (
-      axios.post(`${constants.SERVER_URL}/api/v1/user/signup`, { data: userData })
+      axios.post(constants.SIGNUP_API, { data: userData })
         .then((res) => {
           console.log(res);
           window.localStorage.setItem('JWT', res.data.data);

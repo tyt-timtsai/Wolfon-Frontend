@@ -22,7 +22,7 @@ function Post() {
   const [fellowers, setFellowers] = useState();
 
   async function likePost() {
-    axios.get(`${constants.SERVER_URL}/api/v1/post/like/${post.id}`, {
+    axios.get(`${constants.LIKE_POST_API}/${post.id}`, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },
@@ -37,7 +37,7 @@ function Post() {
   }
 
   async function fellowPost() {
-    axios.get(`${constants.SERVER_URL}/api/v1/post/fellow/${post.id}`, {
+    axios.get(`${constants.FELLOW_POST_API}/${post.id}`, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },
@@ -94,7 +94,7 @@ function Post() {
   }
 
   async function getUser() {
-    const result = await axios.get(`${constants.SERVER_URL}/api/v1/user`, {
+    const result = await axios.get(constants.PROFILE_API, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },

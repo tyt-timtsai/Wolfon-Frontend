@@ -13,7 +13,7 @@ function UserProfile() {
   };
 
   useEffect(() => {
-    axios.get(`${constants.SERVER_URL}/api/v1/user`, {
+    axios.get(constants.PROFILE_API, {
       headers: {
         authorization: `Bearer ${window.localStorage.getItem('JWT')}`,
       },

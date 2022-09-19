@@ -300,8 +300,6 @@ function Streamer({
 
   useEffect(() => {
     console.log('socket');
-    // socket = io('ws://localhost:3000');
-    // socket = io('wss://timtsai.website');
     return (() => socket.close());
   }, [socket]);
 
