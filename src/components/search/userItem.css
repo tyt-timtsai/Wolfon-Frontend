@@ -53,7 +53,19 @@
     color: var(--main-focus-color);
 }
 
+#search-user-btns {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
 .search-user-btn {
     width: 150px;
     /* height: 40px; */
+}
+
+#search-user-follow-icon {
+    height: 0;
 }

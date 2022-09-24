@@ -1,9 +1,13 @@
+/* eslint-disable no-underscore-dangle */
+/* eslint-disable camelcase */
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../../components/header/header';
 import UserLiveItem from '../../components/userAsset/userLiveItem';
-import UserPostItem from '../../components/userAsset/userPostItem';
+// import UserPostItem from '../../components/userAsset/userPostItem';
+import PostList from '../../components/post/Post_list';
+import UserFriendItem from '../../components/userAsset/userFriendItem';
 import Footer from '../../components/footer/footer';
 import constants from '../../global/constants';
 import './userAsset.css';
@@ -51,7 +55,8 @@ function UserAsset() {
       },
     }).then((res) => {
       console.log(res.data.data);
-      // setAssets(res.data.data);
+      const { friends, pendingFriends } = res.data.data;
+      setAssets({ friends, pendingFriends });
     }).catch((err) => {
       console.log(err);
     });
@@ -73,6 +78,7 @@ function UserAsset() {
     if (!jwt) {
       navigate('/user/login');
     }
+    setAssets(null);
     setCategory(params.id);
   }, []);
 
@@ -80,7 +86,7 @@ function UserAsset() {
     if (category) {
       navigate(`/user/asset/${category}`);
     }
-
+    console.log(category);
     switch (category) {
       case 'live':
         getLive();
@@ -106,7 +112,7 @@ function UserAsset() {
         <div id="user-asset-btns">
           <button
             type="button"
-            className="user-asset-btn"
+            className={`${category === 'live' ? 'btn-active' : ''} user-asset-btn`}
             value="live"
             onClick={handleCategory}
           >
@@ -114,7 +120,7 @@ function UserAsset() {
           </button>
           <button
             type="button"
-            className="user-asset-btn"
+            className={`${category === 'post' ? 'btn-active' : ''} user-asset-btn`}
             value="post"
             onClick={handleCategory}
           >
@@ -122,7 +128,7 @@ function UserAsset() {
           </button>
           <button
             type="button"
-            className="user-asset-btn"
+            className={`${category === 'friend' ? 'btn-active' : ''} user-asset-btn`}
             value="friend"
             onClick={handleCategory}
           >
@@ -130,41 +136,74 @@ function UserAsset() {
           </button>
           <button
             type="button"
-            className="user-asset-btn"
+            className={`${category === 'community' ? 'btn-active' : ''} user-asset-btn`}
             value="community"
             onClick={handleCategory}
           >
             COMMUNITY
           </button>
         </div>
-        {category === 'live' ? (
+        {category === 'live' && assets != null ? (
           <div className="live-list-item-container">
             {assets ? assets.reverse().map((live) => (
               <UserLiveItem
                 live={live}
-          // eslint-disable-next-line no-underscore-dangle
                 key={live._id}
               />
             )) : null}
           </div>
         ) : null}
-        {category === 'post' ? (
+        {category === 'post' && assets != null ? (
           <div className="post-list-item-container">
             {assets ? assets.reverse().map((post) => (
-              <UserPostItem
-                // eslint-disable-next-line no-underscore-dangle
+              <PostList
                 key={post._id}
                 post={post}
               />
-            )) : null}
+            )) : <p className="friend-list-label">目前尚無文章</p>}
           </div>
         ) : null}
-        {category === 'friend' ? (
+
+        {category === 'friend' && assets != null ? (
           <div className="friend-list-item-container">
-            <p>friend</p>
+            {assets && assets.pendingFriends.length > 0
+              ? (
+                <>
+                  <p className="friend-list-label">好友申請</p>
+                  <div className="friend-list-items">
+                    {assets.pendingFriends.reverse().map((friend) => (
+                      <UserFriendItem
+                        key={friend._id}
+                        friend={friend}
+                        isFriend={false}
+                        assets={assets}
+                        setAssets={setAssets}
+                      />
+                    ))}
+                  </div>
+                </>
+              )
+              : null}
+            {assets && assets.friends.length > 0
+              ? (
+                <>
+                  <p className="friend-list-label">好友</p>
+                  <div className="friend-list-items">
+                    {assets.friends.reverse().map((friend) => (
+                      <UserFriendItem
+                        key={friend._id}
+                        friend={friend}
+                        isFriend
+                      />
+                    ))}
+                  </div>
+                </>
+              )
+              : null}
           </div>
         ) : null}
-        {category === 'community' ? (
+
+        {category === 'community' && assets != null ? (
           <div className="community-list-item-container">
             <p>community</p>
           </div>

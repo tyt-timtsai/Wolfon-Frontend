@@ -21,7 +21,7 @@ function Login() {
   useEffect(() => {
     const jwt = window.localStorage.getItem('JWT');
     if (jwt) {
-      navigate('/user/profile');
+      navigate('/user/setting');
     }
   }, []);
   return (

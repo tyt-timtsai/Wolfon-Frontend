@@ -12,18 +12,21 @@ import LiveViewer from './page/live/viewer';
 import LiveStreamer from './page/live/streamer';
 // User
 import Login from './page/user/login';
-import Profile from './page/user/profile';
+import Setting from './page/user/setting';
 import UserAsset from './page/user/userAsset';
+import Profile from './page/user/profile';
 // Post
 import Post from './page/post/Post';
 import NewPost from './page/post/new_post';
 // Community
 import Community from './page/community/Community';
+// 404 Page
+import NotFoundPage from './page/404';
+
+const socket = io(constants.SOCKET_URL);
 
 function App() {
-  const socket = io(constants.SOCKET_URL);
   const [room, setRoom] = useState();
-  // useEffect(() => setRoom('room1'));
   useEffect(() => () => socket.disconnect(), [socket]);
   return (
     <Routes id="App">
@@ -88,11 +91,20 @@ function App() {
 
       <Route
         element={(
+          <Setting
+            socket={socket}
+          />
+        )}
+        path="/user/setting"
+      />
+
+      <Route
+        element={(
           <Profile
             socket={socket}
           />
         )}
-        path="/user/profile"
+        path="/user/:id"
       />
 
       <Route
@@ -129,6 +141,13 @@ function App() {
           />
         )}
         path="/community/:id"
+      />
+
+      <Route
+        element={(
+          <NotFoundPage />
+        )}
+        path="*"
       />
     </Routes>
   );

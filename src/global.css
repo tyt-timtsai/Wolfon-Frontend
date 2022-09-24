@@ -13,7 +13,7 @@
     --main-record-color: #E11D48;
 
     /* Animation */
-    --main-transition: 0.2s linear;
+    --main-transition: all 0.2s linear;
     --hover-color-2:rgba(157, 199, 213, 0.3);
 
     /* Background */
@@ -36,6 +36,16 @@ p {
     color: var(--main-color);
 }
 
+input {
+    color: var(--main-color) !important;
+}
+
+@media screen and (min-width: 900px) and (max-width: 1600px) {
+    :root {
+        --main-content-width: 70vw;
+    }
+  }
+
 
 /* Global id */
 #root {
@@ -56,4 +66,54 @@ p {
 
 .border-right {
     border-right: 1px solid var(--third-color);
+}
+
+/* .btn-active {
+    color: var(--main-bg-color);
+    background-color: var(--secondary-color);
+} */
+
+/* MUI */
+/* Chatroom */
+.css-mbfek {
+    color: var(--main-color) !important;
+}
+
+/* .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
+    color: var(--main-color) !important;
+} */
+
+.css-wb57ya-MuiFormControl-root-MuiTextField-root{
+    background-color: var(--secondary-bg-color);
+}
+
+.css-83ijpv-MuiTypography-root {
+    color: var(--main-color) !important;
+}
+
+/* Editor */
+.css-182didf,
+.css-u9osun,
+.css-1636szt,
+.css-cktaik {
+    color: var(--main-color) !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+    border-color: var(--main-color) !important;
+    border-width: 1px !important;
+  }
+
+.css-1yjjitx-MuiSwitch-track {
+    background-color: var(--main-color) !important;
+}
+
+.css-hfutr2-MuiSvgIcon-root-MuiSelect-icon {
+    color: var(--main-color) !important;
+}
+
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root,
+.css-1pysi21-MuiFormLabel-root-MuiInputLabel-root,
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+    color: var(--main-color) !important;
 }

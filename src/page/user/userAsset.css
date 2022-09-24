@@ -38,3 +38,30 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
 }
+
+.friend-list-item-container {
+    width: var(--main-content-width);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.friend-list-items {
+    margin-bottom: 20px;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.friend-list-label {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.btn-active {
+    color: var(--main-bg-color);
+    background-color: var(--secondary-color);
+}

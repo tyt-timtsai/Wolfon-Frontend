@@ -41,7 +41,7 @@ function LiveListItem({ live }) {
       <CardMedia
         component="img"
         height="194"
-        image={`${constants.SERVER_URL}/${live.cover_img}` || 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Symbol.png'}
+        image={live.cover_img ? `${constants.IMAGE_URL}/${live.cover_img}` : 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Symbol.png'}
         alt="Live theme"
       />
       <CardContent>

@@ -11,6 +11,7 @@ function Home() {
   // Home
   const [posts, setPosts] = useState([]);
   const [userData, setUserData] = useState(null);
+  const token = window.localStorage.getItem('JWT');
 
   useEffect(() => {
     axios.get(constants.GET_ALL_POST_API)
@@ -21,27 +22,31 @@ function Home() {
       .catch((err) => {
         console.log(err);
       });
-    axios.get(constants.PROFILE_API, {
-      headers: {
-        authorization: window.localStorage.getItem('JWT'),
-      },
-    })
-      .then((res) => {
-        console.log(res.data.data);
-        setUserData(res.data.data);
+    if (token) {
+      axios.get(constants.PROFILE_API, {
+        headers: {
+          authorization: token,
+        },
       })
-      .catch((err) => {
-        console.log(err);
-      });
+        .then((res) => {
+          console.log(res.data.data);
+          setUserData(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
 
   return (
     <>
       <Header />
       <div id="home-container">
-        <Sidebar
-          userData={userData}
-        />
+        {userData ? (
+          <Sidebar
+            userData={userData}
+          />
+        ) : null}
         <div id="posts-container">
           {posts.reverse().map((post) => (
             <PostList

@@ -17,6 +17,7 @@ function Video({
  * 連線 socket.io
  */
   function connectIO() {
+    // socket.emit('join', room, userData.name);
     socket.emit('join', room, userData.name);
 
     socket.on('answer', async (desc) => {
@@ -108,10 +109,10 @@ function Video({
  * 初始化
  */
   const init = async () => {
-    initPeerConnection();
-    connectIO();
-    sendSDP(true);
-    setIsConnect(true);
+    await initPeerConnection();
+    await connectIO();
+    await sendSDP(true);
+    await setIsConnect(true);
   };
 
   // 取得使用者資料
@@ -134,6 +135,12 @@ function Video({
   useEffect(() => {
     console.log('start');
     getProfile();
+
+    socket.on('test', (data, id) => {
+      console.log(data);
+      console.log(id);
+    });
+
     return (() => socket.close());
   }, [socket]);
 

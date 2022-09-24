@@ -41,12 +41,10 @@ const labelStyle = {
 
 const selectStyle = {
   color: 'var(--link-color)',
-  border: '1px solid #fff',
 };
 
 const inputStyle = {
   color: 'var(--link-color)',
-  border: '1px solid #fff',
   borderRadius: 1,
   width: '75%',
   marginLeft: 1,

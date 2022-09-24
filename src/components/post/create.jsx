@@ -28,7 +28,6 @@ function CreatePost({
           type="text"
           name="title"
           id="create-post-title"
-          sx={{ border: '1px solid #fff', borderRadius: 1 }}
           InputLabelProps={{
             style: { color: 'var(--main-content-color)' },
           }}
@@ -43,7 +42,6 @@ function CreatePost({
           name="subTitle"
           id="create-post-subtitle"
           fullWidth
-          sx={{ border: '1px solid #fff', borderRadius: 1 }}
           InputLabelProps={{
             style: { color: 'var(--main-content-color)' },
           }}

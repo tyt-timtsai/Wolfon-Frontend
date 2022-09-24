@@ -92,7 +92,6 @@ function Editor({
 
   // Get all version tag
   const getVersion = () => {
-    console.log(room);
     if (room != null) {
       axios.get(`${constants.GET_CODE_API}/${room}`)
         .then((res) => {
@@ -293,6 +292,10 @@ function Editor({
               <MenuItem value="javascript">Javascript</MenuItem>
               <MenuItem value="python">Python</MenuItem>
               <MenuItem value="golang">Golang</MenuItem>
+              <MenuItem value="dockerfile">Dockerfile</MenuItem>
+              <MenuItem value="mysql">MySQL</MenuItem>
+              <MenuItem value="powershell">PowerShell</MenuItem>
+              <MenuItem value="gitignore">gitignore</MenuItem>
               <MenuItem value="markdown">Markdown</MenuItem>
             </Select>
           </FormControl>

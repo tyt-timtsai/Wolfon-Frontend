@@ -1,58 +1,36 @@
 /* eslint-disable jsx-a11y/no-static-element-interactions */
 /* eslint-disable jsx-a11y/click-events-have-key-events */
 import React from 'react';
-import {
-  Paper, ListItemIcon, Avatar,
-} from '@mui/material';
+import { useNavigate } from 'react-router-dom';
+import { ListItemIcon } from '@mui/material';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
 import GroupsIcon from '@mui/icons-material/Groups';
 import PeopleIcon from '@mui/icons-material/People';
 import ArticleIcon from '@mui/icons-material/Article';
+import { CgProfile } from 'react-icons/cg';
+import UserInfo from './userInfo';
 import './sidebar.css';
-import { useNavigate } from 'react-router-dom';
 
-function Sidebar({ userData }) {
+function Sidebar({ userData, isSetting }) {
   const navigate = useNavigate();
 
   return (
     <div className="home-sidebar">
       { userData ? (
-        <Paper elevation={2} sx={{ maxWidth: 256 }} id="home-left-sidebar">
-          <Avatar alt="User" id="sidebar-avatar" />
-          <div id="sidebar-user-info">
-            <p id="sidebar-user-name">{userData.name}</p>
-
-            { userData.fellowers.length > 0
-              ? (
-                <p>
-                  fellowers :
-                  {' '}
-                  {userData.fellowers.length}
-                </p>
-              ) : (
-                null
-              )}
-            { userData.fellowers.length > 0
-              ? (
-                <p>
-                  fellowers :
-                  {' '}
-                  {userData.fellowers.length}
-                </p>
-              ) : (
-                null
-              )}
-
-            <p>
-              JOINED :
-              {' '}
-              {userData.created_dt}
-            </p>
-          </div>
-        </Paper>
+        <UserInfo
+          userData={userData}
+          isSetting={isSetting}
+        />
       ) : null}
 
       <div className="sidebar-links">
+        <div className="sidebar-link" onClick={() => navigate(`/user/${userData.id}`)}>
+          <ListItemIcon sx={{ color: '#fff' }}>
+            <CgProfile style={{ width: 24, height: 24, color: 'var(--main-color)' }} />
+          </ListItemIcon>
+          <p> PROFILE</p>
+        </div>
+
         <div className="sidebar-link" onClick={() => navigate('/user/asset/live')}>
           <ListItemIcon sx={{ color: '#fff' }}>
             <SmartDisplayIcon sx={{ color: 'var(--main-record-color)' }} />

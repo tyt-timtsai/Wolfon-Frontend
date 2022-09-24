@@ -6,7 +6,7 @@ import Uploader from '../../global/uploader';
 
 // let socket;
 function Streamer({
-  socket, room, localVideo, setIsStreaming,
+  socket, room, localVideo, setIsStreaming, userData,
 }) {
   const [localStream, setLocalStream] = useState();
   const [record, setRecord] = useState();
@@ -123,7 +123,7 @@ function Streamer({
    * 連線 socket.io
    */
   function connectIO() {
-    socket.emit('join', room);
+    socket.emit('join', room, userData.name);
 
     socket.on('ice_candidate', async (data, id) => {
       console.log('收到 ice_candidate');
@@ -156,7 +156,7 @@ function Streamer({
    * 直播功能
    */
   // 開始錄影
-  const startRecord = async () => {
+  const startRecord = () => {
     let recorder;
     const options = {
       mimeType: 'video/webm;codecs=vp9',
@@ -220,7 +220,7 @@ function Streamer({
   };
 
   // 停止直播
-  const stopStream = async () => {
+  const stopStream = () => {
     if (mediaRecorder && mediaRecorder.state === 'recording') {
       stopRecord();
     }
@@ -235,7 +235,7 @@ function Streamer({
   useEffect(() => {
     if (file) {
       const option = {
-        fileName: `${room}/record`,
+        fileName: `lives/${room}/record`,
         file,
       };
 
@@ -276,16 +276,16 @@ function Streamer({
   /**
  * 初始化
  */
-  const init = async () => {
-    await stopStream();
-    await createStream();
+  const init = () => {
+    stopStream();
+    createStream();
     connectIO();
-    await setIsStreaming(true);
+    setIsStreaming(true);
     startRecord();
   };
 
   const initCamera = async () => {
-    await stopStream();
+    stopStream();
     await createCameraStream();
     connectIO();
     setIsStreaming(true);
@@ -298,10 +298,7 @@ function Streamer({
     }
   }, [localStream]);
 
-  useEffect(() => {
-    console.log('socket');
-    return (() => socket.close());
-  }, [socket]);
+  useEffect(() => (() => socket.close()), [socket]);
 
   return (
     <section id="streamer-video">

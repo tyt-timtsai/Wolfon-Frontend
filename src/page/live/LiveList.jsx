@@ -30,7 +30,7 @@ function LiveList() {
           // eslint-disable-next-line no-underscore-dangle
               key={live._id}
             />
-          )) : null}
+          )) : <p>loading...</p>}
         </div>
       </div>
       <Footer />

@@ -3,11 +3,8 @@ import './chatroom.css';
 import {
   Button, TextField, List, ListItem, ListItemAvatar, Avatar, ListItemText,
 } from '@mui/material';
-import axios from 'axios';
-import constants from '../../global/constants';
 
-function Chatroom({ socket, room }) {
-  const [userData, setUserData] = useState();
+function Chatroom({ socket, room, userData }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
   const messagesList = useRef();
@@ -23,20 +20,6 @@ function Chatroom({ socket, room }) {
       setMessage('');
     }
   };
-
-  useEffect(() => {
-    axios.get(constants.PROFILE_API, {
-      headers: {
-        authorization: window.localStorage.getItem('JWT'),
-      },
-    })
-      .then((res) => {
-        setUserData(res.data.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }, []);
 
   useEffect(() => {
     if (messagesList.current) {

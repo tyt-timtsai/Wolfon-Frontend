@@ -8,8 +8,8 @@ import {
   Typography,
   Button,
 } from '@mui/material';
-import constants from '../../global/constants';
 import './userLiveItem.css';
+import constants from '../../global/constants';
 
 function UserLiveItem({ live }) {
   const navigate = useNavigate();
@@ -20,20 +20,25 @@ function UserLiveItem({ live }) {
 
   return (
     <Card id="user-live-card">
-      <CardMedia
-        component="img"
-        height="194"
-        image={`${constants.SERVER_URL}/${live.cover_img}` || 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Symbol.png'}
-        alt="Live theme"
-      />
-      <CardContent>
-        <Typography variant="h6" align="center">
-          {live.title || 'Did not set title'}
-        </Typography>
-      </CardContent>
-      <CardActions disableSpacing>
-        <Button className="full-width-btn" variant="outlined" onClick={handleClick}>Join Stream</Button>
-      </CardActions>
+      {live.cover_img
+      && (
+      <>
+        <CardMedia
+          component="img"
+          height="194"
+          image={`${constants.IMAGE_URL}/${live.cover_img}` || 'https://logos-world.net/wp-content/uploads/2021/02/Docker-Symbol.png'}
+          alt="Live theme"
+        />
+        <CardContent>
+          <Typography variant="h6" align="center">
+            {live.title || 'Did not set title'}
+          </Typography>
+        </CardContent>
+        <CardActions disableSpacing>
+          <Button className="full-width-btn" variant="outlined" onClick={handleClick}>Join Stream</Button>
+        </CardActions>
+      </>
+      )}
     </Card>
   );
 }
