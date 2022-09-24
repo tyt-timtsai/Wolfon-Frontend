@@ -1,25 +1,28 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { Checkbox, Paper } from '@mui/material';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import parser from 'html-react-parser';
-import Footer from '../../components/footer/footer';
 import Header from '../../components/header/header';
+import UserInfo from '../../components/sidebar/userInfo';
+import Footer from '../../components/footer/footer';
 import constants from '../../global/constants';
 import './post.css';
 
 function Post() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [post, setPost] = useState('');
-  const [author, serAuthor] = useState('');
+  const [author, setAuthor] = useState('');
   const [like, setLike] = useState(false);
   const [likes, setLikes] = useState();
-  const [fellow, setFellow] = useState(false);
-  const [fellowers, setFellowers] = useState();
+  const [follow, setFollow] = useState(false);
+  const [followers, setFollowers] = useState();
+  const [isLogin, setIsLogin] = useState(false);
 
   async function likePost() {
     axios.get(`${constants.LIKE_POST_API}/${post.id}`, {
@@ -28,7 +31,6 @@ function Post() {
       },
     })
       .then((res) => {
-        console.log(res);
         window.localStorage.setItem('JWT', res.data.data);
       })
       .catch((err) => {
@@ -36,14 +38,13 @@ function Post() {
       });
   }
 
-  async function fellowPost() {
-    axios.get(`${constants.FELLOW_POST_API}/${post.id}`, {
+  async function followPost() {
+    axios.get(`${constants.FOLLOW_POST_API}/${post.id}`, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },
     })
       .then((res) => {
-        console.log(res);
         window.localStorage.setItem('JWT', res.data.data);
       })
       .catch((err) => {
@@ -66,13 +67,13 @@ function Post() {
         }
         break;
 
-      case 'fellow':
-        await fellowPost();
-        setFellow(!fellow);
-        if (fellow) {
-          setFellowers(fellowers - 1);
+      case 'follow':
+        await followPost();
+        setFollow(!follow);
+        if (follow) {
+          setFollowers(followers - 1);
         } else {
-          setFellowers(fellowers + 1);
+          setFollowers(followers + 1);
         }
         break;
       default:
@@ -84,32 +85,43 @@ function Post() {
 
   async function getPost() {
     const result = await axios.get(`${constants.SERVER_URL}/api/v1${location.pathname}`);
-    console.log(result);
     const postData = result.data.data;
     setPost(postData.post);
-    serAuthor(postData.userData);
+    setAuthor(postData.userData);
     setLikes(postData.post.likes.length);
-    setFellowers(postData.post.fellowers.length);
+    setFollowers(postData.post.followers.length);
     return postData;
   }
 
-  async function getUser() {
+  async function getUser(token) {
     const result = await axios.get(constants.PROFILE_API, {
       headers: {
-        authorization: window.localStorage.getItem('JWT'),
+        authorization: token,
       },
     });
-    console.log(result);
     const userData = result.data.data;
     return userData;
   }
 
   async function initPost() {
-    const postData = await getPost();
-    const userData = await getUser();
-    const userId = userData.id;
-    setLike(postData.post.likes.includes(userId));
-    setFellow(postData.post.fellowers.includes(userId));
+    let postData;
+    const token = window.localStorage.getItem('JWT');
+    try {
+      postData = await getPost();
+      if (token) {
+        const userData = await getUser(token);
+        const userId = userData.id;
+        setLike(postData.post.likes.includes(userId));
+        setFollow(postData.post.followers.includes(userId));
+        setIsLogin(true);
+      }
+    } catch (error) {
+      console.log(error);
+      if (!postData) {
+        alert('No Such Article');
+        navigate(-1);
+      }
+    }
   }
 
   useEffect(() => {
@@ -123,30 +135,32 @@ function Post() {
       <div id="post-detail-container">
         {post ? (
           <>
-            <div id="post-details">
-              <div className="post-detail-icons">
-                <Checkbox
-                  icon={<FavoriteBorder sx={{ color: '#fff' }} />}
-                  checked={like}
-                  checkedIcon={<Favorite sx={{ color: '#F50057' }} />}
-                  onChange={handleChange('like')}
-                />
-                <p className="post-like-and-fellow">
-                  {likes}
-                </p>
+            {isLogin ? (
+              <div id="post-details">
+                <div className="post-detail-icons">
+                  <Checkbox
+                    icon={<FavoriteBorder sx={{ color: '#fff' }} />}
+                    checked={like}
+                    checkedIcon={<Favorite sx={{ color: '#F50057' }} />}
+                    onChange={handleChange('like')}
+                  />
+                  <p className="post-like-and-follow">
+                    {likes}
+                  </p>
+                </div>
+                <div className="post-detail-icons">
+                  <Checkbox
+                    icon={<BookmarkBorderIcon sx={{ color: '#fff' }} />}
+                    checked={follow}
+                    checkedIcon={<BookmarkIcon />}
+                    onChange={handleChange('follow')}
+                  />
+                  <p className="post-like-and-follow">
+                    {followers}
+                  </p>
+                </div>
               </div>
-              <div className="post-detail-icons">
-                <Checkbox
-                  icon={<BookmarkBorderIcon sx={{ color: '#fff' }} />}
-                  checked={fellow}
-                  checkedIcon={<BookmarkIcon />}
-                  onChange={handleChange('fellow')}
-                />
-                <p className="post-like-and-fellow">
-                  {fellowers}
-                </p>
-              </div>
-            </div>
+            ) : null}
 
             <Paper elevation={6} id="post-detail-content">
               <div id="post-detail-content-header">
@@ -170,12 +184,11 @@ function Post() {
 
             </Paper>
 
-            <Paper elevation={6} id="post-detail-author">
-              <p>{author.name}</p>
-              <p>{author.created_dt}</p>
-            </Paper>
+            <UserInfo
+              userData={author}
+            />
           </>
-        ) : <p> Not Found</p>}
+        ) : <p> Loading... </p>}
       </div>
       <Footer />
     </>

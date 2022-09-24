@@ -30,20 +30,3 @@
     width: 100%;
     z-index: 3;
 }
-
-/* MUI */
-.css-mbfek {
-    color: var(--main-color) !important;
-}
-
-.css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
-    color: var(--main-color) !important;
-}
-
-.css-wb57ya-MuiFormControl-root-MuiTextField-root{
-    background-color: var(--secondary-bg-color);
-}
-
-.css-83ijpv-MuiTypography-root {
-    color: var(--main-color) !important;
-}

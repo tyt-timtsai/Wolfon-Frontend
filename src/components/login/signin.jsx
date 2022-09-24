@@ -45,9 +45,6 @@ function signIn() {
     if (dataArray.some((value) => value === '')) {
       return console.log((Object.keys(userData)[dataArray.indexOf('')]), 'is miss.');
     }
-    if (userData.password !== userData.confirm) {
-      return console.log('confirm password wrong');
-    }
     return (
       axios.post(constants.SIGNIN_API, { data: userData })
         .then((res) => {
@@ -55,11 +52,10 @@ function signIn() {
           setUserData({
             email: userData.email,
             password: '',
-            confirm: '',
             showPassword: false,
           });
           window.localStorage.setItem('JWT', res.data.data);
-          navigate('/user/profile');
+          navigate('/user/setting');
         })
         .catch((err) => console.log(err))
     );
@@ -105,17 +101,6 @@ function signIn() {
             )}
             />
           </FormControl>
-          <TextField
-            required
-            type={userData.showPassword ? 'text' : 'password'}
-            id="signin-confirm"
-            className="signin-inputs"
-            label="Confirm Password"
-            value={userData.confirm}
-            onChange={handleChange('confirm')}
-            variant="filled"
-            margin="dense"
-          />
         </div>
         <Button id="signin-btn" onClick={signin}>Sign in</Button>
       </Paper>

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
@@ -9,6 +10,9 @@ import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ArticleIcon from '@mui/icons-material/Article';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Header from '../components/header/header';
+import SearchUserItem from '../components/search/userItem';
+import UserLiveItem from '../components/userAsset/userLiveItem';
+import PostList from '../components/post/Post_list';
 import Footer from '../components/footer/footer';
 import constants from '../global/constants';
 import './search.css';
@@ -19,9 +23,11 @@ function Search() {
   const [type, setType] = useState('post');
   const [results, setResults] = useState();
   const [value, setValue] = useState(0);
+  const [userData, setUserData] = useState(null);
   const types = ['post', 'live', 'user', 'community'];
 
   const handleChange = (e, index) => {
+    setResults(null);
     setValue(index);
     setType(types[index]);
   };
@@ -34,6 +40,19 @@ function Search() {
     setSearch(input);
     e.preventDefault();
   };
+
+  useEffect(() => {
+    axios.get(constants.PROFILE_API, {
+      headers: {
+        authorization: window.localStorage.getItem('JWT'),
+      },
+    }).then((res) => {
+      console.log(res.data.data);
+      setUserData(res.data.data);
+    }).catch((err) => {
+      console.log(err);
+    });
+  }, []);
 
   useEffect(() => {
     console.log(type);
@@ -55,7 +74,7 @@ function Search() {
       <div id="search-container">
         <div id="search-bar-container">
           <form action="" id="search-form" onSubmit={handleSubmit}>
-            <TextField label="Search" variant="outlined" size="normal" sx={{ width: '100%' }} onChange={handleInput} value={input} />
+            <TextField placeholder="Search" variant="outlined" size="normal" id="search-input" sx={{ width: '100%', color: '#000' }} style={{ color: 'black' }} onChange={handleInput} value={input} />
             <IconButton onClick={handleSubmit}>
               <SearchRoundedIcon id="search-icon" />
             </IconButton>
@@ -68,36 +87,26 @@ function Search() {
           </Tabs>
         </div>
         <div id="search-result-container">
-          {results && type === 'post' ? results.map((result) => (
-            <div key={result.id}>
-              <p>post</p>
-              <p>{result.id}</p>
-              <p>{result.title}</p>
-            </div>
-          ))
-            : (null)}
-          {results && type === 'user' ? results.map((result) => (
-            <div key={result.id}>
-              <p>
-                user :
-                {' '}
-                {result.name}
-              </p>
-              {/* <p>{result.id}</p> */}
-            </div>
-          ))
-            : (null)}
-          {results && type === 'live' ? results.map((result) => (
-          // eslint-disable-next-line no-underscore-dangle
-            <div key={result._id}>
-              <p>
-                Lives :
-                {' '}
-                {result.title || 'no title'}
-              </p>
-            </div>
-          ))
-            : (null)}
+          {results && type === 'post' ? results.reverse().map((post) => (
+            <PostList
+              key={post._id}
+              post={post}
+            />
+          )) : null}
+          {results && type === 'user' ? results.map((user) => (
+            <SearchUserItem
+              key={user.id}
+              user={user}
+              userData={userData}
+            />
+          )) : null}
+          {results && type === 'live' ? results.reverse().map((live) => (
+            <UserLiveItem
+              live={live}
+              key={live._id}
+            />
+          )) : null}
+
           {results && type === 'community' ? results.map((result) => (
             <div key={result.id}>
               <p>{result.id}</p>
@@ -107,8 +116,7 @@ function Search() {
                 {result.name}
               </p>
             </div>
-          ))
-            : (null)}
+          )) : null}
         </div>
       </div>
       <Footer />

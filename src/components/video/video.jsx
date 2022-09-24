@@ -5,8 +5,9 @@ import axios from 'axios';
 import constants from '../../global/constants';
 
 // let socket;
-function Video({ socket, isConnect, setIsConnect }) {
-  const room = 'room1';
+function Video({
+  socket, isConnect, setIsConnect, room,
+}) {
   let peerConn;
   const [userData, setUserData] = useState('');
   const localVideo = useRef();
@@ -16,6 +17,7 @@ function Video({ socket, isConnect, setIsConnect }) {
  * 連線 socket.io
  */
   function connectIO() {
+    // socket.emit('join', room, userData.name);
     socket.emit('join', room, userData.name);
 
     socket.on('answer', async (desc) => {
@@ -107,10 +109,10 @@ function Video({ socket, isConnect, setIsConnect }) {
  * 初始化
  */
   const init = async () => {
-    initPeerConnection();
-    connectIO();
-    sendSDP(true);
-    setIsConnect(true);
+    await initPeerConnection();
+    await connectIO();
+    await sendSDP(true);
+    await setIsConnect(true);
   };
 
   // 取得使用者資料
@@ -131,9 +133,23 @@ function Video({ socket, isConnect, setIsConnect }) {
   }
 
   useEffect(() => {
+    if (userData) {
+      socket.emit('join', room, userData.name);
+    }
+  }, [socket, userData]);
+
+  useEffect(() => {
     console.log('start');
     getProfile();
-    return (() => socket.close());
+
+    socket.on('test', (data, id) => {
+      console.log(data);
+      console.log(id);
+    });
+
+    return (() => {
+      socket.close();
+    });
   }, [socket]);
 
   return (

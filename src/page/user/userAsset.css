@@ -1,0 +1,67 @@
+#user-asset-container {
+    margin-top: 20px;
+    width: var(--main-content-width);
+    min-height: 86vh;
+}
+
+#user-asset-btns {
+    margin-bottom: 20px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--third-color);
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 10px;
+}
+
+.user-asset-btn {
+    border: 0;
+    border-radius: 5px;
+    width: 100%;
+    height: 40px;
+    color: var(--main-color);
+    background-color: transparent;
+    cursor: pointer;
+    transition: var(--main-transition);
+}
+
+.user-asset-btn:hover {
+    background-color: var(--hover-color-2);
+}
+
+.post-list-item-container {
+    width: var(--main-content-width);
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.friend-list-item-container {
+    width: var(--main-content-width);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.friend-list-items {
+    margin-bottom: 20px;
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.friend-list-label {
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+.btn-active {
+    color: var(--main-bg-color);
+    background-color: var(--secondary-color);
+}

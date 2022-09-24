@@ -29,7 +29,7 @@ function TipTap({ setContent }) {
       <p>
         Isn’t that great? And all of that is editable. But wait, there’s more. Let’s try a code block:
       </p>
-      <pre><code class="language-css">body {
+      <pre><code class="language-js">body {
   display: none;
 }</code></pre>
       <p>
@@ -45,7 +45,6 @@ function TipTap({ setContent }) {
     onUpdate: ({ editor }) => {
       const html = editor.getHTML();
       // eslint-disable-next-line quote-props, no-useless-computed-key
-      // setPost({ ...post, ['content']: html });
       setContent(html);
     },
   });

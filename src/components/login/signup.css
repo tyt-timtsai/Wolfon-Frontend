@@ -31,3 +31,10 @@
 .signup-inputs {
     width: 100%;
 }
+
+#signup-name,
+#signup-email,
+#signup-password,
+#signup-confirm {
+    color: var(--main-bg-color) !important;
+}

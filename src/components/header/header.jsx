@@ -2,19 +2,18 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
-// import AdjustIcon from '@mui/icons-material/Adjust';
-// import RadioButtonCheckedIcon from '@mui/icons-material/RadioButtonChecked';
 import './header.css';
 import LiveCreate from '../../page/live/createLive';
 
 function Header() {
   const navigate = useNavigate();
-
   const JWT = window.localStorage.getItem('JWT');
+
   const logout = () => {
     window.localStorage.removeItem('JWT');
-    navigate('/');
+    navigate('/user/login');
   };
+
   return (
     <div id="header-container">
       <div id="header-container-box">
@@ -37,26 +36,20 @@ function Header() {
           <a href="/live" className="hover-underline">
             <Button sx={{ color: 'var(--link-color)' }} type="button">Live List</Button>
           </a>
-          <a href="/live/streamer" className="hover-underline">
-            <Button sx={{ color: 'var(--link-color)' }} type="button">Streamer</Button>
-          </a>
-          <a href="/live/room1" className="hover-underline">
-            <Button sx={{ color: 'var(--link-color)' }} type="button">Viewer</Button>
-          </a>
           { JWT ? (
             <>
               <LiveCreate />
               <a href="/post/create" className="hover-underline">
                 <Button sx={{ color: 'var(--link-color)' }} type="button">new Post</Button>
               </a>
-              <a href="/user/profile" className="hover-underline">
-                <Button sx={{ color: 'var(--link-color)' }} type="button">Profile</Button>
+              <a href="/user/setting" className="hover-underline">
+                <Button sx={{ color: 'var(--link-color)' }} type="button">Setting</Button>
               </a>
-              <Button type="button" color="error" onClick={logout}>Logout</Button>
+              <Button type="button" variant="outlined" color="error" onClick={logout}>Logout</Button>
             </>
           ) : (
-            <a href="/user/login" className="hover-underline">
-              <Button sx={{ color: 'var(--link-color)' }} type="button">login</Button>
+            <a href="/user/login">
+              <Button sx={{ color: 'var(--link-color)', border: '1px solid var(--link-color)' }} variant="outlined" type="button">login</Button>
             </a>
           )}
         </div>

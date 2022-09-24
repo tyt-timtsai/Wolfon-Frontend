@@ -13,8 +13,9 @@ import constants from '../../global/constants';
 import './streamer.css';
 
 function LiveStreamer({ socket, room, setRoom }) {
-  // const room = 'room1';
   const params = useParams();
+  const [userData, setUserData] = useState();
+
   const [isStreaming, setIsStreaming] = useState(false);
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);
@@ -45,6 +46,7 @@ function LiveStreamer({ socket, room, setRoom }) {
         .then((res) => {
           socket.emit('addTag', newTag);
           console.log(res);
+          setTag('');
         })
         .catch((err) => {
           console.log(err);
@@ -76,12 +78,22 @@ function LiveStreamer({ socket, room, setRoom }) {
   };
 
   useEffect(() => {
-    console.log(params.id);
+    axios.get(constants.PROFILE_API, {
+      headers: {
+        authorization: window.localStorage.getItem('JWT'),
+      },
+    })
+      .then((res) => {
+        setUserData(res.data.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+
     setRoom(params.id);
   }, []);
 
   useEffect(() => {
-    console.log(room);
     socket.on('viewer', (id, name) => {
       console.log(id);
       console.log(name);
@@ -111,6 +123,7 @@ function LiveStreamer({ socket, room, setRoom }) {
               setTag={setTag}
               addTag={addTag}
               isStreamer={isStreamer}
+              userData={userData}
             />
             <div id="viewers-list">
               {viewers.map((viewer) => (
@@ -122,6 +135,7 @@ function LiveStreamer({ socket, room, setRoom }) {
             <Chatroom
               socket={socket}
               room={room}
+              userData={userData}
             />
           </div>
         </div>

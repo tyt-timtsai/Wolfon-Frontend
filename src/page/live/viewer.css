@@ -63,3 +63,20 @@
     height: 100%;
     min-height: 500px;
 }
+
+@media screen and (min-width: 900px) and (max-width: 1600px) {
+    #viewer-container{
+        width: 98vw;
+    }
+    #viewer-container{
+        align-items: flex-start;
+    }
+    #viewer-video-container {
+        margin-top: 70px;
+        width: 70%;
+        align-items: center;
+    }
+    #viewer-btns-container {
+        width: 90%;
+    }
+  }

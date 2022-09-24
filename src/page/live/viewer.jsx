@@ -1,11 +1,13 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Editor from '../../components/editor/editor';
 import Video from '../../components/video/video';
 import Chatroom from '../../components/chatroom/chatroom';
 import './viewer.css';
+import constants from '../../global/constants';
 
 function LiveViewer({ socket, room, setRoom }) {
   const editor = useRef();
@@ -15,6 +17,7 @@ function LiveViewer({ socket, room, setRoom }) {
   const [code, setCode] = useState("//Javascript\nconsole.log('Hello Javascript!');");
   const [isComplier, setIsComplier] = useState(true);
   const [isConnect, setIsConnect] = useState(false);
+  const [userData, setUserData] = useState(null);
 
   const handleChange = () => {
     setIsComplier(!isComplier);
@@ -22,6 +25,16 @@ function LiveViewer({ socket, room, setRoom }) {
 
   useEffect(() => {
     console.log(params.id);
+    axios.get(constants.PROFILE_API, {
+      headers: {
+        authorization: window.localStorage.getItem('JWT'),
+      },
+    }).then((res) => {
+      console.log(res);
+      setUserData(res.data.data);
+    }).catch((err) => {
+      console.log(err);
+    });
     setRoom(params.id);
   }, []);
 
@@ -93,6 +106,7 @@ function LiveViewer({ socket, room, setRoom }) {
             <Chatroom
               socket={socket}
               room={room}
+              userData={userData}
             />
           </div>
         </div>

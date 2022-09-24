@@ -53,7 +53,7 @@ function SignUp() {
         .then((res) => {
           console.log(res);
           window.localStorage.setItem('JWT', res.data.data);
-          navigate('/user/profile');
+          navigate('/user/setting');
         })
         .catch((err) => console.log(err))
     );

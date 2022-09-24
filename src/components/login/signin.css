@@ -31,3 +31,8 @@
 .signin-inputs {
     width: 100%;
 }
+
+#signin-email,
+#signin-password {
+    color: var(--main-bg-color) !important;
+}

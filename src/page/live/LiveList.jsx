@@ -23,14 +23,14 @@ function LiveList() {
       <Header />
       <div id="live-list-container">
         <h1>LiveList</h1>
-        <div id="live-list-item-container">
+        <div className="live-list-item-container">
           {lives ? lives.reverse().map((live) => (
             <LiveListItem
               live={live}
           // eslint-disable-next-line no-underscore-dangle
               key={live._id}
             />
-          )) : null}
+          )) : <p>loading...</p>}
         </div>
       </div>
       <Footer />
