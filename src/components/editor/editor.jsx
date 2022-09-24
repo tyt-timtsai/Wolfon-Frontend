@@ -47,6 +47,7 @@ function Editor({
 }) {
   const [terminal, setTerminal] = useState();
   const [select, setSelect] = useState('');
+  const [isCompilable, setIsCompilable] = useState(true);
   // eslint-disable-next-line no-case-declarations, max-len
   // const twosum = 'var twoSum = function(nums, target) {\nvar map = {};\nfor(var i = 0 ; i < nums.length ; i++){\nvar v = nums[i];\nfor(var j = i+1 ; j < nums.length ; j++ ){\nif(  nums[i] + nums[j]  == target ){\nreturn [i,j];\n}}}};\nconst result = twoSum([3,4,5,6,7,8], 12)\n console.log(result);';
 
@@ -69,6 +70,25 @@ function Editor({
         // setCode(twosum);
         break;
     }
+
+    switch (language) {
+      case 'javascript':
+      case 'golang':
+      case 'python':
+        setIsCompilable(true);
+        break;
+      case 'dockerfile':
+      case 'mysql':
+      case 'powershell':
+      case 'gitignore':
+      case 'markdown':
+        setIsCompilable(false);
+        break;
+
+      default:
+        setIsCompilable(false);
+        break;
+    }
   };
 
   // ============== 版本控制 ===============
@@ -77,7 +97,7 @@ function Editor({
     if (e.target.value) {
       axios.get(`${constants.GET_VERSION_API}/${room}?tag=${e.target.value}`)
         .then((res) => {
-          setCode(res.data.tags[0].code);
+          setCode(res.data.data.tags[0].code);
           setSelect(e.target.value);
         })
         .catch((err) => console.log(err));
@@ -145,7 +165,9 @@ function Editor({
 
   // fetch version first
   useEffect(() => {
-    getVersion();
+    if (room) {
+      getVersion();
+    }
   }, [room]);
 
   // Websocket interact on code
@@ -329,7 +351,16 @@ function Editor({
               ))}
             </Select>
           </FormControl>
-          <Button id="run-btn" variant="contained" size="small" type="button" onClick={compile}>Run</Button>
+          <Button
+            id="run-btn"
+            variant="contained"
+            size="small"
+            type="button"
+            disabled={!isCompilable}
+            onClick={compile}
+          >
+            Run
+          </Button>
         </div>
       </div>
     </div>

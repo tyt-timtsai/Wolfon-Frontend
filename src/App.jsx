@@ -10,6 +10,7 @@ import Search from './page/Search';
 import LiveList from './page/live/LiveList';
 import LiveViewer from './page/live/viewer';
 import LiveStreamer from './page/live/streamer';
+import LiveReview from './page/live/review';
 // User
 import Login from './page/user/login';
 import Setting from './page/user/setting';
@@ -67,6 +68,17 @@ function App() {
           />
         )}
         path="/live/:id"
+      />
+
+      <Route
+        element={(
+          <LiveReview
+            socket={socket}
+            room={room}
+            setRoom={setRoom}
+          />
+        )}
+        path="/live/review/:id"
       />
 
       <Route

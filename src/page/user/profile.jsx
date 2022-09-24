@@ -43,7 +43,6 @@ function Profile() {
   useEffect(() => {
     let url;
     if (user) {
-      console.log(`${user.background_image}`);
       switch (category) {
         case 'post':
           url = constants.GET_USER_POST_API;

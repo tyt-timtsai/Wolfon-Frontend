@@ -133,6 +133,12 @@ function Video({
   }
 
   useEffect(() => {
+    if (userData) {
+      socket.emit('join', room, userData.name);
+    }
+  }, [socket, userData]);
+
+  useEffect(() => {
     console.log('start');
     getProfile();
 
@@ -141,7 +147,9 @@ function Video({
       console.log(id);
     });
 
-    return (() => socket.close());
+    return (() => {
+      socket.close();
+    });
   }, [socket]);
 
   return (

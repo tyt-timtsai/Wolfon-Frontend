@@ -46,6 +46,7 @@ function LiveStreamer({ socket, room, setRoom }) {
         .then((res) => {
           socket.emit('addTag', newTag);
           console.log(res);
+          setTag('');
         })
         .catch((err) => {
           console.log(err);
@@ -77,8 +78,6 @@ function LiveStreamer({ socket, room, setRoom }) {
   };
 
   useEffect(() => {
-    console.log(params.id);
-
     axios.get(constants.PROFILE_API, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),

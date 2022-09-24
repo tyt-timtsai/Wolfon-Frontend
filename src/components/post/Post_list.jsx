@@ -5,7 +5,7 @@ import {
 } from '@mui/material';
 import { BsBookmarksFill } from 'react-icons/bs';
 import Favorite from '@mui/icons-material/Favorite';
-import { FaCommentAlt } from 'react-icons/fa';
+// import { FaCommentAlt } from 'react-icons/fa';
 import './post_list.css';
 import constants from '../../global/constants';
 
@@ -65,10 +65,10 @@ function PostButton({ post }) {
               <BsBookmarksFill style={{ width: 18, height: 18 }} />
             </div>
 
-            <div className="post-list-info">
+            {/* <div className="post-list-info">
               {post.comments.length}
               <FaCommentAlt style={{ width: 16, height: 16, marginTop: 1 }} />
-            </div>
+            </div> */}
           </div>
 
           <div className="post-list-view">

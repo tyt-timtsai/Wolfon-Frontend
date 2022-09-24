@@ -70,7 +70,7 @@ const tag = [
   'Docker',
   'Git',
   'Shell',
-  'Terminal',
+  'DataBase',
   'Network',
   'Talk & Share',
 ];
@@ -126,6 +126,7 @@ function LiveCreate() {
     try {
       const result = await axios.post(constants.CREATE_LIVE_API, formData, header);
       console.log(result);
+      setOpen(false);
       navigate(`/live/streamer/${result.data.liveData.room_id}`);
     } catch (error) {
       console.log(error);

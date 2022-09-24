@@ -3,10 +3,12 @@ import './chatroom.css';
 import {
   Button, TextField, List, ListItem, ListItemAvatar, Avatar, ListItemText,
 } from '@mui/material';
+import constants from '../../global/constants';
 
 function Chatroom({ socket, room, userData }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
+  // const [screenshot, setScreenshot] = useState(null);
   const messagesList = useRef();
 
   const editorMessage = (e) => {
@@ -16,7 +18,13 @@ function Chatroom({ socket, room, userData }) {
   const snedMessage = (e) => {
     e.preventDefault();
     if (message) {
-      socket.emit('chat message', { id: socket.id, name: userData.name, msg: message });
+      socket.emit('chat message', {
+        room,
+        id: socket.id,
+        name: userData.name,
+        photo: userData.photo || null,
+        msg: message,
+      });
       setMessage('');
     }
   };
@@ -29,8 +37,6 @@ function Chatroom({ socket, room, userData }) {
 
   useEffect(() => {
     socket.on('chat message', (data) => {
-      console.log(data.msg);
-      console.log(room);
       setMessages((prev) => [...prev, data]);
     });
     return (() => socket.close());
@@ -42,7 +48,10 @@ function Chatroom({ socket, room, userData }) {
         {messages.map((data) => (
           <ListItem key={Math.random()} alignItems="flex-start" value={data.msg}>
             <ListItemAvatar>
-              <Avatar alt="avatar" />
+              <Avatar
+                alt="avatar"
+                src={data.photo ? `${constants.IMAGE_URL}/${data.photo}` : '#'}
+              />
             </ListItemAvatar>
             <ListItemText
               primary={data.name}
