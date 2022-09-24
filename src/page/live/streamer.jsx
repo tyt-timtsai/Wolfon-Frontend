@@ -104,6 +104,10 @@ function LiveStreamer({ socket, room, setRoom }) {
       console.log(viewerCode);
       setCode(viewerCode);
     });
+
+    if (socket) {
+      socket.emit('join', room, userData.name);
+    }
   }, [socket]);
 
   return (

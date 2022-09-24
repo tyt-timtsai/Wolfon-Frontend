@@ -3,12 +3,15 @@ import './chatroom.css';
 import {
   Button, TextField, List, ListItem, ListItemAvatar, Avatar, ListItemText,
 } from '@mui/material';
+import { BiImageAdd } from 'react-icons/bi';
+import { GiCancel } from 'react-icons/gi';
+// import axios from 'axios';
 import constants from '../../global/constants';
 
 function Chatroom({ socket, room, userData }) {
   const [messages, setMessages] = useState([]);
   const [message, setMessage] = useState('');
-  // const [screenshot, setScreenshot] = useState(null);
+  const [file, setFile] = useState(null);
   const messagesList = useRef();
 
   const editorMessage = (e) => {
@@ -17,6 +20,9 @@ function Chatroom({ socket, room, userData }) {
 
   const snedMessage = (e) => {
     e.preventDefault();
+    // if(file){
+    //   axios.post()
+    // }
     if (message) {
       socket.emit('chat message', {
         room,
@@ -24,10 +30,15 @@ function Chatroom({ socket, room, userData }) {
         name: userData.name,
         photo: userData.photo || null,
         msg: message,
+        file,
       });
       setMessage('');
+      setFile(null);
     }
   };
+
+  const handleUpload = (e) => setFile(e.target.files[0]);
+  const deleteFile = () => setFile(null);
 
   useEffect(() => {
     if (messagesList.current) {
@@ -41,6 +52,10 @@ function Chatroom({ socket, room, userData }) {
     });
     return (() => socket.close());
   }, [socket]);
+
+  useEffect(() => {
+    console.log(file);
+  }, [file]);
 
   return (
     <div id="chatroom-container">
@@ -61,10 +76,21 @@ function Chatroom({ socket, room, userData }) {
               variant="body2"
               color="#fff"
             />
+            {data.file ? (
+              <button type="button">
+                <img src={data.file} alt="upload_image" />
+              </button>
+            ) : null}
           </ListItem>
         ))}
+
       </List>
       <form id="message-form" onSubmit={snedMessage}>
+        <label htmlFor="screenshot-upload-input" id="screenshot-upload-label">
+          <BiImageAdd id="screenshot-upload-icon" />
+          <input hidden accept="image/*" type="file" id="screenshot-upload-input" onChange={handleUpload} />
+        </label>
+
         <TextField
           id="message-input"
           size="small"
@@ -75,6 +101,14 @@ function Chatroom({ socket, room, userData }) {
         />
         <Button variant="contained" type="message-btn" onClick={snedMessage}>Send</Button>
       </form>
+      {file ? (
+        <div id="stream-upload-preview">
+          <button type="button" onClick={deleteFile} id="stream-upload-cancel-btn">
+            <GiCancel id="stream-upload-cancel-icon" />
+          </button>
+          <img src={URL.createObjectURL(file)} alt="upload_image" id="stream-upload-preview-img" />
+        </div>
+      ) : null}
     </div>
   );
 }
