@@ -18,6 +18,10 @@ function UserLiveItem({ live }) {
     navigate(`/live/streamer/${live.room_id}`);
   };
 
+  const handleReview = () => {
+    navigate(`/live/review/${live.room_id}`);
+  };
+
   return (
     <Card id="user-live-card">
       {live.cover_img
@@ -35,7 +39,11 @@ function UserLiveItem({ live }) {
           </Typography>
         </CardContent>
         <CardActions disableSpacing>
-          <Button className="full-width-btn" variant="outlined" onClick={handleClick}>Join Stream</Button>
+          {live.isStreaming ? (
+            <Button className="full-width-btn" variant="outlined" onClick={handleClick}>進入直播</Button>
+          ) : (
+            <Button className="full-width-btn" variant="outlined" onClick={handleReview}>觀看錄影</Button>
+          )}
         </CardActions>
       </>
       )}

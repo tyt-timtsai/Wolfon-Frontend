@@ -6,7 +6,7 @@ import Uploader from '../../global/uploader';
 
 // let socket;
 function Streamer({
-  socket, room, localVideo, setIsStreaming, userData,
+  socket, room, localVideo, setIsStreaming,
 }) {
   const [localStream, setLocalStream] = useState();
   const [record, setRecord] = useState();
@@ -123,8 +123,6 @@ function Streamer({
    * 連線 socket.io
    */
   function connectIO() {
-    socket.emit('join', room, userData.name);
-
     socket.on('ice_candidate', async (data, id) => {
       console.log('收到 ice_candidate');
       const candidate = new RTCIceCandidate({
@@ -261,17 +259,6 @@ function Streamer({
       upload.start();
     }
   }, [file]);
-
-  // 上傳影片
-  // const uploadVideo = (e) => {
-  //   e.preventDefault();
-  //   console.log(file);
-  // };
-
-  // const handleUpload = (e) => {
-  //   console.log(e.target.files[0]);
-  //   setFile(e.target.files[0]);
-  // };
 
   /**
  * 初始化

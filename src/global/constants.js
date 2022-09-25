@@ -1,8 +1,9 @@
+const IMAGE_URL = 'https://s3.ap-northeast-1.amazonaws.com/wolfon';
+const WEB_URL = 'http://localhost:3001';
+
 const SERVER_URL = 'http://localhost:3000';
 const SOCKET_URL = 'ws://localhost:3000';
 const API_URL = 'http://localhost:3000/api/v1';
-const WEB_URL = 'http://localhost:3001';
-const IMAGE_URL = 'https://s3.ap-northeast-1.amazonaws.com/wolfon';
 
 // const SERVER_URL = 'https://wolfon.live';
 // const SOCKET_URL = 'wss://wolfon.live';
@@ -37,6 +38,7 @@ const FOLLOW_USER_API = `${API_URL}/user/follow`;
 const GET_LIVE_API = `${API_URL}/live`;
 const CREATE_LIVE_API = `${API_URL}/live`;
 const SEARCH_LIVE_API = `${API_URL}/live/search`;
+const UPLOAD_SCEEENSHOT_API = `${API_URL}/live/screenshot`;
 const UPLOAD_LIVE_API = `${API_URL}/live/upload`;
 const COMPLETE_UPLOAD_LIVE_API = `${API_URL}/live/complete`;
 
@@ -81,6 +83,7 @@ export default {
   CREATE_LIVE_API,
   SEARCH_LIVE_API,
   UPLOAD_LIVE_API,
+  UPLOAD_SCEEENSHOT_API,
   COMPLETE_UPLOAD_LIVE_API,
   // CODE
   GET_CODE_API,

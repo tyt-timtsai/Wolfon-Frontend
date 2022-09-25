@@ -1,5 +1,5 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
@@ -12,6 +12,7 @@ import constants from '../../global/constants';
 function LiveViewer({ socket, room, setRoom }) {
   const editor = useRef();
   const params = useParams();
+  const navigate = useNavigate();
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);
   const [code, setCode] = useState("//Javascript\nconsole.log('Hello Javascript!');");
@@ -25,15 +26,22 @@ function LiveViewer({ socket, room, setRoom }) {
 
   useEffect(() => {
     console.log(params.id);
+    const token = window.localStorage.getItem('JWT');
+    if (!token) {
+      navigate('/user/login');
+    }
     axios.get(constants.PROFILE_API, {
       headers: {
-        authorization: window.localStorage.getItem('JWT'),
+        authorization: token,
       },
     }).then((res) => {
       console.log(res);
       setUserData(res.data.data);
     }).catch((err) => {
       console.log(err);
+      if (err.response.status === 403 || err.response.status === 401) {
+        navigate('/user/login');
+      }
     });
     setRoom(params.id);
   }, []);
@@ -41,7 +49,6 @@ function LiveViewer({ socket, room, setRoom }) {
   return (
     <>
       <Header />
-
       <div id="viewer-container">
         <div
           id="viewer-video-container"
@@ -111,7 +118,6 @@ function LiveViewer({ socket, room, setRoom }) {
           </div>
         </div>
       </div>
-
       <Footer />
     </>
   );

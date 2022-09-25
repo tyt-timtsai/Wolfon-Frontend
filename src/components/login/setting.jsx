@@ -101,7 +101,13 @@ function UserSetting() {
           />
         </div>
         <div className="setting-main-content">
-          <h1>Welcome back</h1>
+          {userData && (
+          <h1>
+            Welcome back
+            {' '}
+            {userData.name}
+          </h1>
+          )}
         </div>
       </div>
     </div>
