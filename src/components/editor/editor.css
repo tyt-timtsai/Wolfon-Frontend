@@ -32,6 +32,10 @@
     gap: 5px;
 }
 
+#tag-input {
+    width: 162px;
+}
+
 #editor-btns {
     width: 100%;
     display: flex;

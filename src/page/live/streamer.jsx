@@ -63,7 +63,7 @@ function LiveStreamer({ socket, room, setRoom }) {
   // Create Screenshot on stream
   const screenShot = () => {
     if (isStreaming) {
-      const scale = 0.2;
+      const scale = 1;
       const video = localVideo.current;
       const canvas = canvasRef.current;
       canvas.width = video.videoWidth * scale;
@@ -94,6 +94,12 @@ function LiveStreamer({ socket, room, setRoom }) {
   }, []);
 
   useEffect(() => {
+    if (socket && userData) {
+      socket.emit('join', room, userData.name);
+    }
+  }, [socket, userData]);
+
+  useEffect(() => {
     socket.on('viewer', (id, name) => {
       console.log(id);
       console.log(name);
@@ -104,11 +110,14 @@ function LiveStreamer({ socket, room, setRoom }) {
       console.log(viewerCode);
       setCode(viewerCode);
     });
-
-    if (socket) {
-      socket.emit('join', room, userData.name);
-    }
   }, [socket]);
+
+  useEffect(() => {
+    socket.on('leave', (id) => {
+      const array = viewers.filter((viewer) => viewer.id !== id);
+      setViewers(array);
+    });
+  }, [socket, viewers]);
 
   return (
     <>
@@ -129,9 +138,19 @@ function LiveStreamer({ socket, room, setRoom }) {
               isStreamer={isStreamer}
               userData={userData}
             />
+            <p id="viewers-list-hint">點擊按鈕 : 取得觀看者的程式</p>
             <div id="viewers-list">
               {viewers.map((viewer) => (
-                <Button variant="contained" type="button" value={viewer.id} key={viewer.id} onClick={getViewerCode}>{viewer.name}</Button>
+                <Button
+                  variant="contained"
+                  type="button"
+                  value={viewer.id}
+                  key={viewer.id}
+                  onClick={getViewerCode}
+                  className="viewers-list-btn"
+                >
+                  {viewer.name}
+                </Button>
               ))}
             </div>
           </div>
@@ -167,8 +186,8 @@ function LiveStreamer({ socket, room, setRoom }) {
         </div>
 
       </section>
-      <canvas ref={canvasRef} />
-      <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164} id="screenShot-container">
+      <canvas ref={canvasRef} style={{ display: 'none' }} />
+      <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164} id="screenshot-container">
         {screenshots.map((screenshot) => (
           screenshot.src
             ? (

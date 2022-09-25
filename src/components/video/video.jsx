@@ -17,9 +17,6 @@ function Video({
  * 連線 socket.io
  */
   function connectIO() {
-    // socket.emit('join', room, userData.name);
-    socket.emit('join', room, userData.name);
-
     socket.on('answer', async (desc) => {
       console.log('收到 answer');
       // 設定對方的配置

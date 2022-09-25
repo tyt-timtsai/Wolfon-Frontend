@@ -284,7 +284,7 @@ function Editor({
               variant="outlined"
               type="text"
               name="tag"
-              id="tag"
+              id="tag-input"
               value={tag}
               onChange={editTag}
             />

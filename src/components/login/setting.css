@@ -36,3 +36,10 @@
     color: var(--main-focus-color);
     background-color: var(--main-color);
 }
+
+.setting-main-content {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

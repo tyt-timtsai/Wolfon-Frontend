@@ -16,7 +16,7 @@ function TipTap({ setContent }) {
         Hi there,
       </h2>
       <p>
-        this is a <em>basic</em> example of <strong>tiptap</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
+        this is a <em>basic</em> example of <strong>How to create a post</strong>. Sure, there are all kind of basic text styles you’d probably expect from a text editor. But wait until you see the lists:
       </p>
       <ul>
         <li>
@@ -33,12 +33,12 @@ function TipTap({ setContent }) {
   display: none;
 }</code></pre>
       <p>
-        I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other examples too.
+        I know, I know, this is impressive. It’s only the tip of the iceberg though. Give it a try and click a little bit around. Don’t forget to check the other features too.
       </p>
       <blockquote>
-        Wow, that’s amazing. Good work, boy! 👏
+        Wow, that’s amazing. Good work! 👏
         <br />
-        — Mom
+        — Wolfon
       </blockquote>
     `,
     // eslint-disable-next-line no-shadow

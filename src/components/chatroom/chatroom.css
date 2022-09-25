@@ -18,6 +18,13 @@
     word-break: break-all;
 }
 
+.message-list-item {
+    margin-bottom: 5px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
 #message-form {
     padding: 10px;
     box-sizing: border-box;
@@ -29,6 +36,12 @@
     gap: 10px;
     width: 100%;
     z-index: 10;
+}
+
+#chatroom-message-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* Screenshot upload */
@@ -85,5 +98,21 @@
 #stream-upload-cancel-icon {
     width: 25px;
     height: 25px;
-    color: var(--main-bg-color);
+    color: var(--main-color);
+}
+
+.chatroom-img-btn {
+    margin-top: -5px;
+    margin-left: 70px;
+    border: none;
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    background-color: transparent;
+}
+
+.chatroom-img {
+    width: 300px;
+    height: auto;
+    cursor: pointer;
 }
