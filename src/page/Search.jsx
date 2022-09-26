@@ -3,7 +3,9 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   IconButton, TextField, Tabs, Tab,
+  Box,
 } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
 import GroupsIcon from '@mui/icons-material/Groups';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
@@ -24,6 +26,7 @@ function Search() {
   const [results, setResults] = useState();
   const [value, setValue] = useState(0);
   const [userData, setUserData] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
   const types = ['post', 'live', 'user', 'community'];
 
   const handleChange = (e, index) => {
@@ -54,17 +57,20 @@ function Search() {
     });
   }, []);
 
+  async function getSearch() {
+    setIsFetching(true);
+    try {
+      const result = await axios.get(`${constants.SERVER_URL}/api/v1/${type}/search?keyword=${search}`);
+      setResults(result.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+    setIsFetching(false);
+  }
+
   useEffect(() => {
-    console.log(type);
-    console.log(search);
     if (search) {
-      axios.get(`${constants.SERVER_URL}/api/v1/${type}/search?keyword=${search}`)
-        .then((res) => {
-          console.log(res.data.data);
-          setResults(res.data.data);
-        }).catch((err) => {
-          console.log(err);
-        });
+      getSearch();
     }
   }, [type, search]);
 
@@ -86,38 +92,46 @@ function Search() {
             <Tab icon={<GroupsIcon />} label="community" />
           </Tabs>
         </div>
-        <div id="search-result-container">
-          {results && type === 'post' ? results.reverse().map((post) => (
-            <PostList
-              key={post._id}
-              post={post}
-            />
-          )) : null}
-          {results && type === 'user' ? results.map((user) => (
-            <SearchUserItem
-              key={user.id}
-              user={user}
-              userData={userData}
-            />
-          )) : null}
-          {results && type === 'live' ? results.reverse().map((live) => (
-            <UserLiveItem
-              live={live}
-              key={live._id}
-            />
-          )) : null}
+        {isFetching ? (
+          <Box sx={{ position: 'relative', top: 200, left: '50vh' }}>
+            <CircularProgress size={30} color="inherit" />
+          </Box>
+        ) : (
+          <div id="search-result-container">
+            {results && type === 'post' ? results.reverse().map((post) => (
+              <PostList
+                key={post._id}
+                post={post}
+              />
+            )) : null}
 
-          {results && type === 'community' ? results.map((result) => (
-            <div key={result.id}>
-              <p>{result.id}</p>
-              <p>
-                community :
-                {' '}
-                {result.name}
-              </p>
-            </div>
-          )) : null}
-        </div>
+            {results && type === 'user' ? results.map((user) => (
+              <SearchUserItem
+                key={user.id}
+                user={user}
+                userData={userData}
+              />
+            )) : null}
+
+            {results && type === 'live' ? results.reverse().map((live) => (
+              <UserLiveItem
+                live={live}
+                key={live._id}
+              />
+            )) : null}
+
+            {results && type === 'community' ? results.map((result) => (
+              <div key={result.id}>
+                <p>{result.id}</p>
+                <p>
+                  community :
+                  {' '}
+                  {result.name}
+                </p>
+              </div>
+            )) : null}
+          </div>
+        )}
       </div>
       <Footer />
     </>

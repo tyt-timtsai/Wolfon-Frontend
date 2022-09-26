@@ -19,8 +19,7 @@ function signIn() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     email: 'sam22@gmail.com',
-    password: 'sam22',
-    confirm: 'sam22',
+    password: '',
     showPassword: false,
   });
 
@@ -66,7 +65,6 @@ function signIn() {
       <Paper elevation={6} id="signin-paper">
         <div id="signin-header">
           <img id="sign-logo" src="/wolf-emblem.png" alt="logo" />
-          <p>Wolfon</p>
         </div>
         <div id="signin-input-container">
           <TextField

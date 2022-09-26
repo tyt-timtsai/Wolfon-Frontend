@@ -84,7 +84,7 @@ function Post() {
   };
 
   async function getPost() {
-    const result = await axios.get(`${constants.SERVER_URL}/api/v1${location.pathname}`);
+    const result = await axios.get(`${constants.GET_POST_API}${location.pathname}`);
     const postData = result.data.data;
     setPost(postData.post);
     setAuthor(postData.userData);
@@ -167,15 +167,15 @@ function Post() {
                 <h1>{post.title}</h1>
                 <h3>{post.subtitle}</h3>
                 <p>
-                  post on :
+                  publish :
                   {' '}
-                  {post.created_dt}
+                  {post.created_dt.slice(0, -4)}
                 </p>
-                <p>
+                {/* <p>
                   update :
                   {' '}
-                  {post.updated_dt}
-                </p>
+                  {post.updated_dt.slice(0, -4)}
+                </p> */}
               </div>
 
               <div className="ProseMirror">
@@ -186,6 +186,7 @@ function Post() {
 
             <UserInfo
               userData={author}
+              isPost
             />
           </>
         ) : <p> Loading... </p>}

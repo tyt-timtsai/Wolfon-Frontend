@@ -19,7 +19,7 @@ function UploadModal({
         <div className="upload-upload-preview">
           {file ? (
             <img className="upload-img" src={URL.createObjectURL(file)} alt="upload file" />
-          ) : <p className="upload-upload-text">上傳背景圖片</p>}
+          ) : <p className="upload-upload-text">上傳圖片</p>}
         </div>
         <div className="upload-modal-btn">
           {file ? (

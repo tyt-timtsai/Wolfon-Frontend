@@ -2,14 +2,14 @@ import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
-  Paper, IconButton, Avatar,
+  Paper, IconButton, Avatar, Button,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import constants from '../../global/constants';
 import UploadModal from '../userAsset/uploadModal';
 import './userInfo.css';
 
-function UserInfo({ userData, isSetting }) {
+function UserInfo({ userData, isSetting, isPost }) {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [file, setFile] = useState(null);
@@ -112,6 +112,15 @@ function UserInfo({ userData, isSetting }) {
           <p className="sidebar-user-text">Joined</p>
         </div>
       </div>
+      )}
+      {isPost && (
+      <Button
+        variant="contained"
+        style={{ marginTop: 2 }}
+        onClick={() => navigate(`/user/${userData.id}`)}
+      >
+        Author Profile
+      </Button>
       )}
     </Paper>
   );

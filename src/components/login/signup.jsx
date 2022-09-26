@@ -64,7 +64,6 @@ function SignUp() {
       <Paper elevation={6} id="signup-paper">
         <div id="signup-header">
           <img id="sign-logo" src="/wolf-emblem.png" alt="logo" />
-          <p>Wolfon</p>
         </div>
         <div id="signup-input-container">
           <TextField
