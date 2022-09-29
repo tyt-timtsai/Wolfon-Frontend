@@ -1,6 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Swal from 'sweetalert2';
+import validator from 'validator';
+
 import Header from '../../components/header/header';
 import CreatePost from '../../components/post/create';
 import Footer from '../../components/footer/footer';
@@ -16,7 +19,31 @@ function NewPost() {
   const [content, setContent] = useState('');
 
   const postPost = () => {
-    axios.post(constants.CREATE_POST_API, { data: post }, {
+    if (validator.isEmpty(post.title)) {
+      return Swal.fire({
+        title: 'Error!',
+        text: '請填寫標題',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+    if (validator.isEmpty(post.subtitle)) {
+      return Swal.fire({
+        title: 'Error!',
+        text: '請填寫副標題',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+    if (validator.isEmpty(post.content)) {
+      return Swal.fire({
+        title: 'Error!',
+        text: '請先填寫文章內容',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+    return axios.post(constants.CREATE_POST_API, { data: post }, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },

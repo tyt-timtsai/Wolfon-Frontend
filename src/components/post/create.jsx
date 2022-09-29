@@ -59,7 +59,7 @@ function CreatePost({
         ? (
           <div id="preview-container">
             <div className="ProseMirror">
-              {parser(post.content)}
+              {post.content ? parser(post.content) : 'Try to editor first.'}
             </div>
           </div>
         )

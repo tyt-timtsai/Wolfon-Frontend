@@ -47,7 +47,7 @@ function Editor({
   setIsFrom,
   screenShot,
 }) {
-  const [terminal, setTerminal] = useState();
+  const [terminal, setTerminal] = useState('');
   const [select, setSelect] = useState('');
   const [isCompilable, setIsCompilable] = useState(true);
   const [isSending, setIsSending] = useState(false);
@@ -154,6 +154,7 @@ function Editor({
 
   // Compile code
   const compile = async () => {
+    setTerminal('');
     setIsSending(true);
     try {
       const data = {
@@ -161,7 +162,14 @@ function Editor({
         code,
       };
       const result = await axios.post(constants.GET_CODE_API, data);
-      setTerminal(result.data);
+      console.log(typeof result.data);
+      console.log(result.data);
+      if (typeof result.data !== 'string') {
+        setTerminal(JSON.stringify(result.data));
+      } else {
+        setTerminal(result.data);
+      }
+      // setTerminal(JSON.stringify(result.data));
     } catch (err) {
       console.log(err);
     }
@@ -212,6 +220,7 @@ function Editor({
             enableLiveAutocompletion: true,
             enableSnippets: true,
             tabSize: 2,
+            fontSize: '14px',
           }}
         />
         <AceEditor
@@ -223,7 +232,6 @@ function Editor({
           width="100%"
           readOnly
           value={terminal}
-          defaultValue=""
           editorProps={{ $blockScrolling: false }}
           showPrintMargin={false}
           showGutter={false}

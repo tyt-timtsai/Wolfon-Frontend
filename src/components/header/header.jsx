@@ -45,11 +45,28 @@ function Header() {
               <a href="/user/setting" className="hover-underline">
                 <Button sx={{ color: 'var(--link-color)' }} type="button">Setting</Button>
               </a>
-              <Button type="button" variant="outlined" color="error" onClick={logout}>Logout</Button>
+              <Button
+                type="button"
+                variant="outlined"
+                color="error"
+                onClick={logout}
+                className="login-btn"
+              >
+                Logout
+              </Button>
             </>
           ) : (
-            <a href="/user/login">
-              <Button sx={{ color: 'var(--link-color)', border: '1px solid var(--link-color)' }} variant="outlined" type="button">login</Button>
+            <a
+              href="/user/login"
+              className="login-btn"
+            >
+              <Button
+                sx={{ color: 'var(--link-color)', border: '1px solid var(--link-color)' }}
+                variant="outlined"
+                type="button"
+              >
+                login
+              </Button>
             </a>
           )}
         </div>

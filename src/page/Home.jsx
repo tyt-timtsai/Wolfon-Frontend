@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { Box } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -11,6 +12,7 @@ import './home.css';
 
 function Home() {
   // Home
+  const navigate = useNavigate();
   const [posts, setPosts] = useState([]);
   const [userData, setUserData] = useState(null);
   const [isFetching, setIsFetching] = useState(false);
@@ -28,14 +30,6 @@ function Home() {
   }
 
   useEffect(() => {
-    // axios.get(constants.GET_ALL_POST_API)
-    //   .then((res) => {
-    //     console.log(res.data.data);
-    //     setPosts(res.data.data);
-    //   })
-    //   .catch((err) => {
-    //     console.log(err);
-    //   });
     if (token) {
       axios.get(constants.PROFILE_API, {
         headers: {
@@ -48,6 +42,10 @@ function Home() {
         })
         .catch((err) => {
           console.log(err);
+          if (err.response.status === 403 || err.response.status === 400) {
+            window.localStorage.removeItem('JWT');
+            navigate('/user/login');
+          }
         });
     }
 

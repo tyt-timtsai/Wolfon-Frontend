@@ -55,6 +55,10 @@ function UserSetting() {
       setUserData(res.data.data);
     }).catch((err) => {
       console.log('Fetch profile error : ', err);
+      if (err.response.status === 403 || err.response.status === 400) {
+        window.localStorage.removeItem('JWT');
+        navigate('/user/login');
+      }
     });
   }, []);
 

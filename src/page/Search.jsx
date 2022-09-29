@@ -1,5 +1,6 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   IconButton, TextField, Tabs, Tab,
@@ -7,7 +8,7 @@ import {
 } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
-import GroupsIcon from '@mui/icons-material/Groups';
+// import GroupsIcon from '@mui/icons-material/Groups';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ArticleIcon from '@mui/icons-material/Article';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -20,6 +21,7 @@ import constants from '../global/constants';
 import './search.css';
 
 function Search() {
+  const navigate = useNavigate();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
   const [type, setType] = useState('post');
@@ -45,16 +47,23 @@ function Search() {
   };
 
   useEffect(() => {
-    axios.get(constants.PROFILE_API, {
-      headers: {
-        authorization: window.localStorage.getItem('JWT'),
-      },
-    }).then((res) => {
-      console.log(res.data.data);
-      setUserData(res.data.data);
-    }).catch((err) => {
-      console.log(err);
-    });
+    const token = window.localStorage.getItem('JWT');
+    if (token) {
+      axios.get(constants.PROFILE_API, {
+        headers: {
+          authorization: window.localStorage.getItem('JWT'),
+        },
+      }).then((res) => {
+        console.log(res.data.data);
+        setUserData(res.data.data);
+      }).catch((err) => {
+        console.log(err);
+        if (err.response.status === 403 || err.response.status === 400) {
+          window.localStorage.removeItem('JWT');
+          navigate('/user/login');
+        }
+      });
+    }
   }, []);
 
   async function getSearch() {
@@ -85,11 +94,17 @@ function Search() {
               <SearchRoundedIcon id="search-icon" />
             </IconButton>
           </form>
-          <Tabs value={value} onChange={handleChange} id="search-tabs" aria-label="icon label tabs example">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            id="search-tabs"
+            aria-label="icon label tabs example"
+            style={{ justifyContent: 'center', alignItems: 'center' }}
+          >
             <Tab icon={<ArticleIcon />} label="post" />
-            <Tab icon={<SmartDisplayIcon />} label="live" />
-            <Tab icon={<AccountBoxIcon />} label="user" />
-            <Tab icon={<GroupsIcon />} label="community" />
+            <Tab icon={<SmartDisplayIcon />} label="live" disabled={userData == null} />
+            <Tab icon={<AccountBoxIcon />} label="user" disabled={userData == null} />
+            {/* <Tab icon={<GroupsIcon />} label="community" /> */}
           </Tabs>
         </div>
         {isFetching ? (
@@ -120,7 +135,7 @@ function Search() {
               />
             )) : null}
 
-            {results && type === 'community' ? results.map((result) => (
+            {/* {results && type === 'community' ? results.map((result) => (
               <div key={result.id}>
                 <p>{result.id}</p>
                 <p>
@@ -129,7 +144,7 @@ function Search() {
                   {result.name}
                 </p>
               </div>
-            )) : null}
+            )) : null} */}
           </div>
         )}
       </div>

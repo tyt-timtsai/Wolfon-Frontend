@@ -72,3 +72,7 @@
     border-bottom: 2px solid var(--main-color);
     transform: translateY(-5px);
 }
+
+.login-btn {
+    margin-left: 100px;
+}

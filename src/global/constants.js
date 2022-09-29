@@ -1,13 +1,13 @@
 const IMAGE_URL = 'https://s3.ap-northeast-1.amazonaws.com/wolfon';
 const WEB_URL = 'http://localhost:3001';
 
-// const SERVER_URL = 'http://localhost:3000';
-// const SOCKET_URL = 'ws://localhost:3000';
-// const API_URL = 'http://localhost:3000/api/v1';
+const SERVER_URL = 'http://localhost:3000';
+const SOCKET_URL = 'ws://localhost:3000';
+const API_URL = 'http://localhost:3000/api/v1';
 
-const SERVER_URL = 'https://wolfon.live';
-const SOCKET_URL = 'wss://wolfon.live';
-const API_URL = 'https://wolfon.live/api/v1';
+// const SERVER_URL = 'https://www.wolfon.live';
+// const SOCKET_URL = 'wss://www.wolfon.live';
+// const API_URL = 'https://www.wolfon.live/api/v1';
 
 const UPLOAD_SIZE = 1024 * 1024 * 10;
 

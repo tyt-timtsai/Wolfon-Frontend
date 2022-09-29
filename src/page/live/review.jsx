@@ -61,7 +61,7 @@ function LiveReview({ socket, room, setRoom }) {
               className="viewer-btns"
               style={{ color: 'var(--secondary-color)' }}
             >
-              Complier
+              Editor
             </button>
           </div>
           <div id="viewer-editor-container">

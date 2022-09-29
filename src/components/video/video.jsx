@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
 import './video.css';
 import axios from 'axios';
@@ -9,6 +10,7 @@ function Video({
   socket, isConnect, setIsConnect, room,
 }) {
   let peerConn;
+  const navigate = useNavigate();
   const [userData, setUserData] = useState('');
   const localVideo = useRef();
 
@@ -126,6 +128,10 @@ function Video({
       })
       .catch((err) => {
         console.log(err);
+        if (err.response.status === 403 || err.response.status === 400) {
+          window.localStorage.removeItem('JWT');
+          navigate('/user/login');
+        }
       });
   }
 

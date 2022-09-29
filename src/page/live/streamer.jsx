@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import {
   Button, ImageList, ImageListItem,
 } from '@mui/material';
@@ -14,8 +14,8 @@ import './streamer.css';
 
 function LiveStreamer({ socket, room, setRoom }) {
   const params = useParams();
+  const navigate = useNavigate();
   const [userData, setUserData] = useState();
-
   const [isStreaming, setIsStreaming] = useState(false);
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);
@@ -88,6 +88,10 @@ function LiveStreamer({ socket, room, setRoom }) {
       })
       .catch((err) => {
         console.log(err);
+        if (err.response.status === 403 || err.response.status === 400) {
+          window.localStorage.removeItem('JWT');
+          navigate('/user/login');
+        }
       });
 
     setRoom(params.id);

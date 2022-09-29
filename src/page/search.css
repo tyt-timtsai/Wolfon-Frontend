@@ -24,6 +24,7 @@
 
 #search-tabs {
     border-radius: 5px;
+    width: 390px;
     background-color: var(--link-color);
 }
 
@@ -44,4 +45,9 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
     color: var(--main-color);
+}
+
+/* MUI */
+.css-heg063-MuiTabs-flexContainer {
+    justify-content: space-evenly;
 }
