@@ -1,19 +1,26 @@
 #create-live-header {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
     align-items: center;
+}
+
+#create-live-img-preview {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
 }
 
 #create-live-upload {
     margin-top: 10px;
     display: flex;
-    justify-content: flex-start;
+    justify-content: flex-end;
     align-items: center;
     gap: 15px;
     word-break: break-all;
 }
 
-#create-live-upload p {
+#create-live-img-name {
     font-size: 14px;
 }
 

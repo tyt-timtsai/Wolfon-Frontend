@@ -56,11 +56,11 @@ function Home() {
     <>
       <Header />
       <div id="home-container">
-        {userData ? (
-          <Sidebar
-            userData={userData}
-          />
-        ) : null}
+        {/* {userData ? ( */}
+        <Sidebar
+          userData={userData}
+        />
+        {/* ) : null} */}
         <div id="posts-container">
 
           {isFetching ? (

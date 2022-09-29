@@ -11,6 +11,8 @@
 
     --main-focus-color:#0288d1;
     --main-record-color: #E11D48;
+    /* Button */
+    --main-button-color:#0288d1;
 
     /* Animation */
     --main-transition: all 0.2s linear;

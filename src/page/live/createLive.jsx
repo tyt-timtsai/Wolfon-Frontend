@@ -9,13 +9,7 @@ import {
   Fade,
   Button,
   Typography,
-  // FormControl,
-  // InputLabel,
-  // Select,
-  // MenuItem,
-  // OutlinedInput,
 } from '@mui/material';
-// import { useTheme } from '@mui/material/styles';
 import './createLive.css';
 import axios from 'axios';
 import constants from '../../global/constants';
@@ -33,81 +27,25 @@ const style = {
   p: 4,
 };
 
-// const labelStyle = {
-//   paddingLeft: 2,
-//   paddingRight: 2,
-//   color: 'var(--link-color)',
-//   bgcolor: 'var(--secondary-bg-color)',
-// };
-
-// const selectStyle = {
-//   color: 'var(--link-color)',
-// };
-
 const inputStyle = {
   color: 'var(--link-color)',
   borderRadius: 1,
   width: '75%',
-  marginLeft: 1,
   marginTop: 2,
-  marginBottom: 1,
+  marginBottom: 2,
 };
-
-// const ITEM_HEIGHT = 48;
-// const ITEM_PADDING_TOP = 8;
-// const MenuProps = {
-//   PaperProps: {
-//     style: {
-//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-//       width: 250,
-//     },
-//   },
-// };
-
-// const tag = [
-//   'Javascript',
-//   'Python',
-//   'Golang',
-//   'Docker',
-//   'Git',
-//   'Shell',
-//   'DataBase',
-//   'Network',
-//   'Talk & Share',
-// ];
-
-// function getStyles(name, personName, theme) {
-//   return {
-//     fontWeight:
-//         personName.indexOf(name) === -1
-//           ? theme.typography.fontWeightRegular
-//           : theme.typography.fontWeightMedium,
-//   };
-// }
 
 function LiveCreate() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
-  // const [language, setLanguage] = useState('');
   const [image, setImage] = useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  // const theme = useTheme();
-
   const handleInput = (e) => {
     setTitle(e.target.value);
   };
-
-  // const handleChange = (e) => {
-  //   const {
-  //     target: { value },
-  //   } = e;
-  //   setLanguage(
-  //     typeof value === 'string' ? value.split(',') : value,
-  //   );
-  // };
 
   const handleUpload = (e) => {
     console.log(e.target.files[0]);
@@ -133,7 +71,6 @@ function LiveCreate() {
       });
     }
     formData.append('title', title);
-    // formData.append('language', language);
     formData.append('image', image);
     const header = {
       headers: {
@@ -144,9 +81,33 @@ function LiveCreate() {
       const result = await axios.post(constants.CREATE_LIVE_API, formData, header);
       console.log(result);
       setOpen(false);
-      navigate(`/live/streamer/${result.data.liveData.room_id}`);
+      Swal.fire({
+        title: 'Success!',
+        text: '直播建立成功',
+        icon: 'success',
+        confirmButtonText: '進入直播頁面',
+        confirmButtonColor: 'var(--main-button-color)',
+      }).then(() => {
+        navigate(`/live/streamer/${result.data.liveData.room_id}`);
+      });
     } catch (error) {
       console.log(error);
+      if (error.response.status === 401 || error.response.status === 403) {
+        Swal.fire({
+          title: 'Error!',
+          text: '身份驗證失敗',
+          icon: 'error',
+          showCancelButton: true,
+          confirmButtonText: '重新登入',
+          confirmButtonColor: 'var(--main-button-color)',
+          cancelButtonText: '取消',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            window.localStorage.removeItem('JWT');
+            navigate('/user/login');
+          }
+        });
+      }
     }
     return 1;
   };
@@ -171,40 +132,8 @@ function LiveCreate() {
               <Typography id="transition-modal-title" variant="h6" component="h2">
                 建立直播
               </Typography>
-              <Button variant="contained" component="label" onClick={handleCreate}>
-                建立直播
-              </Button>
             </div>
 
-            {/* <Typography sx={{ mt: 2 }}>
-              請選擇直播類型 :
-            </Typography>
-
-            <FormControl sx={{ m: 1, width: 300 }}>
-              <InputLabel sx={labelStyle} id="tag-label">直播類型</InputLabel>
-              <Select
-                labelId="tag-label"
-                value={language}
-                onChange={handleChange}
-                input={<OutlinedInput id="select-multiple-chip" label="tag-label" />}
-                MenuProps={MenuProps}
-                sx={selectStyle}
-              >
-                {tag.map((name) => (
-                  <MenuItem
-                    key={name}
-                    value={name}
-                    style={getStyles(name, language, theme)}
-                  >
-                    {name}
-                  </MenuItem>
-                ))}
-              </Select>
-            </FormControl> */}
-            {/*
-            <Typography sx={{ mt: 2 }}>
-              請輸入直播名稱 :
-            </Typography> */}
             <TextField
               label="直播名稱"
               variant="outlined"
@@ -214,16 +143,25 @@ function LiveCreate() {
               }}
               onChange={handleInput}
             />
+
+            {image ? (
+              <img id="create-live-img-preview" src={URL.createObjectURL(image)} alt="" />
+            ) : null}
+
+            {image ? (
+              <Typography id="create-live-img-name">
+                {image.name}
+              </Typography>
+            ) : null}
+
             <div id="create-live-upload">
               <Button variant="outlined" component="label">
                 上傳封面
                 <input hidden accept="image/*" type="file" onChange={handleUpload} />
               </Button>
-              {image ? (
-                <Typography>
-                  {image.name}
-                </Typography>
-              ) : null}
+              <Button variant="contained" component="label" onClick={handleCreate}>
+                建立直播
+              </Button>
             </div>
 
           </Box>

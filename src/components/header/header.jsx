@@ -18,7 +18,6 @@ function Header() {
     <div id="header-container">
       <div id="header-container-box">
         <a href="/" id="logo-container">
-          {/* <img src="/wolf-emblem.png" alt="logo" id="logo-img" /> */}
           <div id="logo-text">
             Wolf
             {' '}

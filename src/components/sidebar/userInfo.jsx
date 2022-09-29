@@ -45,7 +45,6 @@ function UserInfo({ userData, isSetting, isPost }) {
 
   useEffect(() => {
     setFile(null);
-    console.log(`${userData.photo}`);
     console.log(userData);
   }, []);
 
@@ -75,44 +74,50 @@ function UserInfo({ userData, isSetting, isPost }) {
           />
         </>
       ) : (
-        <Avatar
-          alt="User"
-          src={userData.photo ? `${constants.IMAGE_URL}/${userData.photo}` : null}
-          id="sidebar-avatar"
-          onClick={() => navigate(`/user/${userData.id}`)}
-        />
+        <div>
+          {userData && (
+          <Avatar
+            alt="User"
+            src={userData.photo ? `${constants.IMAGE_URL}/${userData.photo}` : null}
+            id="sidebar-avatar"
+            onClick={() => navigate(`/user/${userData.id}`)}
+          />
+          )}
+        </div>
       )}
 
-      {userData.name
-      && (
-      <div id="sidebar-user-info">
-        <p id="sidebar-user-name">{userData.name}</p>
-        <div className="sidebar-user-assets">
-          <div className="sidebar-user-number">
-            {userData.lives.length}
-            {' '}
-            <p className="sidebar-user-text">Lives</p>
-          </div>
-          <div className="sidebar-user-number">
-            {userData.posts.length}
-            {' '}
-            <p className="sidebar-user-text">Posts</p>
-          </div>
-        </div>
+      {userData
+        ? (
+          <div id="sidebar-user-info">
+            <p id="sidebar-user-name">{userData.name}</p>
+            <div className="sidebar-user-assets">
+              <div className="sidebar-user-number">
+                {userData.lives.length}
+                {' '}
+                <p className="sidebar-user-text">Lives</p>
+              </div>
+              <div className="sidebar-user-number">
+                {userData.posts.length}
+                {' '}
+                <p className="sidebar-user-text">Posts</p>
+              </div>
+            </div>
 
-        <div className="sidebar-user-number">
-          {userData.followers.length}
-          {' '}
+            <div className="sidebar-user-number">
+              {userData.followers.length}
+              {' '}
 
-          <p className="sidebar-user-text">Followers</p>
-        </div>
-        <div className="sidebar-user-created">
-          {userData.created_dt.slice(0, -4)}
-          {' '}
-          <p className="sidebar-user-text">Joined</p>
-        </div>
-      </div>
-      )}
+              <p className="sidebar-user-text">Followers</p>
+            </div>
+            <div className="sidebar-user-created">
+              {userData.created_dt.slice(0, -4)}
+              {' '}
+              <p className="sidebar-user-text">Joined</p>
+            </div>
+          </div>
+        ) : (
+          <p> 尚未登入 </p>
+        )}
       {isPost && (
       <Button
         variant="contained"
