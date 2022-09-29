@@ -5,9 +5,9 @@ const SERVER_URL = 'http://localhost:3000';
 const SOCKET_URL = 'ws://localhost:3000';
 const API_URL = 'http://localhost:3000/api/v1';
 
-// const SERVER_URL = 'https://wolfon.live';
-// const SOCKET_URL = 'wss://wolfon.live';
-// const API_URL = 'https://wolfon.live/api/v1';
+// const SERVER_URL = 'https://www.wolfon.live';
+// const SOCKET_URL = 'wss://www.wolfon.live';
+// const API_URL = 'https://www.wolfon.live/api/v1';
 
 const UPLOAD_SIZE = 1024 * 1024 * 10;
 
@@ -47,6 +47,7 @@ const GET_CODE_API = `${API_URL}/code`;
 const GET_VERSION_API = `${API_URL}/code`;
 
 // Post API
+const GET_POST_API = `${API_URL}`;
 const GET_ALL_POST_API = `${API_URL}/post/all`;
 const CREATE_POST_API = `${API_URL}/post`;
 const LIKE_POST_API = `${API_URL}/post/like`;
@@ -89,6 +90,7 @@ export default {
   GET_CODE_API,
   GET_VERSION_API,
   // POST
+  GET_POST_API,
   GET_ALL_POST_API,
   CREATE_POST_API,
   LIKE_POST_API,

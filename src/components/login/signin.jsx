@@ -11,6 +11,7 @@ import {
   InputAdornment,
   IconButton,
 } from '@mui/material';
+import Swal from 'sweetalert2';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import constants from '../../global/constants';
 import './signin.css';
@@ -19,8 +20,7 @@ function signIn() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
     email: 'sam22@gmail.com',
-    password: 'sam22',
-    confirm: 'sam22',
+    password: '',
     showPassword: false,
   });
 
@@ -43,7 +43,12 @@ function signIn() {
     console.log(userData);
     const dataArray = Object.values(userData);
     if (dataArray.some((value) => value === '')) {
-      return console.log((Object.keys(userData)[dataArray.indexOf('')]), 'is miss.');
+      return Swal.fire({
+        title: 'Error!',
+        text: `缺少欄位 ： ${(Object.keys(userData)[dataArray.indexOf('')])}`,
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
     }
     return (
       axios.post(constants.SIGNIN_API, { data: userData })
@@ -57,7 +62,16 @@ function signIn() {
           window.localStorage.setItem('JWT', res.data.data);
           navigate('/user/setting');
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          if (err.response.status === 400 || err.response.status === 403) {
+            Swal.fire({
+              title: 'Error!',
+              text: '信箱或密碼錯誤',
+              icon: 'error',
+              confirmButtonText: 'OK',
+            });
+          }
+        })
     );
   };
 
@@ -66,7 +80,6 @@ function signIn() {
       <Paper elevation={6} id="signin-paper">
         <div id="signin-header">
           <img id="sign-logo" src="/wolf-emblem.png" alt="logo" />
-          <p>Wolfon</p>
         </div>
         <div id="signin-input-container">
           <TextField

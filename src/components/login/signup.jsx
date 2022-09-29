@@ -11,6 +11,8 @@ import {
   InputAdornment,
   IconButton,
 } from '@mui/material';
+import Swal from 'sweetalert2';
+import validator from 'validator';
 import { VisibilityOff, Visibility } from '@mui/icons-material';
 import constants from '../../global/constants';
 import './signup.css';
@@ -26,6 +28,9 @@ function SignUp() {
   });
 
   const handleChange = (prop) => (e) => {
+    if (prop === 'email') {
+      console.log(e.target.value);
+    }
     setUserData({ ...userData, [prop]: e.target.value });
   };
 
@@ -41,12 +46,56 @@ function SignUp() {
   };
 
   const signUp = () => {
-    const dataArray = Object.values(userData);
-    if (dataArray.some((value) => value === '')) {
-      return console.log((Object.keys(userData)[dataArray.indexOf('')]), 'is miss.');
+    const {
+      name, email, password, confirm,
+    } = userData;
+    if (name.toString().trim() === '') {
+      return Swal.fire({
+        title: 'Error!',
+        text: '請填寫名字',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
     }
+
+    if (email.toString().trim() === ''
+    ) {
+      return Swal.fire({
+        title: 'Error!',
+        text: '請填寫信箱',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+
+    if (!validator.isEmail(email)) {
+      return Swal.fire({
+        title: 'Error!',
+        text: '信箱格式錯誤',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+
+    if (
+      password.toString().trim() === ''
+    || confirm.toString().trim() === ''
+    ) {
+      return Swal.fire({
+        title: 'Error!',
+        text: '請填寫密碼',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+
     if (userData.password !== userData.confirm) {
-      return console.log('confirm password wrong');
+      return Swal.fire({
+        title: 'Error!',
+        text: '確認密碼錯誤',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
     }
     return (
       axios.post(constants.SIGNUP_API, { data: userData })
@@ -55,7 +104,16 @@ function SignUp() {
           window.localStorage.setItem('JWT', res.data.data);
           navigate('/user/setting');
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          if (err.response.status === 400 || err.response.status === 401) {
+            Swal.fire({
+              title: 'Error!',
+              text: `${err.response.message}`,
+              icon: 'error',
+              confirmButtonText: 'OK',
+            });
+          }
+        })
     );
   };
 
@@ -64,11 +122,9 @@ function SignUp() {
       <Paper elevation={6} id="signup-paper">
         <div id="signup-header">
           <img id="sign-logo" src="/wolf-emblem.png" alt="logo" />
-          <p>Wolfon</p>
         </div>
         <div id="signup-input-container">
           <TextField
-            required
             id="signup-name"
             className="signup-inputs"
             label="Name"
@@ -78,7 +134,6 @@ function SignUp() {
             margin="dense"
           />
           <TextField
-            required
             id="signup-email"
             className="signup-inputs"
             label="Email"
@@ -87,7 +142,10 @@ function SignUp() {
             variant="filled"
             margin="dense"
           />
-          <FormControl required variant="filled" margin="dense">
+          <FormControl
+            variant="filled"
+            margin="dense"
+          >
             <InputLabel htmlFor="signup-password">Password</InputLabel>
             <FilledInput
               id="signup-password"
@@ -110,7 +168,6 @@ function SignUp() {
             />
           </FormControl>
           <TextField
-            required
             type={userData.showPassword ? 'text' : 'password'}
             id="signup-confirm"
             className="signup-inputs"

@@ -1,4 +1,6 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 import {
   TextField,
   Backdrop,
@@ -7,16 +9,15 @@ import {
   Fade,
   Button,
   Typography,
-  FormControl,
-  InputLabel,
-  Select,
-  MenuItem,
-  OutlinedInput,
+  // FormControl,
+  // InputLabel,
+  // Select,
+  // MenuItem,
+  // OutlinedInput,
 } from '@mui/material';
-import { useTheme } from '@mui/material/styles';
+// import { useTheme } from '@mui/material/styles';
 import './createLive.css';
 import axios from 'axios';
-import { useNavigate } from 'react-router-dom';
 import constants from '../../global/constants';
 
 const style = {
@@ -32,16 +33,16 @@ const style = {
   p: 4,
 };
 
-const labelStyle = {
-  paddingLeft: 2,
-  paddingRight: 2,
-  color: 'var(--link-color)',
-  bgcolor: 'var(--secondary-bg-color)',
-};
+// const labelStyle = {
+//   paddingLeft: 2,
+//   paddingRight: 2,
+//   color: 'var(--link-color)',
+//   bgcolor: 'var(--secondary-bg-color)',
+// };
 
-const selectStyle = {
-  color: 'var(--link-color)',
-};
+// const selectStyle = {
+//   color: 'var(--link-color)',
+// };
 
 const inputStyle = {
   color: 'var(--link-color)',
@@ -52,61 +53,61 @@ const inputStyle = {
   marginBottom: 1,
 };
 
-const ITEM_HEIGHT = 48;
-const ITEM_PADDING_TOP = 8;
-const MenuProps = {
-  PaperProps: {
-    style: {
-      maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
-      width: 250,
-    },
-  },
-};
+// const ITEM_HEIGHT = 48;
+// const ITEM_PADDING_TOP = 8;
+// const MenuProps = {
+//   PaperProps: {
+//     style: {
+//       maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+//       width: 250,
+//     },
+//   },
+// };
 
-const tag = [
-  'Javascript',
-  'Python',
-  'Golang',
-  'Docker',
-  'Git',
-  'Shell',
-  'DataBase',
-  'Network',
-  'Talk & Share',
-];
+// const tag = [
+//   'Javascript',
+//   'Python',
+//   'Golang',
+//   'Docker',
+//   'Git',
+//   'Shell',
+//   'DataBase',
+//   'Network',
+//   'Talk & Share',
+// ];
 
-function getStyles(name, personName, theme) {
-  return {
-    fontWeight:
-        personName.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-  };
-}
+// function getStyles(name, personName, theme) {
+//   return {
+//     fontWeight:
+//         personName.indexOf(name) === -1
+//           ? theme.typography.fontWeightRegular
+//           : theme.typography.fontWeightMedium,
+//   };
+// }
 
 function LiveCreate() {
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [title, setTitle] = useState('');
-  const [language, setLanguage] = useState('');
+  // const [language, setLanguage] = useState('');
   const [image, setImage] = useState();
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const theme = useTheme();
+  // const theme = useTheme();
 
   const handleInput = (e) => {
     setTitle(e.target.value);
   };
 
-  const handleChange = (e) => {
-    const {
-      target: { value },
-    } = e;
-    setLanguage(
-      typeof value === 'string' ? value.split(',') : value,
-    );
-  };
+  // const handleChange = (e) => {
+  //   const {
+  //     target: { value },
+  //   } = e;
+  //   setLanguage(
+  //     typeof value === 'string' ? value.split(',') : value,
+  //   );
+  // };
 
   const handleUpload = (e) => {
     console.log(e.target.files[0]);
@@ -115,8 +116,24 @@ function LiveCreate() {
 
   const handleCreate = async () => {
     const formData = new FormData();
+    if (!title || title === '') {
+      return Swal.fire({
+        title: 'Error!',
+        text: '請輸入直播名稱',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
+    if (!image) {
+      return Swal.fire({
+        title: 'Error!',
+        text: '請上傳直播封面',
+        icon: 'error',
+        confirmButtonText: 'OK',
+      });
+    }
     formData.append('title', title);
-    formData.append('language', language);
+    // formData.append('language', language);
     formData.append('image', image);
     const header = {
       headers: {
@@ -131,6 +148,7 @@ function LiveCreate() {
     } catch (error) {
       console.log(error);
     }
+    return 1;
   };
 
   return (
@@ -158,7 +176,7 @@ function LiveCreate() {
               </Button>
             </div>
 
-            <Typography sx={{ mt: 2 }}>
+            {/* <Typography sx={{ mt: 2 }}>
               請選擇直播類型 :
             </Typography>
 
@@ -182,11 +200,11 @@ function LiveCreate() {
                   </MenuItem>
                 ))}
               </Select>
-            </FormControl>
-
+            </FormControl> */}
+            {/*
             <Typography sx={{ mt: 2 }}>
               請輸入直播名稱 :
-            </Typography>
+            </Typography> */}
             <TextField
               label="直播名稱"
               variant="outlined"

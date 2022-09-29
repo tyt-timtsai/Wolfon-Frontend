@@ -4,7 +4,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { ListItemIcon } from '@mui/material';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
-import GroupsIcon from '@mui/icons-material/Groups';
+// import GroupsIcon from '@mui/icons-material/Groups';
 import PeopleIcon from '@mui/icons-material/People';
 import ArticleIcon from '@mui/icons-material/Article';
 import { CgProfile } from 'react-icons/cg';
@@ -52,12 +52,12 @@ function Sidebar({ userData, isSetting }) {
           <p> FRIEND</p>
         </div>
 
-        <div className="sidebar-link" onClick={() => navigate('/user/asset/community')}>
+        {/* <div className="sidebar-link" onClick={() => navigate('/user/asset/community')}>
           <ListItemIcon sx={{ color: '#fff' }} className="sidebar-link-icon">
             <GroupsIcon sx={{ color: '#81c784' }} />
           </ListItemIcon>
           <p> COMMUNITY</p>
-        </div>
+        </div> */}
       </div>
     </div>
   );

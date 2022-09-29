@@ -79,7 +79,7 @@ function LiveViewer({ socket, room, setRoom }) {
                 color: 'var(--secondary-color)',
               }}
             >
-              Complier
+              Editor
             </button>
             <button
               type="button"

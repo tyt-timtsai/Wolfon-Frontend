@@ -42,7 +42,7 @@ input {
 
 @media screen and (min-width: 900px) and (max-width: 1600px) {
     :root {
-        --main-content-width: 70vw;
+        --main-content-width: 80vw;
     }
   }
 
@@ -117,3 +117,8 @@ input {
 .css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
     color: var(--main-color) !important;
 }
+
+/* SweetAlert2 */
+.swal2-container {
+    z-index: 20000 !important;
+  }

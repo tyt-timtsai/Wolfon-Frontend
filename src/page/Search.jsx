@@ -1,11 +1,14 @@
 /* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import {
   IconButton, TextField, Tabs, Tab,
+  Box,
 } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
-import GroupsIcon from '@mui/icons-material/Groups';
+// import GroupsIcon from '@mui/icons-material/Groups';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ArticleIcon from '@mui/icons-material/Article';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -18,12 +21,14 @@ import constants from '../global/constants';
 import './search.css';
 
 function Search() {
+  const navigate = useNavigate();
   const [input, setInput] = useState('');
   const [search, setSearch] = useState('');
   const [type, setType] = useState('post');
   const [results, setResults] = useState();
   const [value, setValue] = useState(0);
   const [userData, setUserData] = useState(null);
+  const [isFetching, setIsFetching] = useState(false);
   const types = ['post', 'live', 'user', 'community'];
 
   const handleChange = (e, index) => {
@@ -42,29 +47,39 @@ function Search() {
   };
 
   useEffect(() => {
-    axios.get(constants.PROFILE_API, {
-      headers: {
-        authorization: window.localStorage.getItem('JWT'),
-      },
-    }).then((res) => {
-      console.log(res.data.data);
-      setUserData(res.data.data);
-    }).catch((err) => {
-      console.log(err);
-    });
+    const token = window.localStorage.getItem('JWT');
+    if (token) {
+      axios.get(constants.PROFILE_API, {
+        headers: {
+          authorization: window.localStorage.getItem('JWT'),
+        },
+      }).then((res) => {
+        console.log(res.data.data);
+        setUserData(res.data.data);
+      }).catch((err) => {
+        console.log(err);
+        if (err.response.status === 403 || err.response.status === 400) {
+          window.localStorage.removeItem('JWT');
+          navigate('/user/login');
+        }
+      });
+    }
   }, []);
 
+  async function getSearch() {
+    setIsFetching(true);
+    try {
+      const result = await axios.get(`${constants.SERVER_URL}/api/v1/${type}/search?keyword=${search}`);
+      setResults(result.data.data);
+    } catch (err) {
+      console.log(err);
+    }
+    setIsFetching(false);
+  }
+
   useEffect(() => {
-    console.log(type);
-    console.log(search);
     if (search) {
-      axios.get(`${constants.SERVER_URL}/api/v1/${type}/search?keyword=${search}`)
-        .then((res) => {
-          console.log(res.data.data);
-          setResults(res.data.data);
-        }).catch((err) => {
-          console.log(err);
-        });
+      getSearch();
     }
   }, [type, search]);
 
@@ -79,45 +94,59 @@ function Search() {
               <SearchRoundedIcon id="search-icon" />
             </IconButton>
           </form>
-          <Tabs value={value} onChange={handleChange} id="search-tabs" aria-label="icon label tabs example">
+          <Tabs
+            value={value}
+            onChange={handleChange}
+            id="search-tabs"
+            aria-label="icon label tabs example"
+            style={{ justifyContent: 'center', alignItems: 'center' }}
+          >
             <Tab icon={<ArticleIcon />} label="post" />
-            <Tab icon={<SmartDisplayIcon />} label="live" />
-            <Tab icon={<AccountBoxIcon />} label="user" />
-            <Tab icon={<GroupsIcon />} label="community" />
+            <Tab icon={<SmartDisplayIcon />} label="live" disabled={userData == null} />
+            <Tab icon={<AccountBoxIcon />} label="user" disabled={userData == null} />
+            {/* <Tab icon={<GroupsIcon />} label="community" /> */}
           </Tabs>
         </div>
-        <div id="search-result-container">
-          {results && type === 'post' ? results.reverse().map((post) => (
-            <PostList
-              key={post._id}
-              post={post}
-            />
-          )) : null}
-          {results && type === 'user' ? results.map((user) => (
-            <SearchUserItem
-              key={user.id}
-              user={user}
-              userData={userData}
-            />
-          )) : null}
-          {results && type === 'live' ? results.reverse().map((live) => (
-            <UserLiveItem
-              live={live}
-              key={live._id}
-            />
-          )) : null}
+        {isFetching ? (
+          <Box sx={{ position: 'relative', top: 200, left: '50vh' }}>
+            <CircularProgress size={30} color="inherit" />
+          </Box>
+        ) : (
+          <div id="search-result-container">
+            {results && type === 'post' ? results.reverse().map((post) => (
+              <PostList
+                key={post._id}
+                post={post}
+              />
+            )) : null}
 
-          {results && type === 'community' ? results.map((result) => (
-            <div key={result.id}>
-              <p>{result.id}</p>
-              <p>
-                community :
-                {' '}
-                {result.name}
-              </p>
-            </div>
-          )) : null}
-        </div>
+            {results && type === 'user' ? results.map((user) => (
+              <SearchUserItem
+                key={user.id}
+                user={user}
+                userData={userData}
+              />
+            )) : null}
+
+            {results && type === 'live' ? results.reverse().map((live) => (
+              <UserLiveItem
+                live={live}
+                key={live._id}
+              />
+            )) : null}
+
+            {/* {results && type === 'community' ? results.map((result) => (
+              <div key={result.id}>
+                <p>{result.id}</p>
+                <p>
+                  community :
+                  {' '}
+                  {result.name}
+                </p>
+              </div>
+            )) : null} */}
+          </div>
+        )}
       </div>
       <Footer />
     </>

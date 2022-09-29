@@ -7,6 +7,7 @@ import Favorite from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import parser from 'html-react-parser';
+import Swal from 'sweetalert2';
 import Header from '../../components/header/header';
 import UserInfo from '../../components/sidebar/userInfo';
 import Footer from '../../components/footer/footer';
@@ -54,7 +55,17 @@ function Post() {
 
   const handleChange = (prop) => async () => {
     if (!window.localStorage.getItem('JWT')) {
-      return alert('Please Login');
+      return Swal.fire({
+        title: 'Error!',
+        text: '尚未登入',
+        icon: 'error',
+        confirmButtonText: '前往登入',
+        denyButtonText: '繼續瀏覽',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          navigate('/user/login');
+        }
+      });
     }
     switch (prop) {
       case 'like':
@@ -84,7 +95,7 @@ function Post() {
   };
 
   async function getPost() {
-    const result = await axios.get(`${constants.SERVER_URL}/api/v1${location.pathname}`);
+    const result = await axios.get(`${constants.GET_POST_API}${location.pathname}`);
     const postData = result.data.data;
     setPost(postData.post);
     setAuthor(postData.userData);
@@ -94,13 +105,21 @@ function Post() {
   }
 
   async function getUser(token) {
-    const result = await axios.get(constants.PROFILE_API, {
-      headers: {
-        authorization: token,
-      },
-    });
-    const userData = result.data.data;
-    return userData;
+    try {
+      const result = await axios.get(constants.PROFILE_API, {
+        headers: {
+          authorization: token,
+        },
+      });
+      const userData = result.data.data;
+      return userData;
+    } catch (err) {
+      if (err.response.status === 403 || err.response.status === 400) {
+        window.localStorage.removeItem('JWT');
+        navigate('/user/login');
+      }
+    }
+    return 1;
   }
 
   async function initPost() {
@@ -118,8 +137,16 @@ function Post() {
     } catch (error) {
       console.log(error);
       if (!postData) {
-        alert('No Such Article');
-        navigate(-1);
+        Swal.fire({
+          title: 'Error!',
+          text: '無此文章',
+          icon: 'error',
+          confirmButtonText: '回上一頁',
+        }).then((result) => {
+          if (result.isConfirmed) {
+            navigate(-1);
+          }
+        });
       }
     }
   }
@@ -167,15 +194,15 @@ function Post() {
                 <h1>{post.title}</h1>
                 <h3>{post.subtitle}</h3>
                 <p>
-                  post on :
+                  publish :
                   {' '}
-                  {post.created_dt}
+                  {post.created_dt.slice(0, -4)}
                 </p>
-                <p>
+                {/* <p>
                   update :
                   {' '}
-                  {post.updated_dt}
-                </p>
+                  {post.updated_dt.slice(0, -4)}
+                </p> */}
               </div>
 
               <div className="ProseMirror">
@@ -186,6 +213,7 @@ function Post() {
 
             <UserInfo
               userData={author}
+              isPost
             />
           </>
         ) : <p> Loading... </p>}

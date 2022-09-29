@@ -11,7 +11,9 @@ import {
   FormGroup,
   FormControlLabel,
   Switch,
+  Box,
 } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import './editor.css';
 
 import constants from '../../global/constants';
@@ -45,9 +47,10 @@ function Editor({
   setIsFrom,
   screenShot,
 }) {
-  const [terminal, setTerminal] = useState();
+  const [terminal, setTerminal] = useState('');
   const [select, setSelect] = useState('');
   const [isCompilable, setIsCompilable] = useState(true);
+  const [isSending, setIsSending] = useState(false);
   // eslint-disable-next-line no-case-declarations, max-len
   // const twosum = 'var twoSum = function(nums, target) {\nvar map = {};\nfor(var i = 0 ; i < nums.length ; i++){\nvar v = nums[i];\nfor(var j = i+1 ; j < nums.length ; j++ ){\nif(  nums[i] + nums[j]  == target ){\nreturn [i,j];\n}}}};\nconst result = twoSum([3,4,5,6,7,8], 12)\n console.log(result);';
 
@@ -150,17 +153,27 @@ function Editor({
   };
 
   // Compile code
-  const compile = () => {
-    const data = {
-      language: mode,
-      code,
-    };
-    axios.post(constants.GET_CODE_API, data)
-      .then((res) => {
-        console.log(res.data);
-        setTerminal(res.data);
-      })
-      .catch((err) => console.log(err));
+  const compile = async () => {
+    setTerminal('');
+    setIsSending(true);
+    try {
+      const data = {
+        language: mode,
+        code,
+      };
+      const result = await axios.post(constants.GET_CODE_API, data);
+      console.log(typeof result.data);
+      console.log(result.data);
+      if (typeof result.data !== 'string') {
+        setTerminal(JSON.stringify(result.data));
+      } else {
+        setTerminal(result.data);
+      }
+      // setTerminal(JSON.stringify(result.data));
+    } catch (err) {
+      console.log(err);
+    }
+    setIsSending(false);
   };
 
   // fetch version first
@@ -207,6 +220,7 @@ function Editor({
             enableLiveAutocompletion: true,
             enableSnippets: true,
             tabSize: 2,
+            fontSize: '14px',
           }}
         />
         <AceEditor
@@ -218,7 +232,6 @@ function Editor({
           width="100%"
           readOnly
           value={terminal}
-          defaultValue=""
           editorProps={{ $blockScrolling: false }}
           showPrintMargin={false}
           showGutter={false}
@@ -351,6 +364,7 @@ function Editor({
               ))}
             </Select>
           </FormControl>
+
           <Button
             id="run-btn"
             variant="contained"
@@ -359,7 +373,12 @@ function Editor({
             disabled={!isCompilable}
             onClick={compile}
           >
-            Run
+            {isSending ? (
+              <Box sx={{ display: 'flex' }}>
+                <CircularProgress size={30} color="inherit" />
+              </Box>
+            )
+              : 'Run'}
           </Button>
         </div>
       </div>
