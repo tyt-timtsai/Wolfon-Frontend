@@ -7,7 +7,6 @@ import constants from './global/constants';
 import Home from './page/Home';
 import Search from './page/Search';
 // Live
-import LiveList from './page/live/LiveList';
 import LiveViewer from './page/live/viewer';
 import LiveStreamer from './page/live/streamer';
 import LiveReview from './page/live/review';
@@ -47,16 +46,6 @@ function App() {
           />
         )}
         path="/search"
-      />
-
-      <Route
-        element={(
-          <LiveList
-            socket={socket}
-            room={room}
-          />
-        )}
-        path="/live"
       />
 
       <Route

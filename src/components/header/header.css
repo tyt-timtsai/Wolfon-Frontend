@@ -42,9 +42,20 @@
 }
 
 #logo-span {
-    margin: 8px 2px 0 2px;
-    width: 14px;
-    height: 14px;
+    margin: 9px 2px 0 2px;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--main-record-color);
+}
+
+#logo-span-circle {
+    width: 10px;
+    height: 10px;
+    border: 2px solid var(--secondary-bg-color);
     border-radius: 50%;
     background-color: var(--main-record-color);
 }
@@ -53,7 +64,14 @@
     display: flex;
     justify-content: space-around;
     align-items: center;
-    gap: 10px;
+    gap: 20px;
+}
+
+#header-search-icon {
+    padding-top: 5px;
+    border-radius: 50%;
+    text-decoration: none;
+    color: var(--main-button-color);
 }
 
 #header-links a {
@@ -73,6 +91,6 @@
     transform: translateY(-5px);
 }
 
-.login-btn {
-    margin-left: 100px;
-}
+/* .login-btn {
+    margin-left: 100;
+} */

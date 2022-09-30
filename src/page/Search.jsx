@@ -14,7 +14,7 @@ import ArticleIcon from '@mui/icons-material/Article';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
 import Header from '../components/header/header';
 import SearchUserItem from '../components/search/userItem';
-import UserLiveItem from '../components/userAsset/userLiveItem';
+import LiveListItem from '../components/video/LiveListItem';
 import PostList from '../components/post/Post_list';
 import Footer from '../components/footer/footer';
 import constants from '../global/constants';
@@ -129,7 +129,7 @@ function Search() {
             )) : null}
 
             {results && type === 'live' ? results.reverse().map((live) => (
-              <UserLiveItem
+              <LiveListItem
                 live={live}
                 key={live._id}
               />

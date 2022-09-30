@@ -9,3 +9,11 @@
     -webkit-backdrop-filter: blur(5.8px);
     border: 1px solid var(--border-color);
 }
+
+.live-list-item-container {
+    width: var(--main-content-width);
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}

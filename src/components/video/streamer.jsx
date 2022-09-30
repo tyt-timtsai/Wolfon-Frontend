@@ -4,16 +4,15 @@ import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import Uploader from '../../global/uploader';
 
-// let socket;
 function Streamer({
   socket, room, localVideo, setIsStreaming,
 }) {
-  const [localStream, setLocalStream] = useState();
-  const [record, setRecord] = useState();
   const [file, setFile] = useState();
-  const [mediaRecorder, setMediaRecorder] = useState();
+  const [record, setRecord] = useState();
   const [chunks, setChunks] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [localStream, setLocalStream] = useState();
+  const [mediaRecorder, setMediaRecorder] = useState();
   const download = useRef();
   const PCs = {};
   let stream;
@@ -180,7 +179,6 @@ function Streamer({
           setChunks((prev) => [...prev, e.data]);
         }
       };
-      // mediaRecorder.start(10);
       recorder.start(10);
       // console.log(mediaRecorder.state);
       console.log(recorder.state);
@@ -307,17 +305,20 @@ function Streamer({
             {progress}
           </Stack>
         ) : null}
-        <Button variant="contained" type="button" onClick={init}>開始直播</Button>
+        <Button variant="contained" type="button" onClick={init}>分享畫面</Button>
         <Button variant="contained" type="button" onClick={initCamera}>開啟鏡頭</Button>
-        <Button variant="contained" type="button" onClick={stopStream}>結束直播</Button>
+        {localStream && <Button variant="contained" type="button" color="error" onClick={stopStream}>結束直播</Button>}
         {record ? (
-          <a id="stream-download" ref={download} href={record.href} download={record.filename} style={{ display: 'block' }}>Download</a>
+          <a
+            ref={download}
+            href={record.href}
+            id="stream-download"
+            download={record.filename}
+            style={{ display: 'block', backgroundColor: 'var(--main-button-color)' }}
+          >
+            Download
+          </a>
         ) : null}
-
-        {/* <form onSubmit={uploadVideo}>
-        <input type="file" name="video" id="upload" onChange={handleUpload} />
-        <button type="submit">Submit</button>
-      </form> */}
       </div>
 
     </section>

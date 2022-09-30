@@ -56,8 +56,8 @@ function Chatroom({ socket, room, userData }) {
       });
       setMessage('');
       setFile(null);
-      setIsSending(false);
     }
+    setIsSending(false);
   };
 
   const handleUpload = (e) => setFile(e.target.files[0]);

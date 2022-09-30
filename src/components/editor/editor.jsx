@@ -52,7 +52,7 @@ function Editor({
   const [isCompilable, setIsCompilable] = useState(true);
   const [isSending, setIsSending] = useState(false);
   // eslint-disable-next-line no-case-declarations, max-len
-  // const twosum = 'var twoSum = function(nums, target) {\nvar map = {};\nfor(var i = 0 ; i < nums.length ; i++){\nvar v = nums[i];\nfor(var j = i+1 ; j < nums.length ; j++ ){\nif(  nums[i] + nums[j]  == target ){\nreturn [i,j];\n}}}};\nconst result = twoSum([3,4,5,6,7,8], 12)\n console.log(result);';
+  const twosum = 'var twoSum = function(nums, target) {\n  var map = {};\n  for(var i = 0 ; i < nums.length ; i++){\n    var v = nums[i];\n    for(var j = i+1 ; j < nums.length ; j++ ){\n      if(  nums[i] + nums[j]  == target ){\n        return [i,j];\n      }\n     }\n    }\n  };\n\nconst result = twoSum([3,4,5,6,7,8], 12)\nconsole.log(result);';
 
   // Change programming language
   const changeMode = (e) => {
@@ -60,7 +60,9 @@ function Editor({
     setMode(language);
     switch (language) {
       case 'javascript':
-        setCode('//Javascript\nconsole.log("Hello Javascript!");');
+        setCode(twosum);
+
+        // setCode('//Javascript\nconsole.log("Hello Javascript!");');
         break;
       case 'golang':
         setCode('// Golang\npackage main\nimport "fmt"\n\nfunc main(){\n    fmt.Println("Hello Golang!") \n}');
@@ -70,7 +72,6 @@ function Editor({
         break;
       default:
         setCode('');
-        // setCode(twosum);
         break;
     }
 
@@ -100,6 +101,9 @@ function Editor({
     if (e.target.value) {
       axios.get(`${constants.GET_VERSION_API}/${room}?tag=${e.target.value}`)
         .then((res) => {
+          if (mode !== res.data.data.language) {
+            setMode(res.data.data.language);
+          }
           setCode(res.data.data.tags[0].code);
           setSelect(e.target.value);
         })
@@ -169,7 +173,6 @@ function Editor({
       } else {
         setTerminal(result.data);
       }
-      // setTerminal(JSON.stringify(result.data));
     } catch (err) {
       console.log(err);
     }
@@ -220,7 +223,7 @@ function Editor({
             enableLiveAutocompletion: true,
             enableSnippets: true,
             tabSize: 2,
-            fontSize: '14px',
+            // fontSize: '14px',
           }}
         />
         <AceEditor
@@ -261,7 +264,7 @@ function Editor({
               />
             </FormGroup>
             <FormControl className="editor-selector" size="small">
-              <InputLabel id="upper-tag-label">上層 Tag</InputLabel>
+              <InputLabel id="upper-tag-label">上層標籤</InputLabel>
               <Select
                 name="upper-version"
                 id="upper-version"
@@ -281,8 +284,8 @@ function Editor({
                   ) : (
                     <MenuItem
                       key={ver.version}
+                      // style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
                       value={ver.version}
-                      style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
                     >
                       {ver.version}
                     </MenuItem>
@@ -292,7 +295,7 @@ function Editor({
             </FormControl>
 
             <TextField
-              label="Tag"
+              label="Tag Name"
               size="small"
               variant="outlined"
               type="text"
@@ -356,7 +359,6 @@ function Editor({
                   <MenuItem
                     key={ver.version}
                     value={ver.version}
-                    style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
                   >
                     {ver.version}
                   </MenuItem>

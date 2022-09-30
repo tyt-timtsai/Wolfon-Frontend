@@ -25,11 +25,17 @@
 }
 
 #tag-container {
+    position: relative;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 5px;
+}
+
+#screenshot-btn {
+    position: absolute;
+    left: 10px;
 }
 
 #tag-input {

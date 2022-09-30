@@ -53,12 +53,10 @@ function Sidebar({ userData, isSetting }) {
 
   return (
     <div className="home-sidebar">
-      {/* { userData ? ( */}
       <UserInfo
         userData={userData}
         isSetting={isSetting}
       />
-      {/* ) : null} */}
 
       <div className="sidebar-links">
         <div className="sidebar-link" onClick={handleNavigate('profile')}>
@@ -88,13 +86,6 @@ function Sidebar({ userData, isSetting }) {
           </ListItemIcon>
           <p> FRIEND</p>
         </div>
-
-        {/* <div className="sidebar-link" onClick={() => navigate('/user/asset/community')}>
-          <ListItemIcon sx={{ color: '#fff' }} className="sidebar-link-icon">
-            <GroupsIcon sx={{ color: '#81c784' }} />
-          </ListItemIcon>
-          <p> COMMUNITY</p>
-        </div> */}
       </div>
     </div>
   );

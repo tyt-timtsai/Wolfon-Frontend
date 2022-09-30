@@ -51,6 +51,14 @@
     justify-content: space-between;
 }
 
+.post-list-title {
+    word-break: break-all;
+}
+
+.post-list-subtitle {
+    word-break: break-all;
+}
+
 .post-list-info-container {
     display: flex;
     align-items: center;

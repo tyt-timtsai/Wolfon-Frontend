@@ -18,8 +18,6 @@ function PostButton({ post }) {
     color: 'var(--main-content-color)',
   };
 
-  console.log(`${post.author_photo}`);
-
   return (
     // eslint-disable-next-line no-underscore-dangle
     <Card
@@ -64,11 +62,6 @@ function PostButton({ post }) {
               {post.followers.length}
               <BsBookmarksFill style={{ width: 18, height: 18 }} />
             </div>
-
-            {/* <div className="post-list-info">
-              {post.comments.length}
-              <FaCommentAlt style={{ width: 16, height: 16, marginTop: 1 }} />
-            </div> */}
           </div>
 
           <div className="post-list-view">

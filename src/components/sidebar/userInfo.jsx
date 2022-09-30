@@ -56,6 +56,7 @@ function UserInfo({ userData, isSetting, isPost }) {
             alt="User"
             src={userData.photo ? `${constants.IMAGE_URL}/${userData.photo}` : null}
             id="sidebar-avatar"
+            style={{ cursor: 'default' }}
           />
           <IconButton
             id="sidebar-avatar-edit-icon"

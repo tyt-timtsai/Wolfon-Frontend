@@ -21,19 +21,16 @@ function Header() {
           <div id="logo-text">
             Wolf
             {' '}
-            <div id="logo-span" />
+            <div id="logo-span">
+              <div id="logo-span-circle" />
+            </div>
             n
           </div>
         </a>
 
         <div id="header-links">
-          <a href="/search">
-            <Button type="button" size="small">
-              <SearchRoundedIcon sx={{ transition: 'var(--main-transition)', '&:hover': { color: 'var(--link-color)' } }} fontSize="medium" />
-            </Button>
-          </a>
-          <a href="/live" className="hover-underline">
-            <Button sx={{ color: 'var(--link-color)' }} type="button">Live List</Button>
+          <a href="/search" id="header-search-icon">
+            <SearchRoundedIcon sx={{ transition: 'var(--main-transition)', '&:hover': { color: 'var(--link-color)' } }} fontSize="medium" />
           </a>
           { JWT ? (
             <>
@@ -42,14 +39,13 @@ function Header() {
                 <Button sx={{ color: 'var(--link-color)' }} type="button">new Post</Button>
               </a>
               <a href="/user/setting" className="hover-underline">
-                <Button sx={{ color: 'var(--link-color)' }} type="button">Setting</Button>
+                <Button sx={{ color: 'var(--main-focus-color)' }} type="button">Setting</Button>
               </a>
               <Button
                 type="button"
                 variant="outlined"
                 color="error"
                 onClick={logout}
-                className="login-btn"
               >
                 Logout
               </Button>

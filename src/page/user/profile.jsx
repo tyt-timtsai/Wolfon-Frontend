@@ -4,7 +4,9 @@ import { useParams } from 'react-router-dom';
 import axios from 'axios';
 import {
   Avatar,
+  Box,
 } from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import constants from '../../global/constants';
 import Header from '../../components/header/header';
 import UserLiveItem from '../../components/userAsset/userLiveItem';
@@ -18,6 +20,7 @@ function Profile() {
   const [user, setUser] = useState(null);
   const [category, setCategory] = useState('post');
   const [assets, setAssets] = useState(null);
+  const [isFetching, setIsFetching] = useState(true);
 
   const handleCategory = (prop) => () => {
     if (prop !== category) {
@@ -43,6 +46,7 @@ function Profile() {
   useEffect(() => {
     let url;
     if (user) {
+      setIsFetching(true);
       switch (category) {
         case 'post':
           url = constants.GET_USER_POST_API;
@@ -64,8 +68,10 @@ function Profile() {
         .then((res) => {
           console.log(res.data.data);
           setAssets(res.data.data);
+          setIsFetching(false);
         }).catch((err) => {
           console.log(err);
+          setIsFetching(false);
         });
     }
   }, [user, category]);
@@ -76,6 +82,7 @@ function Profile() {
         { user
           ? (
             <>
+
               <div className="user-profile-header">
                 <img
                   id="user-profile-background"
@@ -152,50 +159,59 @@ function Profile() {
               </div>
 
               <div className="user-profile-assets-container">
-                {category === 'post' && user != null ? (
-                  <div className="live-list-item-container">
-                    {assets ? assets.reverse().map((post) => (
-                      <PostList
-                        key={post._id}
-                        post={post}
-                      />
-                    )) : null}
-                  </div>
-                ) : null}
+                {isFetching ? (
+                  <Box sx={{ display: 'flex', marginLeft: '49%' }}>
+                    <CircularProgress size={30} color="inherit" />
+                  </Box>
+                ) : (
+                  <>
+                    {category === 'post' && user != null ? (
+                      <div className="live-list-item-container">
+                        {assets ? assets.reverse().map((post) => (
+                          <PostList
+                            key={post._id}
+                            post={post}
+                          />
+                        )) : null}
+                      </div>
+                    ) : null}
 
-                {category === 'live' && user != null ? (
-                  <div className="live-list-item-container">
-                    {assets ? assets.reverse().map((live) => (
-                      <UserLiveItem
-                        live={live}
-                        key={live._id}
-                      />
-                    )) : null}
-                  </div>
-                ) : null}
+                    {category === 'live' && user != null ? (
+                      <div className="live-list-item-container">
+                        {assets ? assets.reverse().map((live) => (
+                          <UserLiveItem
+                            live={live}
+                            key={live._id}
+                          />
+                        )) : null}
+                      </div>
+                    ) : null}
 
-                {category === 'follow' && user != null ? (
-                  <div className="live-list-item-container">
-                    {assets ? assets.reverse().map((post) => (
-                      <PostList
-                        key={post._id}
-                        post={post}
-                      />
-                    )) : null}
-                  </div>
-                ) : null}
+                    {category === 'follow' && user != null ? (
+                      <div className="live-list-item-container">
+                        {assets ? assets.reverse().map((post) => (
+                          <PostList
+                            key={post._id}
+                            post={post}
+                          />
+                        )) : null}
+                      </div>
+                    ) : null}
 
-                {category === 'like' && user != null ? (
-                  <div className="live-list-item-container">
-                    {assets ? assets.reverse().map((post) => (
-                      <PostList
-                        key={post._id}
-                        post={post}
-                      />
-                    )) : null}
-                  </div>
-                ) : null}
+                    {category === 'like' && user != null ? (
+                      <div className="live-list-item-container">
+                        {assets ? assets.reverse().map((post) => (
+                          <PostList
+                            key={post._id}
+                            post={post}
+                          />
+                        )) : null}
+                      </div>
+                    ) : null}
+                  </>
+                )}
               </div>
+
             </>
           )
           : null}

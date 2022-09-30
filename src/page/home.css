@@ -8,6 +8,32 @@
     gap: 15px;
 }
 
+/* Type Button */
+#home-type-btns {
+    width: 100%;
+    height: 30px;
+    display: flex;
+    gap: 5px;
+}
+
+.home-type-btn {
+    width: 100%;
+    height: 100%;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--main-color);
+    background-color: transparent;
+    transition: var(--main-transition);
+    cursor: pointer;
+}
+
+.home-type-btn:hover {
+    color: var(--main-bg-color);
+    background-color: var(--main-color);
+}
+
 /* Sidebar */
 .home-sidebar {
     margin-top: 30px;
@@ -20,12 +46,28 @@
     height: 900px;
 }
 
-/* Posts */
-#posts-container {
+/* Content */
+#content-container {
     margin-top: 30px;
     width: 100%;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 10px;
+}
+
+#posts-container {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+}
+
+#lives-container {
+    width: 100%;
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(2, 1fr);
     gap: 10px;
 }
