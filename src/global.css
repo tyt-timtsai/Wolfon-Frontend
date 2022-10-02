@@ -23,6 +23,13 @@
     --secondary-bg-color: #1c1c1c;
     --border-color: rgb(54, 54, 56);
     --main-bg-gradient:linear-gradient(135deg, rgba(208,178,194,0.4920343137254902) 0%, rgba(255,255,255,1) 49%, rgba(210,214,242,0.5704656862745099) 100%);
+
+    /* MUI Palette */
+    --mui-blue-1: #e3f2fd;
+    --mui-blue-2: #90caf9;
+    --mui-blue-3: #42a5f5;
+    --mui-red: #f44336;
+    --mui-green: #81c784;
     
 }
 

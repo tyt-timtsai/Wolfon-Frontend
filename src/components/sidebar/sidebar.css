@@ -37,3 +37,8 @@
     background-color: var(--hover-color-2);
     transition: var(--main-transition);
 }
+
+.sidebar-active {
+    background-color: var(--main-focus-color);
+    transition: var(--main-transition);
+}

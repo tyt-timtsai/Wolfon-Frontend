@@ -21,7 +21,6 @@ function LiveListItem({ live }) {
   const [isStreaming, setIsStreaming] = useState(true);
 
   useEffect(() => {
-    console.log(live);
     setIsStreaming(live.isStreaming);
   }, []);
 
@@ -35,6 +34,12 @@ function LiveListItem({ live }) {
 
   return (
     <Card id="live-item-card">
+      {isStreaming && (
+      <div className="live-item-streaming-icon">
+        <div className="live-item-streaming-dot" />
+        <p className="live-item-streaming-text">Live</p>
+      </div>
+      )}
       <CardHeader
         avatar={(
           <Avatar
@@ -48,7 +53,7 @@ function LiveListItem({ live }) {
           <Typography variant="caption" align="center" sx={{ color: 'var(--main-content-color)' }}>
             September 14, 2016
           </Typography>
-)}
+        )}
       />
       <CardMedia
         component="img"

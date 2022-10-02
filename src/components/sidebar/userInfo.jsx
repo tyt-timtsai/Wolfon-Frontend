@@ -45,9 +45,7 @@ function UserInfo({ userData, isSetting, isPost }) {
 
   useEffect(() => {
     setFile(null);
-    console.log(userData);
   }, []);
-
   return (
     <Paper elevation={2} sx={{ maxWidth: 256 }} id="home-left-sidebar">
       {isSetting ? (
@@ -56,6 +54,7 @@ function UserInfo({ userData, isSetting, isPost }) {
             alt="User"
             src={userData.photo ? `${constants.IMAGE_URL}/${userData.photo}` : null}
             id="sidebar-avatar"
+            style={{ cursor: 'default' }}
           />
           <IconButton
             id="sidebar-avatar-edit-icon"

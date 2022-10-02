@@ -21,7 +21,7 @@ function Login() {
   useEffect(() => {
     const jwt = window.localStorage.getItem('JWT');
     if (jwt) {
-      navigate('/user/setting');
+      navigate('/user/profile');
     }
   }, []);
   return (
@@ -53,7 +53,6 @@ function Login() {
             onClick={handleSignUp}
           >
             Sign up
-
           </button>
         </div>
         <div className="login-form-container" style={isSignIn ? { display: 'flex' } : { display: 'none' }}>

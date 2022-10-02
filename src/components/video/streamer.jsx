@@ -4,16 +4,16 @@ import Stack from '@mui/material/Stack';
 import CircularProgress from '@mui/material/CircularProgress';
 import Uploader from '../../global/uploader';
 
-// let socket;
 function Streamer({
   socket, room, localVideo, setIsStreaming,
 }) {
-  const [localStream, setLocalStream] = useState();
-  const [record, setRecord] = useState();
   const [file, setFile] = useState();
-  const [mediaRecorder, setMediaRecorder] = useState();
+  const [record, setRecord] = useState();
   const [chunks, setChunks] = useState([]);
   const [progress, setProgress] = useState(0);
+  const [localStream, setLocalStream] = useState();
+  const [mediaRecorder, setMediaRecorder] = useState();
+  const [isEnd, setIsEnd] = useState(false);
   const download = useRef();
   const PCs = {};
   let stream;
@@ -29,12 +29,20 @@ function Streamer({
         cursor: 'always',
       },
       audio: {
+        autoGainControl: true,
+        sampleSize: 16,
+        channelCount: 2,
         echoCancellation: true,
         noiseSuppression: true,
         sampleRate: 44100,
       },
     };
     stream = await navigator.mediaDevices.getDisplayMedia(constraints);
+    const audioStream = await navigator.mediaDevices.getUserMedia(
+      { audio: true },
+    ).catch((err) => { console.log(err); });
+    const [audioTrack] = audioStream.getAudioTracks();
+    stream.addTrack(audioTrack);
     setLocalStream(stream);
     localVideo.current.srcObject = stream;
   }
@@ -157,7 +165,8 @@ function Streamer({
   const startRecord = () => {
     let recorder;
     const options = {
-      mimeType: 'video/webm;codecs=vp9',
+      // mimeType: 'video/webm;codecs=vp9',
+      mimeType: 'video/webm',
     };
 
     if (!MediaRecorder.isTypeSupported(options.mimeType)) {
@@ -180,7 +189,6 @@ function Streamer({
           setChunks((prev) => [...prev, e.data]);
         }
       };
-      // mediaRecorder.start(10);
       recorder.start(10);
       // console.log(mediaRecorder.state);
       console.log(recorder.state);
@@ -188,6 +196,7 @@ function Streamer({
     } else {
       console.log('Please start streaming first.');
     }
+    setIsStreaming(true);
   };
 
   // 下載錄影
@@ -226,8 +235,37 @@ function Streamer({
       const tracks = localVideo.current.srcObject.getTracks();
       tracks.forEach((track) => track.stop());
       localVideo.current.srcObject = null;
+      setIsEnd(true);
+      setIsStreaming(false);
+      const blob = new Blob(chunks, { type: 'video/webm' });
+      localVideo.current.src = URL.createObjectURL(blob);
     }
   };
+
+  /**
+ * 初始化
+ */
+  const init = () => {
+    stopStream();
+    createStream();
+    connectIO();
+    startRecord();
+  };
+
+  const initCamera = async () => {
+    stopStream();
+    await createCameraStream();
+    connectIO();
+    startRecord();
+  };
+
+  // 有影音流就開始錄影
+  useEffect(() => {
+    console.log(localStream);
+    if (localStream) {
+      startRecord();
+    }
+  }, [localStream]);
 
   // 結束直播時上傳錄影
   useEffect(() => {
@@ -260,31 +298,6 @@ function Streamer({
     }
   }, [file]);
 
-  /**
- * 初始化
- */
-  const init = () => {
-    stopStream();
-    createStream();
-    connectIO();
-    setIsStreaming(true);
-    startRecord();
-  };
-
-  const initCamera = async () => {
-    stopStream();
-    await createCameraStream();
-    connectIO();
-    setIsStreaming(true);
-  };
-
-  useEffect(() => {
-    console.log(localStream);
-    if (localStream) {
-      startRecord();
-    }
-  }, [localStream]);
-
   useEffect(() => (() => socket.close()), [socket]);
 
   return (
@@ -301,23 +314,26 @@ function Streamer({
         Your browser does not support the video tag.
       </video>
       <div id="streamer-video-btns">
+        {isEnd && <p>Live streaming end.</p>}
         {record ? (
           <Stack spacing={2} direction="row">
             <CircularProgress variant="determinate" value={progress} />
             {progress}
           </Stack>
         ) : null}
-        <Button variant="contained" type="button" onClick={init}>開始直播</Button>
-        <Button variant="contained" type="button" onClick={initCamera}>開啟鏡頭</Button>
-        <Button variant="contained" type="button" onClick={stopStream}>結束直播</Button>
+        {!isEnd && <Button variant="contained" type="button" onClick={init}>Share Screen</Button> }
+        {!isEnd && <Button variant="contained" type="button" onClick={initCamera}>Camera</Button> }
+        {localStream && <Button variant="contained" type="button" color="error" onClick={stopStream}>End Live Stream</Button>}
         {record ? (
-          <a id="stream-download" ref={download} href={record.href} download={record.filename} style={{ display: 'block' }}>Download</a>
+          <a
+            ref={download}
+            href={record.href}
+            id="stream-download"
+            download={record.filename}
+          >
+            Download
+          </a>
         ) : null}
-
-        {/* <form onSubmit={uploadVideo}>
-        <input type="file" name="video" id="upload" onChange={handleUpload} />
-        <button type="submit">Submit</button>
-      </form> */}
       </div>
 
     </section>

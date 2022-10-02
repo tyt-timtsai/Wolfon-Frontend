@@ -52,7 +52,7 @@ function Editor({
   const [isCompilable, setIsCompilable] = useState(true);
   const [isSending, setIsSending] = useState(false);
   // eslint-disable-next-line no-case-declarations, max-len
-  // const twosum = 'var twoSum = function(nums, target) {\nvar map = {};\nfor(var i = 0 ; i < nums.length ; i++){\nvar v = nums[i];\nfor(var j = i+1 ; j < nums.length ; j++ ){\nif(  nums[i] + nums[j]  == target ){\nreturn [i,j];\n}}}};\nconst result = twoSum([3,4,5,6,7,8], 12)\n console.log(result);';
+  const twosum = 'var twoSum = function(nums, target) {\n  var map = {};\n  for(var i = 0 ; i < nums.length ; i++){\n    var v = nums[i];\n    for(var j = i+1 ; j < nums.length ; j++ ){\n      if(  nums[i] + nums[j]  == target ){\n        return [i,j];\n      }\n     }\n    }\n  };\n\nconst result = twoSum([3,4,5,6,7,8], 12)\nconsole.log(result);';
 
   // Change programming language
   const changeMode = (e) => {
@@ -60,7 +60,9 @@ function Editor({
     setMode(language);
     switch (language) {
       case 'javascript':
-        setCode('//Javascript\nconsole.log("Hello Javascript!");');
+        setCode(twosum);
+
+        // setCode('//Javascript\nconsole.log("Hello Javascript!");');
         break;
       case 'golang':
         setCode('// Golang\npackage main\nimport "fmt"\n\nfunc main(){\n    fmt.Println("Hello Golang!") \n}');
@@ -70,7 +72,6 @@ function Editor({
         break;
       default:
         setCode('');
-        // setCode(twosum);
         break;
     }
 
@@ -97,13 +98,17 @@ function Editor({
   // ============== 版本控制 ===============
   // Use version tag
   const changeVersion = (e) => {
+    console.log(e.target.value);
     if (e.target.value) {
       axios.get(`${constants.GET_VERSION_API}/${room}?tag=${e.target.value}`)
         .then((res) => {
           setCode(res.data.data.tags[0].code);
-          setSelect(e.target.value);
+          // setSelect(e.target.value);
+          setSelect('');
         })
         .catch((err) => console.log(err));
+    } else {
+      setSelect('');
     }
   };
 
@@ -169,7 +174,6 @@ function Editor({
       } else {
         setTerminal(result.data);
       }
-      // setTerminal(JSON.stringify(result.data));
     } catch (err) {
       console.log(err);
     }
@@ -220,7 +224,7 @@ function Editor({
             enableLiveAutocompletion: true,
             enableSnippets: true,
             tabSize: 2,
-            fontSize: '14px',
+            // fontSize: '14px',
           }}
         />
         <AceEditor
@@ -244,74 +248,6 @@ function Editor({
         />
       </div>
       <div id="editor-btn-container">
-        {isStreamer ? (
-          <div id="tag-container">
-            <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
-
-            <FormGroup>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    checked={isFrom}
-                    onChange={() => setIsFrom(!isFrom)}
-                  />
-                )}
-                label="使用複層"
-                labelPlacement="end"
-              />
-            </FormGroup>
-            <FormControl className="editor-selector" size="small">
-              <InputLabel id="upper-tag-label">上層 Tag</InputLabel>
-              <Select
-                name="upper-version"
-                id="upper-version"
-                labelId="language-label"
-                label="Version"
-                value={from}
-                onChange={handleUpperTag}
-              >
-                {version.map((ver) => (
-                  ver.from ? (
-                    <MenuItem
-                      key={ver.version}
-                      value={ver.version}
-                    >
-                      {ver.version}
-                    </MenuItem>
-                  ) : (
-                    <MenuItem
-                      key={ver.version}
-                      value={ver.version}
-                      style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
-                    >
-                      {ver.version}
-                    </MenuItem>
-                  )
-                ))}
-              </Select>
-            </FormControl>
-
-            <TextField
-              label="Tag"
-              size="small"
-              variant="outlined"
-              type="text"
-              name="tag"
-              id="tag-input"
-              value={tag}
-              onChange={editTag}
-            />
-            <Button
-              variant="contained"
-              type="button"
-              className="editor-btn"
-              id="tag-btn"
-              onClick={addTag}
-            >
-              新增標籤
-            </Button>
-          </div>
-        ) : null }
 
         <div id="editor-btns">
           <FormControl className="editor-selector" size="small">
@@ -324,6 +260,7 @@ function Editor({
               value={mode}
               onChange={changeMode}
             >
+              <MenuItem value="null">Language</MenuItem>
               <MenuItem value="javascript">Javascript</MenuItem>
               <MenuItem value="python">Python</MenuItem>
               <MenuItem value="golang">Golang</MenuItem>
@@ -356,7 +293,6 @@ function Editor({
                   <MenuItem
                     key={ver.version}
                     value={ver.version}
-                    style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
                   >
                     {ver.version}
                   </MenuItem>
@@ -381,6 +317,82 @@ function Editor({
               : 'Run'}
           </Button>
         </div>
+
+        {isStreamer ? <hr style={{ width: '100%', border: '1px solid var(--third-color)' }} /> : null }
+
+        {isStreamer ? (
+          <div id="tag-container">
+            <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> Screenshot </Button>
+
+            <FormGroup>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={isFrom}
+                    onChange={() => setIsFrom(!isFrom)}
+                  />
+                )}
+                label="Use Upper Version"
+                labelPlacement="end"
+              />
+            </FormGroup>
+            <FormControl className="editor-selector" size="small">
+              <InputLabel id="upper-tag-label">Upper Version</InputLabel>
+              <Select
+                name="upper-version"
+                id="upper-version"
+                labelId="language-label"
+                label="Version"
+                value={from}
+                onChange={handleUpperTag}
+              >
+                <MenuItem
+                  value={null}
+                >
+                  No upper version
+                </MenuItem>
+                {version.map((ver) => (
+                  ver.from ? (
+                    <MenuItem
+                      key={ver.version}
+                      value={ver.version}
+                    >
+                      {ver.version}
+                    </MenuItem>
+                  ) : (
+                    <MenuItem
+                      key={ver.version}
+                      // style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
+                      value={ver.version}
+                    >
+                      {ver.version}
+                    </MenuItem>
+                  )
+                ))}
+              </Select>
+            </FormControl>
+
+            <TextField
+              label="Version Name"
+              size="small"
+              variant="outlined"
+              type="text"
+              name="tag"
+              id="tag-input"
+              value={tag}
+              onChange={editTag}
+            />
+            <Button
+              variant="contained"
+              type="button"
+              className="editor-btn"
+              id="tag-btn"
+              onClick={addTag}
+            >
+              Add Version
+            </Button>
+          </div>
+        ) : null }
       </div>
     </div>
   );

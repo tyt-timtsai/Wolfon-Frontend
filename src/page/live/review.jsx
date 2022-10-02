@@ -59,7 +59,7 @@ function LiveReview({ socket, room, setRoom }) {
             <button
               type="button"
               className="viewer-btns"
-              style={{ color: 'var(--secondary-color)' }}
+              style={{ color: 'var(--secondary-color)', cursor: 'default' }}
             >
               Editor
             </button>

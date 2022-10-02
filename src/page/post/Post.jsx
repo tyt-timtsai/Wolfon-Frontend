@@ -193,17 +193,14 @@ function Post() {
               <div id="post-detail-content-header">
                 <h1>{post.title}</h1>
                 <h3>{post.subtitle}</h3>
-                <p>
-                  publish :
+                <p id="post-published">
+                  Published :
                   {' '}
                   {post.created_dt.slice(0, -4)}
                 </p>
-                {/* <p>
-                  update :
-                  {' '}
-                  {post.updated_dt.slice(0, -4)}
-                </p> */}
               </div>
+
+              <hr style={{ width: '95%', border: '1px solid var(--third-color)' }} />
 
               <div className="ProseMirror">
                 {parser(post.content)}

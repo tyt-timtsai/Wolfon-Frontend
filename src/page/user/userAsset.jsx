@@ -3,9 +3,13 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
+import {
+  Box,
+} from '@mui/material';
+import CircularProgress from '@mui/material/CircularProgress';
 import Header from '../../components/header/header';
+import Sidebar from '../../components/sidebar/sidebar';
 import UserLiveItem from '../../components/userAsset/userLiveItem';
-// import UserPostItem from '../../components/userAsset/userPostItem';
 import PostList from '../../components/post/Post_list';
 import UserFriendItem from '../../components/userAsset/userFriendItem';
 import Footer from '../../components/footer/footer';
@@ -13,80 +17,169 @@ import constants from '../../global/constants';
 import './userAsset.css';
 
 function UserAsset() {
-  const navigate = useNavigate();
-  const [assets, setAssets] = useState([]);
   const params = useParams();
-  const [category, setCategory] = useState('');
-  const jwt = window.localStorage.getItem('JWT');
-
-  const handleCategory = (e) => {
-    if (category !== e.target.value) {
-      setAssets(null);
-      setCategory(e.target.value);
-    }
-  };
+  const navigate = useNavigate();
+  const [assets, setAssets] = useState(null);
+  const [category, setCategory] = useState(null);
+  const [isFetching, setIsFetching] = useState(true);
+  const [userData, setUserData] = useState(null);
+  const token = window.localStorage.getItem('JWT');
 
   function getLive() {
     axios.get(constants.GET_USER_LIVE_API, {
       headers: {
-        authorization: jwt,
+        authorization: token,
       },
     }).then((res) => {
-      setAssets(res.data.data);
+      setAssets(res.data.data.reverse());
+      setIsFetching(false);
     }).catch((err) => {
       console.log(err);
+      setIsFetching(false);
     });
   }
+
   function getPost() {
     axios.get(constants.GET_USER_POST_API, {
       headers: {
-        authorization: jwt,
+        authorization: token,
       },
     }).then((res) => {
-      setAssets(res.data.data);
+      setAssets(res.data.data.reverse());
+      setIsFetching(false);
     }).catch((err) => {
       console.log(err);
+      setIsFetching(false);
     });
   }
+
+  function getLikePost() {
+    console.log('get like post');
+
+    axios.get(constants.GET_USER_LIKE_API, {
+      headers: {
+        authorization: token,
+      },
+    }).then((res) => {
+      setAssets(res.data.data.reverse());
+      setIsFetching(false);
+    }).catch((err) => {
+      console.log(err);
+      setIsFetching(false);
+    });
+  }
+
+  function getFollowPost() {
+    console.log('get follow post');
+    axios.get(constants.GET_USER_FOLLOW_POST_API, {
+      headers: {
+        authorization: token,
+      },
+    }).then((res) => {
+      setAssets(res.data.data.reverse());
+      setIsFetching(false);
+    }).catch((err) => {
+      console.log(err);
+      setIsFetching(false);
+    });
+  }
+
   function getFriend() {
     axios.get(constants.GET_USER_FRIEND_API, {
       headers: {
-        authorization: jwt,
+        authorization: token,
       },
     }).then((res) => {
       console.log(res.data.data);
       const { friends, pendingFriends } = res.data.data;
-      setAssets({ friends, pendingFriends });
+      setAssets({
+        friends,
+        pendingFriends,
+      });
+      setIsFetching(false);
     }).catch((err) => {
       console.log(err);
+      if (err.response.status === 403 || err.response.status === 401) {
+        window.localStorage.removeItem('JWT');
+        navigate('/user/login');
+      }
+      setIsFetching(false);
     });
   }
-  function getCommunity() {
-    axios.get(constants.GET_USER_COMMUNITY_API, {
+
+  function getFollow() {
+    console.log('getFollow');
+    axios.get(constants.GET_USER_FOLLOW_API, {
       headers: {
-        authorization: jwt,
+        authorization: token,
       },
     }).then((res) => {
       console.log(res.data.data);
-      // setAssets(res.data.data);
+      setAssets(res.data.data.follows.reverse());
+      setIsFetching(false);
     }).catch((err) => {
       console.log(err);
+      if (err.response.status === 403 || err.response.status === 401) {
+        window.localStorage.removeItem('JWT');
+        navigate('/user/login');
+      }
+      setIsFetching(false);
+    });
+  }
+
+  function getFollower() {
+    console.log('getFollow');
+    axios.get(constants.GET_USER_FOLLOWER_API, {
+      headers: {
+        authorization: token,
+      },
+    }).then((res) => {
+      console.log(res.data.data);
+      setAssets(res.data.data.followers.reverse());
+      setIsFetching(false);
+    }).catch((err) => {
+      console.log(err);
+      if (err.response.status === 403 || err.response.status === 401) {
+        window.localStorage.removeItem('JWT');
+        navigate('/user/login');
+      }
+      setIsFetching(false);
     });
   }
 
   useEffect(() => {
-    if (!jwt) {
+    if (!token) {
       navigate('/user/login');
+    } else {
+      console.log('get profile');
+      axios.get(constants.PROFILE_API, {
+        headers: {
+          authorization: token,
+        },
+      })
+        .then((res) => {
+          console.log(res.data.data);
+          setUserData(res.data.data);
+        })
+        .catch((err) => {
+          console.log(err);
+          if (err.response.status === 403 || err.response.status === 400) {
+            window.localStorage.removeItem('JWT');
+            navigate('/user/login');
+          }
+        });
     }
-    setAssets(null);
     setCategory(params.id);
   }, []);
 
   useEffect(() => {
-    if (category) {
-      navigate(`/user/asset/${category}`);
-    }
-    console.log(category);
+    console.log(params);
+    setAssets(null);
+    setCategory(params.id);
+  }, [params]);
+
+  useEffect(() => {
+    setIsFetching(true);
     switch (category) {
       case 'live':
         getLive();
@@ -94,11 +187,20 @@ function UserAsset() {
       case 'post':
         getPost();
         break;
+      case 'likePost':
+        getLikePost();
+        break;
+      case 'followPost':
+        getFollowPost();
+        break;
       case 'friend':
         getFriend();
         break;
-      case 'community':
-        getCommunity();
+      case 'follow':
+        getFollow();
+        break;
+      case 'follower':
+        getFollower();
         break;
 
       default:
@@ -108,107 +210,151 @@ function UserAsset() {
   return (
     <>
       <Header />
+
       <div id="user-asset-container">
-        <div id="user-asset-btns">
-          <button
-            type="button"
-            className={`${category === 'live' ? 'btn-active' : ''} user-asset-btn`}
-            value="live"
-            onClick={handleCategory}
-          >
-            LIVE
-          </button>
-          <button
-            type="button"
-            className={`${category === 'post' ? 'btn-active' : ''} user-asset-btn`}
-            value="post"
-            onClick={handleCategory}
-          >
-            POST
-          </button>
-          <button
-            type="button"
-            className={`${category === 'friend' ? 'btn-active' : ''} user-asset-btn`}
-            value="friend"
-            onClick={handleCategory}
-          >
-            FRIEND
-          </button>
-          <button
-            type="button"
-            className={`${category === 'community' ? 'btn-active' : ''} user-asset-btn`}
-            value="community"
-            onClick={handleCategory}
-          >
-            COMMUNITY
-          </button>
+        <Sidebar
+          userData={userData}
+          location={category}
+        />
+        <div id="user-asset-content-container">
+
+          {isFetching ? (
+            <Box sx={{ display: 'flex', marginLeft: '49%' }}>
+              <CircularProgress size={30} color="inherit" />
+            </Box>
+          ) : (
+            <>
+              {category === 'live' && assets != null ? (
+                <div className="asset-live-container">
+                  {assets ? assets.map((live) => (
+                    <UserLiveItem
+                      live={live}
+                      key={live._id}
+                    />
+                  )) : null}
+                </div>
+              ) : null}
+
+              {category === 'post' && assets != null ? (
+                <div className="post-list-item-container">
+                  {assets ? assets.map((post) => (
+                    <PostList
+                      key={post._id}
+                      post={post}
+                    />
+                  )) : <p className="friend-list-label">No Post</p>}
+                </div>
+              ) : null}
+
+              {category === 'likePost' && assets != null ? (
+                <div className="post-list-item-container">
+                  {assets ? assets.map((post) => (
+                    <PostList
+                      key={post._id}
+                      post={post}
+                    />
+                  )) : <p className="friend-list-label">No Like Post</p>}
+                </div>
+              ) : null}
+
+              {category === 'followPost' && assets != null ? (
+                <div className="post-list-item-container">
+                  {assets ? assets.map((post) => (
+                    <PostList
+                      key={post._id}
+                      post={post}
+                    />
+                  )) : <p className="friend-list-label">No Follow Post</p>}
+                </div>
+              ) : null}
+
+              {category === 'friend' && assets != null ? (
+                <div className="friend-list-item-container">
+                  {assets && assets.pendingFriends.length > 0
+                    ? (
+                      <>
+                        <p className="friend-list-label">好友申請</p>
+                        <div className="friend-list-items">
+                          {assets.pendingFriends.map((friend) => (
+                            <UserFriendItem
+                              key={friend._id}
+                              friend={friend}
+                              isFriend={false}
+                              assets={assets}
+                              setAssets={setAssets}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )
+                    : null}
+                  {assets && assets.friends.length > 0
+                    ? (
+                      <>
+                        <p className="friend-list-label">好友</p>
+                        <div className="friend-list-items">
+                          {assets.friends.map((friend) => (
+                            <UserFriendItem
+                              key={friend._id}
+                              friend={friend}
+                              isFriend
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )
+                    : <p className="friend-list-label">目前尚無好友</p>}
+                </div>
+              ) : null}
+
+              {category === 'follow' && assets != null ? (
+                <div className="friend-list-item-container">
+                  {assets && assets.length > 0
+                    ? (
+                      <>
+                        <p className="friend-list-label">Follow Users</p>
+                        <div className="friend-list-items">
+                          {assets.map((user) => (
+                            <UserFriendItem
+                              key={user._id}
+                              friend={user}
+                              isFriend={userData.friends.includes(user.id)}
+                              assets={assets}
+                              setAssets={setAssets}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )
+                    : null}
+                </div>
+              ) : null}
+
+              {category === 'follower' && assets != null ? (
+                <div className="friend-list-item-container">
+                  {assets && assets.length > 0
+                    ? (
+                      <>
+                        <p className="friend-list-label">Followers</p>
+                        <div className="friend-list-items">
+                          {assets.map((user) => (
+                            <UserFriendItem
+                              key={user._id}
+                              friend={user}
+                              isFriend={userData.friends.includes(user.id)}
+                              assets={assets}
+                              setAssets={setAssets}
+                            />
+                          ))}
+                        </div>
+                      </>
+                    )
+                    : null}
+                </div>
+              ) : null}
+            </>
+          )}
         </div>
-        {category === 'live' && assets != null ? (
-          <div className="live-list-item-container">
-            {assets ? assets.reverse().map((live) => (
-              <UserLiveItem
-                live={live}
-                key={live._id}
-              />
-            )) : null}
-          </div>
-        ) : null}
-        {category === 'post' && assets != null ? (
-          <div className="post-list-item-container">
-            {assets ? assets.reverse().map((post) => (
-              <PostList
-                key={post._id}
-                post={post}
-              />
-            )) : <p className="friend-list-label">目前尚無文章</p>}
-          </div>
-        ) : null}
-
-        {category === 'friend' && assets != null ? (
-          <div className="friend-list-item-container">
-            {assets && assets.pendingFriends.length > 0
-              ? (
-                <>
-                  <p className="friend-list-label">好友申請</p>
-                  <div className="friend-list-items">
-                    {assets.pendingFriends.reverse().map((friend) => (
-                      <UserFriendItem
-                        key={friend._id}
-                        friend={friend}
-                        isFriend={false}
-                        assets={assets}
-                        setAssets={setAssets}
-                      />
-                    ))}
-                  </div>
-                </>
-              )
-              : null}
-            {assets && assets.friends.length > 0
-              ? (
-                <>
-                  <p className="friend-list-label">好友</p>
-                  <div className="friend-list-items">
-                    {assets.friends.reverse().map((friend) => (
-                      <UserFriendItem
-                        key={friend._id}
-                        friend={friend}
-                        isFriend
-                      />
-                    ))}
-                  </div>
-                </>
-              )
-              : null}
-          </div>
-        ) : null}
-
-        {category === 'community' && assets != null ? (
-          <div className="community-list-item-container">
-            <p>community</p>
-          </div>
-        ) : null}
-
       </div>
       <Footer />
     </>

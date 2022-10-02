@@ -30,7 +30,15 @@
 }
 
 #post-detail-content-header {
+    position: relative;
     padding: 10px 20px;
+}
+
+#post-published {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: var(--third-color);
 }
 
 #post-details {

@@ -32,7 +32,7 @@ function UserFriendItem({
     });
   };
   const rejectFriend = () => {
-    axios.patch(constants.CANCEL_APPLY_API, { id: friend.id, action: 'reject' }, {
+    axios.put(constants.CANCEL_APPLY_API, { id: friend.id, action: 'reject' }, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },

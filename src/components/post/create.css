@@ -1,6 +1,7 @@
 #create-post-container {
     margin-top: 50px;
     min-height:90vh;
+    width: var(--main-content-width);
 }
 
 #title-inputs-container {
@@ -19,7 +20,16 @@
     gap: 20px;
 }
 
-/* MUI */
-/* .css-1o6z5ng {
-    color: var(--main-color);
-} */
+#post-preview {
+    margin-top: 10px;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'Source Code Pro', monospace;
+    background-color: var(--secondary-bg-color);
+}

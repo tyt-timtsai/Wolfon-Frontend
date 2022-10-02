@@ -25,11 +25,17 @@
 }
 
 #tag-container {
+    position: relative;
     width: 100%;
     display: flex;
     align-items: center;
     justify-content: flex-end;
     gap: 5px;
+}
+
+#screenshot-btn {
+    position: absolute;
+    left: 0px;
 }
 
 #tag-input {
@@ -71,6 +77,10 @@
 .terminal {
     border-radius: 0 0 10px 10px;
     border-top: 1px solid var(--border-color);
+}
+
+.terminal .ace_cursor {
+    display: none !important;
 }
 
 /* MUI */

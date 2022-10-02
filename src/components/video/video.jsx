@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/media-has-caption */
 import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@mui/material';
@@ -164,7 +165,6 @@ function Video({
           backgroundColor: 'black',
         }}
         id="video"
-        muted
         autoPlay
         playsInline
         controls
@@ -178,7 +178,7 @@ function Video({
         onClick={init}
         style={isConnect ? { display: 'none' } : { display: 'block' }}
       >
-        連接直播
+        connect
       </Button>
     </section>
   );

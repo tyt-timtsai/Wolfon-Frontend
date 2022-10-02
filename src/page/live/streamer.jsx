@@ -15,12 +15,13 @@ import './streamer.css';
 function LiveStreamer({ socket, room, setRoom }) {
   const params = useParams();
   const navigate = useNavigate();
-  const [userData, setUserData] = useState();
+  const [userData, setUserData] = useState('');
+  const [liveData, setLiveData] = useState('');
   const [isStreaming, setIsStreaming] = useState(false);
   const [mode, setMode] = useState('javascript');
   const [version, setVersion] = useState([]);
   const [code, setCode] = useState("//Javascript\nconsole.log('Hello Javascript!');");
-  const [tag, setTag] = useState('');
+  const [tag, setTag] = useState([]);
   const [from, setFrom] = useState('');
   const [isFrom, setIsFrom] = useState(false);
   const [viewers, setViewers] = useState([]);
@@ -60,6 +61,22 @@ function LiveStreamer({ socket, room, setRoom }) {
     socket.emit('getCode', e.target.value, socket.id);
   };
 
+  // Get newest version
+  const getNewestVersion = () => {
+    console.log(version);
+    if (version.length > 0) {
+      console.log(version[version.length - 1]);
+      axios.get(`${constants.GET_VERSION_API}/${room}?tag=${version[version.length - 1].version}`)
+        .then((res) => {
+          if (mode !== res.data.data.language) {
+            setMode(res.data.data.language);
+          }
+          setCode(res.data.data.tags[0].code);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
   // Create Screenshot on stream
   const screenShot = () => {
     if (isStreaming) {
@@ -77,7 +94,7 @@ function LiveStreamer({ socket, room, setRoom }) {
     setIsShow(!isShow);
   };
 
-  useEffect(() => {
+  function getProfile() {
     axios.get(constants.PROFILE_API, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
@@ -93,7 +110,21 @@ function LiveStreamer({ socket, room, setRoom }) {
           navigate('/user/login');
         }
       });
+  }
 
+  function getLive() {
+    axios.get(`${constants.GET_LIVE_API}?id=${room}`)
+      .then((res) => {
+        console.log(res.data);
+
+        setLiveData(res.data.liveData);
+      }).catch((err) => {
+        console.log(err);
+      });
+  }
+
+  useEffect(() => {
+    getProfile();
     setRoom(params.id);
   }, []);
 
@@ -102,6 +133,12 @@ function LiveStreamer({ socket, room, setRoom }) {
       socket.emit('join', room, userData.name);
     }
   }, [socket, userData]);
+
+  useEffect(() => {
+    if (room) {
+      getLive();
+    }
+  }, [room]);
 
   useEffect(() => {
     socket.on('viewer', (id, name) => {
@@ -127,7 +164,22 @@ function LiveStreamer({ socket, room, setRoom }) {
     <>
       <Header />
       <section id="streamer-container">
-        <button id="streamer-hide-btn" type="button" onClick={handleShow}>{isShow ? 'HIDE VIDEO & CHAT' : 'SHOW VIDEO & CHAT' }</button>
+        <div id="live-title">
+          <div id="live-title-container">
+            <h1 style={{ paddingLeft: 10 }}>
+              {liveData ? `LIVE TITLE | ${liveData.title}` : null}
+            </h1>
+            {isStreaming && (
+            <div className="live-item-streaming-icon">
+              <div className="live-item-streaming-dot" />
+              <p className="live-item-streaming-text">Live</p>
+            </div>
+            )}
+          </div>
+          <button id="streamer-hide-btn" type="button" onClick={handleShow}>
+            {isShow ? 'CLICK TO HIDE VIDEO & CHAT' : 'CLICK TO SHOW VIDEO & CHAT' }
+          </button>
+        </div>
         <div id="streamer-header-container" style={isShow ? { display: 'flex' } : { display: 'none' }}>
           <div id="streamer-video-container">
             <Streamer
@@ -142,8 +194,22 @@ function LiveStreamer({ socket, room, setRoom }) {
               isStreamer={isStreamer}
               userData={userData}
             />
-            <p id="viewers-list-hint">點擊按鈕 : 取得觀看者的程式</p>
+            <p id="viewers-list-hint">
+              Click : Get viewer editor code
+              <br />
+              <br />
+              Newest : Get newest version
+            </p>
             <div id="viewers-list">
+              <Button
+                variant="contained"
+                type="button"
+                color="error"
+                onClick={getNewestVersion}
+                className="viewers-list-btn"
+              >
+                newest
+              </Button>
               {viewers.map((viewer) => (
                 <Button
                   variant="contained"

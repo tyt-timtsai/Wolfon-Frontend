@@ -17,6 +17,21 @@
     align-items: center;
 }
 
+#user-profile-background-container {
+    position: relative;
+}
+
+#user-profile-social-btns {
+    position: absolute;
+    right: 15px;
+    bottom: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 5px;
+    z-index: 100;
+}
+
 #user-profile-infos {
     margin-bottom: 30px;
     width: 100%;
@@ -51,6 +66,30 @@
     position: relative;
     top: -50px;
     text-align: center;
+}
+
+#profile-background-edit-icon {
+    margin: -15px 0;
+    position: absolute;
+    right: 10px;
+    bottom: 30px;
+    width: 35px;
+    height: 35px;
+    color: var(--main-focus-color);
+    background-color: var(--main-color);
+    z-index: 100;
+}
+
+#profile-avatar-edit-icon {
+    margin: -15px 0;
+    position: absolute;
+    right: 10px;
+    top: 130px;
+    width: 35px;
+    height: 35px;
+    color: var(--main-focus-color);
+    background-color: var(--main-color);
+    z-index: 100;
 }
 
 #user-profile-name {
