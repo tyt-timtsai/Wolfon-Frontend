@@ -29,7 +29,7 @@ function Home() {
     setIsFetching(true);
     try {
       const result = await axios.get(constants.GET_ALL_POST_API);
-      setPosts(result.data.data);
+      setPosts(result.data.data.reverse());
     } catch (err) {
       console.log(err);
     }
@@ -40,7 +40,7 @@ function Home() {
     setIsFetching(true);
     try {
       const result = await axios.get(constants.GET_LIVE_API);
-      setLives(result.data.liveData);
+      setLives(result.data.liveData.reverse());
     } catch (err) {
       console.log(err);
     }
@@ -87,6 +87,7 @@ function Home() {
       <div id="home-container">
         <Sidebar
           userData={userData}
+          location="home"
         />
         <div id="content-container">
           <div id="home-type-btns">
@@ -117,7 +118,7 @@ function Home() {
             <>
               {type === 'post' && posts && (
                 <div id="posts-container">
-                  {posts.reverse().map((post) => (
+                  {posts.map((post) => (
                     <PostList
                 // eslint-disable-next-line no-underscore-dangle
                       key={post._id}
@@ -128,7 +129,7 @@ function Home() {
               )}
               {type === 'live' && lives && (
                 <div id="lives-container">
-                  {lives && lives.reverse().map((live) => (
+                  {lives && lives.map((live) => (
                     <LiveListItem
                       live={live}
                     // eslint-disable-next-line no-underscore-dangle

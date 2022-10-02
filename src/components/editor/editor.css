@@ -35,7 +35,7 @@
 
 #screenshot-btn {
     position: absolute;
-    left: 10px;
+    left: 0px;
 }
 
 #tag-input {
@@ -77,6 +77,10 @@
 .terminal {
     border-radius: 0 0 10px 10px;
     border-top: 1px solid var(--border-color);
+}
+
+.terminal .ace_cursor {
+    display: none !important;
 }
 
 /* MUI */

@@ -22,7 +22,7 @@ function NewPost() {
     if (validator.isEmpty(post.title)) {
       return Swal.fire({
         title: 'Error!',
-        text: '請填寫標題',
+        text: 'Required : Title ',
         icon: 'error',
         confirmButtonText: 'OK',
       });
@@ -30,7 +30,7 @@ function NewPost() {
     if (validator.isEmpty(post.subtitle)) {
       return Swal.fire({
         title: 'Error!',
-        text: '請填寫副標題',
+        text: 'Required : Subtitle',
         icon: 'error',
         confirmButtonText: 'OK',
       });
@@ -49,7 +49,7 @@ function NewPost() {
       },
     })
       .then((res) => {
-        console.log(res);
+        window.localStorage.setItem('JWT', res.data.data.token);
         navigate(`/post/${res.data.data.id}`);
       })
       .catch((err) => console.log(err));

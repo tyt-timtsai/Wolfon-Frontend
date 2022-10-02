@@ -22,6 +22,7 @@ const GET_USER_POST_API = `${API_URL}/user/post`;
 const GET_USER_LIKE_API = `${API_URL}/user/like`;
 const GET_USER_FOLLOW_POST_API = `${API_URL}/user/follow_post`;
 const GET_USER_FRIEND_API = `${API_URL}/user/friend`;
+const GET_USER_FOLLOW_API = `${API_URL}/user/follow`;
 const GET_USER_FOLLOWER_API = `${API_URL}/user/follower`;
 const GET_USER_COMMUNITY_API = `${API_URL}/user/community`;
 // Setting
@@ -70,6 +71,7 @@ export default {
   GET_USER_POST_API,
   GET_USER_LIKE_API,
   GET_USER_FRIEND_API,
+  GET_USER_FOLLOW_API,
   GET_USER_FOLLOWER_API,
   GET_USER_COMMUNITY_API,
   GET_USER_FOLLOW_POST_API,

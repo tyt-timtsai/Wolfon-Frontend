@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import {
-  Checkbox,
+  // Checkbox,
   Button,
   Avatar,
 } from '@mui/material';
-import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
-import BookmarkIcon from '@mui/icons-material/Bookmark';
+// import { BsBell, BsBellFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import constants from '../../global/constants';
@@ -19,12 +18,12 @@ function SearchUserItem({ user, userData }) {
   const navigate = useNavigate();
   const token = window.localStorage.getItem('JWT');
 
-  const style = {
-    position: 'relative',
-    bottom: '90%',
-    left: '37%',
-    height: 0,
-  };
+  // const style = {
+  //   position: 'relative',
+  //   bottom: '90%',
+  //   left: '37%',
+  //   height: 0,
+  // };
 
   function followUser() {
     axios.post(
@@ -161,17 +160,16 @@ function SearchUserItem({ user, userData }) {
           </div>
               ) : null}
           </div>
-          {token
+          {token && !isMe
       && (
-      <Checkbox
-        icon={<BookmarkBorderIcon sx={{ color: '#fff' }} />}
-        checked={follow}
-        checkedIcon={<BookmarkIcon />}
-        onChange={handleFollow}
-        className="search-user-follow-icon"
-        style={style}
-        size="large"
-      />
+      <Button
+        type="button"
+        variant={follow ? 'outlined' : 'contained'}
+        onClick={handleFollow}
+        className="search-user-follow-btn"
+      >
+        {follow ? 'Following' : 'Follow'}
+      </Button>
       )}
         </>
       )}

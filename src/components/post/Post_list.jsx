@@ -27,7 +27,7 @@ function PostButton({ post }) {
       onClick={() => navigate(`/post/${post.id}`)}
     >
       {post.updated_dt && (
-      <CardContent>
+      <CardContent className="post-list-cards-container">
 
         <div className="post-list-card-author">
           <Avatar
@@ -67,7 +67,7 @@ function PostButton({ post }) {
           <div className="post-list-view">
             {post.view}
             {' '}
-            次觀看
+            views
           </div>
         </div>
 

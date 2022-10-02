@@ -20,13 +20,22 @@
     gap: 10px;
 }
 
-#streamer-hide-btn {
-    margin-top: 30px;
-    margin-bottom: 10px;
-    padding: 10px 0;
-    border: 0;
-    border-radius: 10px;
+#live-title {
+    display: flex;
     width: 100%;
+    justify-content: space-between;
+}
+
+#live-title-container {
+    position: relative;
+    width: 100%;
+}
+
+#streamer-hide-btn {
+    margin: auto 0;
+    border: 1px solid var(--secondary-color);
+    border-radius: 10px;
+    width: 96%;
     height: 40px;
     background-color: transparent;
     color: var(--main-color);
@@ -74,13 +83,18 @@
 }
 
 #stream-download {
+    margin-bottom: 2px;
     padding: 10px 15px;
     border-radius: 5px;
-    width: min-content;
+    width: max-content;
+    height: 16px;
+    display: flex;
+    align-items: center;
     text-decoration: none;
-    background-color: #0288d1;
     color: var(--main-color);
+    background-color: var(--main-button-color);
 }
+
 
 #stream-download:hover {
     background-color: #017bbc;
@@ -90,7 +104,7 @@
 /* Video List */
 #viewers-list-hint {
     position: relative;
-    top: 130px;
+    top: 115px;
     height: 0;
     width: 100%;
     font-size: 15px;
@@ -137,4 +151,88 @@
     width: var(--main-content-width);
     border: 1px solid var(--border-color);
     border-radius: 5px;
+}
+
+/* Streaming icon */
+.live-item-streaming-icon {
+    position: absolute;
+    top: 30%;
+    right: 40px;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    z-index: 50;
+}
+
+.live-item-streaming-text {
+    font-size: 20px;
+    font-weight: 500;
+    color: var(--main-record-color);
+}
+
+.live-item-streaming-dot {
+    width: 15px;
+    height: 15px;
+    border-radius: 50%;
+    background-color: var(--main-record-color);
+    opacity: .8;
+}
+
+.live-item-streaming-dot:after {
+    content: '';
+    display: block;
+    border: 1px solid #e50040;
+    border-radius: 50%;
+    width: 15px;
+    height: 15px;
+    right: 1px;
+    bottom: 1px;
+    position: relative;
+    opacity: 0;
+    -webkit-animation: circle 2s linear .2s infinite;
+            animation: circle 2s linear .2s infinite;
+    }
+
+@-webkit-keyframes circle {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1); 
+        opacity: 0; 
+    }
+
+    50% {
+        -webkit-transform: scale(1.25);
+        transform: scale(1.25); 
+        opacity: .8; 
+    }
+
+    100% {
+        -webkit-transform: scale(1.5);
+        transform: scale(1.5);
+        opacity: 0; 
+    } 
+}
+
+@keyframes circle {
+    0% {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+        opacity: 0; 
+        }
+
+    50% {
+        -webkit-transform: scale(1.25);
+        transform: scale(1.25);
+        opacity: .8; 
+        }
+
+    100% {
+        -webkit-transform: scale(1.5);
+        transform: scale(1.5);
+        opacity: 0;
+        } 
 }

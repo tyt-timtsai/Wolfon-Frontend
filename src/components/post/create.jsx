@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import parser from 'html-react-parser';
-import { TextField, Button } from '@mui/material';
+import { TextField, Button, Paper } from '@mui/material';
 import Tiptap from './TipTap';
 import './create.css';
 
@@ -28,6 +28,7 @@ function CreatePost({
           type="text"
           name="title"
           id="create-post-title"
+          style={{ width: '400px' }}
           InputLabelProps={{
             style: { color: 'var(--main-content-color)' },
           }}
@@ -42,6 +43,7 @@ function CreatePost({
           name="subTitle"
           id="create-post-subtitle"
           fullWidth
+          style={{ backgroundColor: 'var(--main-bg-color)' }}
           InputLabelProps={{
             style: { color: 'var(--main-content-color)' },
           }}
@@ -57,11 +59,19 @@ function CreatePost({
       </div>
       { preview
         ? (
-          <div id="preview-container">
-            <div className="ProseMirror">
-              {post.content ? parser(post.content) : 'Try to editor first.'}
+          <Paper elevation={6} id="post-preview">
+            <div id="post-detail-content-header">
+              <h1>{post.title}</h1>
+              <h3>{post.subtitle}</h3>
             </div>
-          </div>
+
+            <hr style={{ width: '97%', border: '1px solid var(--third-color)' }} />
+
+            <div className="ProseMirror">
+              {parser(post.content)}
+            </div>
+
+          </Paper>
         )
         : null }
     </div>

@@ -8,7 +8,6 @@ import {
 } from '@mui/material';
 import CircularProgress from '@mui/material/CircularProgress';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
-// import GroupsIcon from '@mui/icons-material/Groups';
 import AccountBoxIcon from '@mui/icons-material/AccountBox';
 import ArticleIcon from '@mui/icons-material/Article';
 import SearchRoundedIcon from '@mui/icons-material/SearchRounded';
@@ -134,17 +133,6 @@ function Search() {
                 key={live._id}
               />
             )) : null}
-
-            {/* {results && type === 'community' ? results.map((result) => (
-              <div key={result.id}>
-                <p>{result.id}</p>
-                <p>
-                  community :
-                  {' '}
-                  {result.name}
-                </p>
-              </div>
-            )) : null} */}
           </div>
         )}
       </div>

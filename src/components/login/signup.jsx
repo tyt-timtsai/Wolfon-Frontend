@@ -102,7 +102,7 @@ function SignUp() {
         .then((res) => {
           console.log(res);
           window.localStorage.setItem('JWT', res.data.data);
-          navigate('/user/setting');
+          navigate('/user/profile');
         })
         .catch((err) => {
           if (err.response.status === 400 || err.response.status === 401) {

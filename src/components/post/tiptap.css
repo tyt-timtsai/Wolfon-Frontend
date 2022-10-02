@@ -1,5 +1,6 @@
 /* Basic editor styles */
 .tiptap-editor {
+  margin: 0;
   padding: 0;
   border-radius: 5px;
   border: 2px solid #fff;

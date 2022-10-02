@@ -38,8 +38,8 @@ function Header() {
               <a href="/post/create" className="hover-underline">
                 <Button sx={{ color: 'var(--link-color)' }} type="button">new Post</Button>
               </a>
-              <a href="/user/setting" className="hover-underline">
-                <Button sx={{ color: 'var(--main-focus-color)' }} type="button">Setting</Button>
+              <a href="/user/profile" className="hover-underline">
+                <Button sx={{ color: 'var(--main-focus-color)' }} type="button">Profile</Button>
               </a>
               <Button
                 type="button"

@@ -45,9 +45,7 @@ function UserInfo({ userData, isSetting, isPost }) {
 
   useEffect(() => {
     setFile(null);
-    console.log(userData);
   }, []);
-
   return (
     <Paper elevation={2} sx={{ maxWidth: 256 }} id="home-left-sidebar">
       {isSetting ? (

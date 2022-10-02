@@ -6,20 +6,28 @@ import Swal from 'sweetalert2';
 import { ListItemIcon } from '@mui/material';
 import SmartDisplayIcon from '@mui/icons-material/SmartDisplay';
 // import GroupsIcon from '@mui/icons-material/Groups';
+import HomeIcon from '@mui/icons-material/Home';
 import PeopleIcon from '@mui/icons-material/People';
 import ArticleIcon from '@mui/icons-material/Article';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
+import PushPinIcon from '@mui/icons-material/PushPin';
+import GroupsIcon from '@mui/icons-material/Groups';
 import { CgProfile } from 'react-icons/cg';
 import UserInfo from './userInfo';
 import './sidebar.css';
 
-function Sidebar({ userData, isSetting }) {
+function Sidebar({ userData, isSetting, location }) {
   const navigate = useNavigate();
 
   const handleNavigate = (prop) => () => {
     if (userData) {
       switch (prop) {
+        case 'home':
+          navigate('/');
+          break;
         case 'profile':
-          navigate(`/user/${userData.id}`);
+          navigate('/user/profile');
           break;
         case 'live':
           navigate('/user/asset/live');
@@ -27,8 +35,20 @@ function Sidebar({ userData, isSetting }) {
         case 'post':
           navigate('/user/asset/post');
           break;
+        case 'likePost':
+          navigate('/user/asset/likePost');
+          break;
+        case 'followPost':
+          navigate('/user/asset/followPost');
+          break;
         case 'friend':
           navigate('/user/asset/friend');
+          break;
+        case 'follow':
+          navigate('/user/asset/follow');
+          break;
+        case 'follower':
+          navigate('/user/asset/follower');
           break;
 
         default:
@@ -59,32 +79,69 @@ function Sidebar({ userData, isSetting }) {
       />
 
       <div className="sidebar-links">
-        <div className="sidebar-link" onClick={handleNavigate('profile')}>
+        <div className={location === 'home' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('home')}>
+          <ListItemIcon sx={{ color: '#fff' }}>
+            <HomeIcon style={{ width: 24, height: 24, color: 'var(--main-color)' }} />
+          </ListItemIcon>
+          <p> HOME</p>
+        </div>
+
+        <div className={location === 'profile' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('profile')}>
           <ListItemIcon sx={{ color: '#fff' }}>
             <CgProfile style={{ width: 24, height: 24, color: 'var(--main-color)' }} />
           </ListItemIcon>
           <p> PROFILE</p>
         </div>
 
-        <div className="sidebar-link" onClick={handleNavigate('live')}>
+        <hr style={{ width: '96%' }} />
+
+        <div className={location === 'live' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('live')}>
           <ListItemIcon sx={{ color: '#fff' }}>
             <SmartDisplayIcon sx={{ color: 'var(--main-record-color)' }} />
           </ListItemIcon>
           <p> LIVE</p>
         </div>
 
-        <div className="sidebar-link" onClick={handleNavigate('post')}>
+        <div className={location === 'post' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('post')}>
           <ListItemIcon sx={{ color: '#fff' }}>
-            <ArticleIcon sx={{ color: 'var(--main-focus-color)' }} />
+            <ArticleIcon sx={{ color: 'var(--mui-blue-2)' }} />
           </ListItemIcon>
           <p> POST</p>
         </div>
 
-        <div className="sidebar-link" onClick={handleNavigate('friend')}>
+        <div className={location === 'likePost' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('likePost')}>
+          <ListItemIcon sx={{ color: '#fff' }}>
+            <FavoriteIcon sx={{ color: 'var(--mui-red)' }} />
+          </ListItemIcon>
+          <p> LIKE POST</p>
+        </div>
+
+        <div className={location === 'followPost' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('followPost')}>
+          <ListItemIcon sx={{ color: '#fff' }}>
+            <BookmarkIcon sx={location === 'followPost' ? { color: 'var(--main-color)' } : { color: 'var(--main-focus-color)' }} />
+          </ListItemIcon>
+          <p> FOLLOW POST</p>
+        </div>
+
+        <div className={location === 'friend' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('friend')}>
           <ListItemIcon sx={{ color: '#fff' }}>
             <PeopleIcon sx={{ color: '#ffb74d' }} />
           </ListItemIcon>
           <p> FRIEND</p>
+        </div>
+
+        <div className={location === 'follow' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('follow')}>
+          <ListItemIcon sx={{ color: '#fff' }}>
+            <PushPinIcon sx={{ color: 'var(--mui-blue-1)' }} />
+          </ListItemIcon>
+          <p> FOLLOW</p>
+        </div>
+
+        <div className={location === 'follower' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('follower')}>
+          <ListItemIcon sx={{ color: '#fff' }}>
+            <GroupsIcon sx={{ color: 'var(--mui-green)' }} />
+          </ListItemIcon>
+          <p> FOLLOWER</p>
         </div>
       </div>
     </div>

@@ -98,16 +98,17 @@ function Editor({
   // ============== 版本控制 ===============
   // Use version tag
   const changeVersion = (e) => {
+    console.log(e.target.value);
     if (e.target.value) {
       axios.get(`${constants.GET_VERSION_API}/${room}?tag=${e.target.value}`)
         .then((res) => {
-          if (mode !== res.data.data.language) {
-            setMode(res.data.data.language);
-          }
           setCode(res.data.data.tags[0].code);
-          setSelect(e.target.value);
+          // setSelect(e.target.value);
+          setSelect('');
         })
         .catch((err) => console.log(err));
+    } else {
+      setSelect('');
     }
   };
 
@@ -247,74 +248,6 @@ function Editor({
         />
       </div>
       <div id="editor-btn-container">
-        {isStreamer ? (
-          <div id="tag-container">
-            <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> 直播畫面截圖 </Button>
-
-            <FormGroup>
-              <FormControlLabel
-                control={(
-                  <Switch
-                    checked={isFrom}
-                    onChange={() => setIsFrom(!isFrom)}
-                  />
-                )}
-                label="使用複層"
-                labelPlacement="end"
-              />
-            </FormGroup>
-            <FormControl className="editor-selector" size="small">
-              <InputLabel id="upper-tag-label">上層標籤</InputLabel>
-              <Select
-                name="upper-version"
-                id="upper-version"
-                labelId="language-label"
-                label="Version"
-                value={from}
-                onChange={handleUpperTag}
-              >
-                {version.map((ver) => (
-                  ver.from ? (
-                    <MenuItem
-                      key={ver.version}
-                      value={ver.version}
-                    >
-                      {ver.version}
-                    </MenuItem>
-                  ) : (
-                    <MenuItem
-                      key={ver.version}
-                      // style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
-                      value={ver.version}
-                    >
-                      {ver.version}
-                    </MenuItem>
-                  )
-                ))}
-              </Select>
-            </FormControl>
-
-            <TextField
-              label="Tag Name"
-              size="small"
-              variant="outlined"
-              type="text"
-              name="tag"
-              id="tag-input"
-              value={tag}
-              onChange={editTag}
-            />
-            <Button
-              variant="contained"
-              type="button"
-              className="editor-btn"
-              id="tag-btn"
-              onClick={addTag}
-            >
-              新增標籤
-            </Button>
-          </div>
-        ) : null }
 
         <div id="editor-btns">
           <FormControl className="editor-selector" size="small">
@@ -327,6 +260,7 @@ function Editor({
               value={mode}
               onChange={changeMode}
             >
+              <MenuItem value="null">Language</MenuItem>
               <MenuItem value="javascript">Javascript</MenuItem>
               <MenuItem value="python">Python</MenuItem>
               <MenuItem value="golang">Golang</MenuItem>
@@ -383,6 +317,82 @@ function Editor({
               : 'Run'}
           </Button>
         </div>
+
+        {isStreamer ? <hr style={{ width: '100%', border: '1px solid var(--third-color)' }} /> : null }
+
+        {isStreamer ? (
+          <div id="tag-container">
+            <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> Screenshot </Button>
+
+            <FormGroup>
+              <FormControlLabel
+                control={(
+                  <Switch
+                    checked={isFrom}
+                    onChange={() => setIsFrom(!isFrom)}
+                  />
+                )}
+                label="Use Upper Version"
+                labelPlacement="end"
+              />
+            </FormGroup>
+            <FormControl className="editor-selector" size="small">
+              <InputLabel id="upper-tag-label">Upper Version</InputLabel>
+              <Select
+                name="upper-version"
+                id="upper-version"
+                labelId="language-label"
+                label="Version"
+                value={from}
+                onChange={handleUpperTag}
+              >
+                <MenuItem
+                  value={null}
+                >
+                  No upper version
+                </MenuItem>
+                {version.map((ver) => (
+                  ver.from ? (
+                    <MenuItem
+                      key={ver.version}
+                      value={ver.version}
+                    >
+                      {ver.version}
+                    </MenuItem>
+                  ) : (
+                    <MenuItem
+                      key={ver.version}
+                      // style={{ backgroundColor: '#1a4d7b', color: '#fff' }}
+                      value={ver.version}
+                    >
+                      {ver.version}
+                    </MenuItem>
+                  )
+                ))}
+              </Select>
+            </FormControl>
+
+            <TextField
+              label="Version Name"
+              size="small"
+              variant="outlined"
+              type="text"
+              name="tag"
+              id="tag-input"
+              value={tag}
+              onChange={editTag}
+            />
+            <Button
+              variant="contained"
+              type="button"
+              className="editor-btn"
+              id="tag-btn"
+              onClick={addTag}
+            >
+              Add Version
+            </Button>
+          </div>
+        ) : null }
       </div>
     </div>
   );

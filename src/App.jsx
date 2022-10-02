@@ -12,7 +12,6 @@ import LiveStreamer from './page/live/streamer';
 import LiveReview from './page/live/review';
 // User
 import Login from './page/user/login';
-import Setting from './page/user/setting';
 import UserAsset from './page/user/userAsset';
 import Profile from './page/user/profile';
 // Post
@@ -92,11 +91,11 @@ function App() {
 
       <Route
         element={(
-          <Setting
+          <Profile
             socket={socket}
           />
         )}
-        path="/user/setting"
+        path="/user/profile"
       />
 
       <Route
