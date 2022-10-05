@@ -143,13 +143,7 @@ function Video({
   }, [socket, userData]);
 
   useEffect(() => {
-    console.log('start');
     getProfile();
-
-    socket.on('test', (data, id) => {
-      console.log(data);
-      console.log(id);
-    });
 
     return (() => {
       socket.close();

@@ -45,7 +45,6 @@ function Editor({
   from,
   isFrom,
   setIsFrom,
-  screenShot,
 }) {
   const [terminal, setTerminal] = useState('');
   const [select, setSelect] = useState('');
@@ -224,7 +223,7 @@ function Editor({
             enableLiveAutocompletion: true,
             enableSnippets: true,
             tabSize: 2,
-            // fontSize: '14px',
+            fontSize: '13px',
           }}
         />
         <AceEditor
@@ -244,6 +243,7 @@ function Editor({
             selectionStyle: 'text',
             highlightGutterLine: false,
             copyWithEmptySelection: true,
+            fontSize: '13px',
           }}
         />
       </div>
@@ -322,8 +322,6 @@ function Editor({
 
         {isStreamer ? (
           <div id="tag-container">
-            <Button variant="contained" type="button" id="screenshot-btn" onClick={screenShot}> Screenshot </Button>
-
             <FormGroup>
               <FormControlLabel
                 control={(

@@ -40,9 +40,9 @@ function UserLiveItem({ live }) {
         </CardContent>
         <CardActions disableSpacing>
           {live.isStreaming ? (
-            <Button className="full-width-btn" variant="outlined" onClick={handleClick}>進入直播</Button>
+            <Button className="full-width-btn" variant="contained" onClick={handleClick}>進入直播</Button>
           ) : (
-            <Button className="full-width-btn" variant="outlined" onClick={handleReview}>觀看錄影</Button>
+            <Button className="full-width-btn" variant="contained" onClick={handleReview}>觀看錄影</Button>
           )}
         </CardActions>
       </>

@@ -2,8 +2,10 @@ import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
 import {
-  Button, ImageList, ImageListItem,
+  Button,
+  //  ImageList, ImageListItem,
 } from '@mui/material';
+import Swal from 'sweetalert2';
 import Header from '../../components/header/header';
 import Footer from '../../components/footer/footer';
 import Editor from '../../components/editor/editor';
@@ -25,10 +27,8 @@ function LiveStreamer({ socket, room, setRoom }) {
   const [from, setFrom] = useState('');
   const [isFrom, setIsFrom] = useState(false);
   const [viewers, setViewers] = useState([]);
-  const [screenshots, setScreenshots] = useState([]);
   const [isShow, setIsShow] = useState(true);
   const editor = useRef();
-  const canvasRef = useRef();
   const localVideo = useRef();
   const isStreamer = true;
 
@@ -47,6 +47,13 @@ function LiveStreamer({ socket, room, setRoom }) {
         .then((res) => {
           socket.emit('addTag', newTag);
           console.log(res);
+          Swal.fire({
+            title: 'Success!',
+            text: '直播版本成功',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            confirmButtonColor: 'var(--main-button-color)',
+          });
           setTag('');
         })
         .catch((err) => {
@@ -74,19 +81,6 @@ function LiveStreamer({ socket, room, setRoom }) {
           setCode(res.data.data.tags[0].code);
         })
         .catch((err) => console.log(err));
-    }
-  };
-
-  // Create Screenshot on stream
-  const screenShot = () => {
-    if (isStreaming) {
-      const scale = 1;
-      const video = localVideo.current;
-      const canvas = canvasRef.current;
-      canvas.width = video.videoWidth * scale;
-      canvas.height = video.videoHeight * scale;
-      canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
-      setScreenshots((prev) => [...prev, { src: canvas.toDataURL('image/png') }]);
     }
   };
 
@@ -170,9 +164,9 @@ function LiveStreamer({ socket, room, setRoom }) {
               {liveData ? `LIVE TITLE | ${liveData.title}` : null}
             </h1>
             {isStreaming && (
-            <div className="live-item-streaming-icon">
-              <div className="live-item-streaming-dot" />
-              <p className="live-item-streaming-text">Live</p>
+            <div className="streamer-streaming-icon">
+              <div className="streamer-streaming-dot" />
+              <p className="streamer-streaming-text">Live</p>
             </div>
             )}
           </div>
@@ -187,7 +181,6 @@ function LiveStreamer({ socket, room, setRoom }) {
               room={room}
               localVideo={localVideo}
               setIsStreaming={setIsStreaming}
-              screenShot={screenShot}
               tag={tag}
               setTag={setTag}
               addTag={addTag}
@@ -251,23 +244,10 @@ function LiveStreamer({ socket, room, setRoom }) {
             from={from}
             isFrom={isFrom}
             setIsFrom={setIsFrom}
-            screenShot={screenShot}
           />
         </div>
 
       </section>
-      <canvas ref={canvasRef} style={{ display: 'none' }} />
-      <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164} id="screenshot-container">
-        {screenshots.map((screenshot) => (
-          screenshot.src
-            ? (
-              <ImageListItem key={screenshots.indexOf(screenshot)}>
-                <img src={screenshot.src} className="screenshots-img" alt="screenshot" loading="lazy" />
-              </ImageListItem>
-            )
-            : null
-        ))}
-      </ImageList>
       <Footer />
     </>
   );

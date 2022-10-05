@@ -7,6 +7,9 @@ import Uploader from '../../global/uploader';
 function Streamer({
   socket, room, localVideo, setIsStreaming,
 }) {
+  let stream;
+  const PCs = {};
+  const download = useRef();
   const [file, setFile] = useState();
   const [record, setRecord] = useState();
   const [chunks, setChunks] = useState([]);
@@ -14,9 +17,8 @@ function Streamer({
   const [localStream, setLocalStream] = useState();
   const [mediaRecorder, setMediaRecorder] = useState();
   const [isEnd, setIsEnd] = useState(false);
-  const download = useRef();
-  const PCs = {};
-  let stream;
+  const [isConnected, setIsConnected] = useState(false);
+  const [peerConnections, setPeerConnections] = useState({});
 
   // ===================== 連線相關 =====================
 
@@ -37,12 +39,26 @@ function Streamer({
         sampleRate: 44100,
       },
     };
+
     stream = await navigator.mediaDevices.getDisplayMedia(constraints);
-    const audioStream = await navigator.mediaDevices.getUserMedia(
-      { audio: true },
-    ).catch((err) => { console.log(err); });
-    const [audioTrack] = audioStream.getAudioTracks();
-    stream.addTrack(audioTrack);
+
+    if (!localStream) {
+      const audioStream = await navigator.mediaDevices.getUserMedia(
+        { audio: true },
+      ).catch((err) => { console.log(err); });
+      const [audioTrack] = audioStream.getAudioTracks();
+      stream.addTrack(audioTrack);
+    }
+
+    if (localStream) {
+      const track = stream.getVideoTracks()[0];
+      const peerConns = Object.values(peerConnections);
+      peerConns.forEach((pc) => {
+        const sender = pc.getSenders().find((s) => s.track.kind === track.kind);
+        sender.replaceTrack(track);
+      });
+    }
+
     setLocalStream(stream);
     localVideo.current.srcObject = stream;
   }
@@ -53,12 +69,26 @@ function Streamer({
         cursor: 'always',
       },
       audio: {
+        autoGainControl: true,
+        sampleSize: 16,
+        channelCount: 2,
         echoCancellation: true,
         noiseSuppression: true,
         sampleRate: 44100,
       },
     };
+
     stream = await navigator.mediaDevices.getUserMedia(constraints);
+
+    if (localStream) {
+      const track = stream.getVideoTracks()[0];
+      const peerConns = Object.values(peerConnections);
+      peerConns.forEach((pc) => {
+        const sender = pc.getSenders().find((s) => s.track.kind === track.kind);
+        sender.replaceTrack(track);
+      });
+    }
+
     setLocalStream(stream);
     localVideo.current.srcObject = stream;
   }
@@ -100,7 +130,6 @@ function Streamer({
         console.log('remote disconnected');
       }
     };
-
     return peerConn;
   }
 
@@ -144,18 +173,15 @@ function Streamer({
       console.log('收到 offer');
       const pc = initPeerConnection();
       PCs[id] = pc;
-      console.log(pc);
+      console.log(PCs);
+      setPeerConnections(PCs);
       // 設定對方的配置
       await pc.setRemoteDescription(desc);
 
       // 發送 answer
       await sendSDP(false, pc);
     });
-
-    socket.on('bye', async (id) => {
-      console.log(id, '中斷連線');
-      delete PCs[id];
-    });
+    setIsConnected(true);
   }
 
   /**
@@ -165,7 +191,6 @@ function Streamer({
   const startRecord = () => {
     let recorder;
     const options = {
-      // mimeType: 'video/webm;codecs=vp9',
       mimeType: 'video/webm',
     };
 
@@ -175,7 +200,6 @@ function Streamer({
     }
     if (localStream) {
       try {
-        // mediaRecorder = new MediaRecorder(localStream, options);
         recorder = new MediaRecorder(localStream, options);
         setMediaRecorder(recorder);
       } catch (err) {
@@ -183,16 +207,12 @@ function Streamer({
         return;
       }
 
-      // mediaRecorder.ondataavailable = (e) => {
       recorder.ondataavailable = (e) => {
         if (e && e.data && e.data.size > 0) {
           setChunks((prev) => [...prev, e.data]);
         }
       };
       recorder.start(10);
-      // console.log(mediaRecorder.state);
-      console.log(recorder.state);
-      console.log('recorder started');
     } else {
       console.log('Please start streaming first.');
     }
@@ -212,12 +232,8 @@ function Streamer({
 
   // 停止錄影
   const stopRecord = () => {
-    console.log('in stopRecord', mediaRecorder);
     if (mediaRecorder) {
       mediaRecorder.stop();
-      console.log(mediaRecorder.state);
-      console.log('recorder stopped');
-      // const blob = new Blob(buffer, { type: 'video/webm' });
       const blob = new Blob(chunks, { type: 'video/webm' });
       downloadRecord(blob);
       setFile(blob);
@@ -246,22 +262,27 @@ function Streamer({
  * 初始化
  */
   const init = () => {
-    stopStream();
     createStream();
-    connectIO();
-    startRecord();
+    if (!isConnected) {
+      connectIO();
+    }
+    if (!mediaRecorder) {
+      startRecord();
+    }
   };
 
   const initCamera = async () => {
-    stopStream();
     await createCameraStream();
-    connectIO();
-    startRecord();
+    if (!isConnected) {
+      connectIO();
+    }
+    if (!mediaRecorder) {
+      startRecord();
+    }
   };
 
   // 有影音流就開始錄影
   useEffect(() => {
-    console.log(localStream);
     if (localStream) {
       startRecord();
     }
@@ -297,6 +318,20 @@ function Streamer({
       upload.start();
     }
   }, [file]);
+
+  // 觀看者離開時刪除 Peer
+  useEffect(() => {
+    socket.on('leave', async (id) => {
+      console.log(peerConnections);
+
+      setPeerConnections((current) => {
+        const copy = { ...current };
+        delete copy[`${id}`];
+        return copy;
+      });
+    });
+    console.log(peerConnections);
+  }, [peerConnections]);
 
   useEffect(() => (() => socket.close()), [socket]);
 
