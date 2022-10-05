@@ -28,7 +28,8 @@ function Profile() {
   const [category, setCategory] = useState('post');
   const [assets, setAssets] = useState(null);
 
-  const [open, setOpen] = useState(false);
+  const [openBackground, setOpenBackground] = useState(false);
+  const [openAvatar, setOpenAvatar] = useState(false);
   const [file, setFile] = useState(null);
 
   const [isOwn, setIsOwn] = useState(false);
@@ -37,11 +38,40 @@ function Profile() {
   const [isFriend, setIsFriend] = useState(false);
   const [isFetching, setIsFetching] = useState(true);
 
-  const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleOpenAvatar = () => setOpenAvatar(true);
+  const handleOpenBackground = () => setOpenBackground(true);
+  const handleClose = () => {
+    setOpenAvatar(false);
+    setOpenBackground(false);
+  };
   const handleUpload = (e) => setFile(e.target.files[0]);
 
-  const upload = () => {
+  const uploadAvatar = () => {
+    if (file && user && isOwn) {
+      console.log('upload');
+      const formData = new FormData();
+      formData.append('type', 'avatar');
+      formData.append('image', file);
+      axios.post(
+        constants.UPLOAD_IMAGE_API,
+        formData,
+        {
+          headers: {
+            authorization: `Bearer ${window.localStorage.getItem('JWT')}`,
+          },
+        },
+      ).then((res) => {
+        window.localStorage.setItem('JWT', res.data.data);
+        navigate(0);
+      }).catch((err) => {
+        console.log(err);
+      });
+    }
+    setFile(null);
+    handleClose();
+  };
+
+  const uploadBackground = () => {
     if (file && user && isOwn) {
       console.log('upload');
       const formData = new FormData();
@@ -282,14 +312,15 @@ function Profile() {
                         id="profile-background-edit-icon"
                         aria-label="upload picture"
                         component="label"
-                        onClick={handleOpen}
+                        onClick={handleOpenBackground}
+                        value="background"
                       >
                         <EditIcon />
                       </IconButton>
                       <UploadModal
-                        open={open}
+                        open={openBackground}
                         file={file}
-                        upload={upload}
+                        upload={uploadBackground}
                         handleClose={handleClose}
                         handleUpload={handleUpload}
                       />
@@ -334,23 +365,24 @@ function Profile() {
                     <p id="user-profile-name">{user.name}</p>
                     {isOwn
                     && (
-                    <>
-                      <IconButton
-                        id="profile-avatar-edit-icon"
-                        aria-label="upload picture"
-                        component="label"
-                        onClick={handleOpen}
-                      >
-                        <EditIcon />
-                      </IconButton>
-                      <UploadModal
-                        open={open}
-                        file={file}
-                        upload={upload}
-                        handleClose={handleClose}
-                        handleUpload={handleUpload}
-                      />
-                    </>
+                      <>
+                        <IconButton
+                          id="profile-avatar-edit-icon"
+                          aria-label="upload picture"
+                          component="label"
+                          onClick={handleOpenAvatar}
+                          value="avatar"
+                        >
+                          <EditIcon />
+                        </IconButton>
+                        <UploadModal
+                          open={openAvatar}
+                          file={file}
+                          upload={uploadAvatar}
+                          handleClose={handleClose}
+                          handleUpload={handleUpload}
+                        />
+                      </>
                     )}
                   </div>
 

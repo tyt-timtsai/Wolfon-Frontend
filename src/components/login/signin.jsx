@@ -71,6 +71,14 @@ function signIn() {
               confirmButtonText: 'OK',
             });
           }
+          if (err.response.status === 401) {
+            Swal.fire({
+              title: 'Error!',
+              text: '信箱未註冊',
+              icon: 'error',
+              confirmButtonText: 'OK',
+            });
+          }
         })
     );
   };
