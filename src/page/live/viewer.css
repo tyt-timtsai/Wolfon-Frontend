@@ -3,7 +3,7 @@
     box-sizing: border-box;
     /* width: var(--main-content-width); */
     width: 93vw;
-    min-height: 75vh;
+    min-height: 85vh;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
