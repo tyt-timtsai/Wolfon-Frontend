@@ -187,13 +187,13 @@ function LiveStreamer({ socket, room, setRoom }) {
               isStreamer={isStreamer}
               userData={userData}
             />
-            <p id="viewers-list-hint">
-              Click : Get viewer editor code
-              <br />
-              <br />
-              Newest : Get newest version
-            </p>
             <div id="viewers-list">
+              <p id="viewers-list-hint">
+                Click : Get viewer editor code
+                <br />
+                <br />
+                Newest : Get newest version
+              </p>
               <Button
                 variant="contained"
                 type="button"
