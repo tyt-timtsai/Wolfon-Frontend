@@ -96,7 +96,9 @@ function Home() {
               value="post"
               onClick={handleType}
               className="home-type-btn"
-              style={type === 'post' ? { backgroundColor: 'var(--main-color)', color: 'var(--main-bg-color)' } : null}
+              style={type === 'post'
+                ? { backgroundColor: 'var(--main-color)', color: 'var(--main-bg-color)' }
+                : { border: '1px solid var(--third-color)', color: 'var(--third-color)' }}
             >
               Post
             </button>
@@ -105,7 +107,9 @@ function Home() {
               value="live"
               onClick={handleType}
               className="home-type-btn"
-              style={type === 'live' ? { backgroundColor: 'var(--main-color)', color: 'var(--main-bg-color)' } : null}
+              style={type === 'live'
+                ? { backgroundColor: 'var(--main-color)', color: 'var(--main-bg-color)' }
+                : { border: '1px solid var(--third-color)', color: 'var(--third-color)' }}
             >
               Live
             </button>

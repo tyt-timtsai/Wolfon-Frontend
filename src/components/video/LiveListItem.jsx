@@ -71,9 +71,9 @@ function LiveListItem({ live }) {
           <FavoriteIcon />
         </IconButton> */}
         {isStreaming ? (
-          <Button className="full-width-btn" variant="outlined" onClick={handleJoin}>加入直播</Button>
+          <Button className="full-width-btn" variant="contained" onClick={handleJoin}>加入直播</Button>
         ) : (
-          <Button className="full-width-btn" variant="outlined" onClick={handleReview}>觀看直播錄影</Button>
+          <Button className="full-width-btn" variant="contained" onClick={handleReview}>觀看直播錄影</Button>
         )}
       </CardActions>
     </Card>

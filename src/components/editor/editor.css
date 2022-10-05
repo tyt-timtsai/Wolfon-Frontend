@@ -33,11 +33,6 @@
     gap: 5px;
 }
 
-#screenshot-btn {
-    position: absolute;
-    left: 0px;
-}
-
 #tag-input {
     width: 162px;
 }

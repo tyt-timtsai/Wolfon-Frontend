@@ -154,7 +154,7 @@
 }
 
 /* Streaming icon */
-.live-item-streaming-icon {
+.streamer-streaming-icon {
     position: absolute;
     top: 30%;
     right: 40px;
@@ -168,13 +168,13 @@
     z-index: 50;
 }
 
-.live-item-streaming-text {
+.streamer-streaming-text {
     font-size: 20px;
     font-weight: 500;
     color: var(--main-record-color);
 }
 
-.live-item-streaming-dot {
+.streamer-streaming-dot {
     width: 15px;
     height: 15px;
     border-radius: 50%;
@@ -182,7 +182,7 @@
     opacity: .8;
 }
 
-.live-item-streaming-dot:after {
+.streamer-streaming-dot:after {
     content: '';
     display: block;
     border: 1px solid #e50040;

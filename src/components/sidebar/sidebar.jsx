@@ -92,57 +92,61 @@ function Sidebar({ userData, isSetting, location }) {
           </ListItemIcon>
           <p> PROFILE</p>
         </div>
+        {userData
+      && (
+        <>
+          <hr style={{ width: '96%' }} />
 
-        <hr style={{ width: '96%' }} />
+          <div className={location === 'live' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('live')}>
+            <ListItemIcon sx={{ color: '#fff' }}>
+              <SmartDisplayIcon sx={{ color: 'var(--main-record-color)' }} />
+            </ListItemIcon>
+            <p> LIVE</p>
+          </div>
 
-        <div className={location === 'live' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('live')}>
-          <ListItemIcon sx={{ color: '#fff' }}>
-            <SmartDisplayIcon sx={{ color: 'var(--main-record-color)' }} />
-          </ListItemIcon>
-          <p> LIVE</p>
-        </div>
+          <div className={location === 'post' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('post')}>
+            <ListItemIcon sx={{ color: '#fff' }}>
+              <ArticleIcon sx={{ color: 'var(--mui-blue-2)' }} />
+            </ListItemIcon>
+            <p> POST</p>
+          </div>
 
-        <div className={location === 'post' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('post')}>
-          <ListItemIcon sx={{ color: '#fff' }}>
-            <ArticleIcon sx={{ color: 'var(--mui-blue-2)' }} />
-          </ListItemIcon>
-          <p> POST</p>
-        </div>
+          <div className={location === 'likePost' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('likePost')}>
+            <ListItemIcon sx={{ color: '#fff' }}>
+              <FavoriteIcon sx={{ color: 'var(--mui-red)' }} />
+            </ListItemIcon>
+            <p> LIKE POST</p>
+          </div>
 
-        <div className={location === 'likePost' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('likePost')}>
-          <ListItemIcon sx={{ color: '#fff' }}>
-            <FavoriteIcon sx={{ color: 'var(--mui-red)' }} />
-          </ListItemIcon>
-          <p> LIKE POST</p>
-        </div>
+          <div className={location === 'followPost' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('followPost')}>
+            <ListItemIcon sx={{ color: '#fff' }}>
+              <BookmarkIcon sx={location === 'followPost' ? { color: 'var(--main-color)' } : { color: 'var(--main-focus-color)' }} />
+            </ListItemIcon>
+            <p> FOLLOW POST</p>
+          </div>
 
-        <div className={location === 'followPost' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('followPost')}>
-          <ListItemIcon sx={{ color: '#fff' }}>
-            <BookmarkIcon sx={location === 'followPost' ? { color: 'var(--main-color)' } : { color: 'var(--main-focus-color)' }} />
-          </ListItemIcon>
-          <p> FOLLOW POST</p>
-        </div>
+          <div className={location === 'friend' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('friend')}>
+            <ListItemIcon sx={{ color: '#fff' }}>
+              <PeopleIcon sx={{ color: '#ffb74d' }} />
+            </ListItemIcon>
+            <p> FRIEND</p>
+          </div>
 
-        <div className={location === 'friend' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('friend')}>
-          <ListItemIcon sx={{ color: '#fff' }}>
-            <PeopleIcon sx={{ color: '#ffb74d' }} />
-          </ListItemIcon>
-          <p> FRIEND</p>
-        </div>
+          <div className={location === 'follow' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('follow')}>
+            <ListItemIcon sx={{ color: '#fff' }}>
+              <PushPinIcon sx={{ color: 'var(--mui-blue-1)' }} />
+            </ListItemIcon>
+            <p> FOLLOW</p>
+          </div>
 
-        <div className={location === 'follow' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('follow')}>
-          <ListItemIcon sx={{ color: '#fff' }}>
-            <PushPinIcon sx={{ color: 'var(--mui-blue-1)' }} />
-          </ListItemIcon>
-          <p> FOLLOW</p>
-        </div>
-
-        <div className={location === 'follower' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('follower')}>
-          <ListItemIcon sx={{ color: '#fff' }}>
-            <GroupsIcon sx={{ color: 'var(--mui-green)' }} />
-          </ListItemIcon>
-          <p> FOLLOWER</p>
-        </div>
+          <div className={location === 'follower' ? 'sidebar-link sidebar-active' : 'sidebar-link'} onClick={handleNavigate('follower')}>
+            <ListItemIcon sx={{ color: '#fff' }}>
+              <GroupsIcon sx={{ color: 'var(--mui-green)' }} />
+            </ListItemIcon>
+            <p> FOLLOWER</p>
+          </div>
+        </>
+      )}
       </div>
     </div>
   );
