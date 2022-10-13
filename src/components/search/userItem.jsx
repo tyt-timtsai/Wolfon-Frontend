@@ -1,10 +1,9 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import {
-  // Checkbox,
   Button,
   Avatar,
 } from '@mui/material';
-// import { BsBell, BsBellFill } from 'react-icons/bs';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import constants from '../../global/constants';
@@ -18,17 +17,10 @@ function SearchUserItem({ user, userData }) {
   const navigate = useNavigate();
   const token = window.localStorage.getItem('JWT');
 
-  // const style = {
-  //   position: 'relative',
-  //   bottom: '90%',
-  //   left: '37%',
-  //   height: 0,
-  // };
-
   function followUser() {
     axios.post(
       constants.FOLLOW_USER_API,
-      { id: user.id },
+      { id: user._id },
       { headers: { authorization: token } },
     ).then((res) => {
       console.log(res);
@@ -41,7 +33,7 @@ function SearchUserItem({ user, userData }) {
   function unFollowUser() {
     axios.delete(constants.FOLLOW_USER_API, {
       headers: { authorization: token },
-      data: { id: user.id },
+      data: { id: user._id },
     }).then((res) => {
       console.log(res);
       window.localStorage.setItem('JWT', res.data.data);
@@ -60,7 +52,7 @@ function SearchUserItem({ user, userData }) {
   };
 
   const applyFriend = () => {
-    axios.post(constants.APPLY_FRIEND_API, { id: user.id }, {
+    axios.post(constants.APPLY_FRIEND_API, { id: user._id }, {
       headers: { authorization: token },
     })
       .then((res) => {
@@ -73,7 +65,7 @@ function SearchUserItem({ user, userData }) {
   };
 
   const cancelApply = () => {
-    axios.put(constants.CANCEL_APPLY_API, { id: user.id, action: 'cancel' }, {
+    axios.put(constants.CANCEL_APPLY_API, { id: user._id, action: 'cancel' }, {
       headers: { authorization: token },
     })
       .then((res) => {
@@ -87,16 +79,16 @@ function SearchUserItem({ user, userData }) {
 
   useEffect(() => {
     if (token) {
-      if (userData.id === user.id) {
+      if (userData._id === user._id) {
         setIsMe(true);
       }
-      if (userData.friends.includes(user.id)) {
+      if (userData.friends.includes(user._id)) {
         setIsFriend(true);
       }
-      if (userData.apply_friends.includes(user.id)) {
+      if (userData.apply_friends.includes(user._id)) {
         setIsApply(true);
       }
-      if (userData.follows.includes(user.id)) {
+      if (userData.follows.includes(user._id)) {
         setFollow(true);
       }
     }
@@ -130,7 +122,7 @@ function SearchUserItem({ user, userData }) {
               className="search-user-btn"
               variant="outlined"
               type="button"
-              onClick={() => navigate(`/user/${user.id}`)}
+              onClick={() => navigate(`/user/${user._id}`)}
             >
               個人頁面
             </Button>

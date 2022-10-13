@@ -1,13 +1,19 @@
+/* eslint-disable no-underscore-dangle */
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-import { Checkbox, Paper } from '@mui/material';
+import {
+  Checkbox, Paper,
+  IconButton,
+} from '@mui/material';
 import FavoriteBorder from '@mui/icons-material/FavoriteBorder';
 import Favorite from '@mui/icons-material/Favorite';
 import BookmarkBorderIcon from '@mui/icons-material/BookmarkBorder';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import parser from 'html-react-parser';
 import Swal from 'sweetalert2';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 import Header from '../../components/header/header';
 import UserInfo from '../../components/sidebar/userInfo';
 import Footer from '../../components/footer/footer';
@@ -24,9 +30,10 @@ function Post() {
   const [follow, setFollow] = useState(false);
   const [followers, setFollowers] = useState();
   const [isLogin, setIsLogin] = useState(false);
+  const [isAuthor, setIsAuthor] = useState(false);
 
   async function likePost() {
-    axios.get(`${constants.LIKE_POST_API}/${post.id}`, {
+    axios.get(`${constants.LIKE_POST_API}/${post._id}`, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },
@@ -40,7 +47,7 @@ function Post() {
   }
 
   async function followPost() {
-    axios.get(`${constants.FOLLOW_POST_API}/${post.id}`, {
+    axios.get(`${constants.FOLLOW_POST_API}/${post._id}`, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },
@@ -52,6 +59,40 @@ function Post() {
         console.log(err);
       });
   }
+
+  function deletePost() {
+    axios.delete(`${constants.DELETE_POST_API}/${post._id}`, {
+      headers: {
+        authorization: window.localStorage.getItem('JWT'),
+      },
+    })
+      .then((res) => {
+        window.localStorage.setItem('JWT', res.data.data);
+        navigate('/user/profile');
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  const handleDelete = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showDenyButton: true,
+      confirmButtonText: 'Yes, Delete it',
+      denyButtonText: 'No',
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deletePost();
+      }
+    });
+  };
+
+  const handleEdit = () => {
+    navigate(`/post/edit/${post._id}`);
+  };
 
   const handleChange = (prop) => async () => {
     if (!window.localStorage.getItem('JWT')) {
@@ -111,8 +152,8 @@ function Post() {
           authorization: token,
         },
       });
-      const userData = result.data.data;
-      return userData;
+      const user = result.data.data;
+      return user;
     } catch (err) {
       if (err.response.status === 403 || err.response.status === 400) {
         window.localStorage.removeItem('JWT');
@@ -128,11 +169,14 @@ function Post() {
     try {
       postData = await getPost();
       if (token) {
-        const userData = await getUser(token);
-        const userId = userData.id;
+        const user = await getUser(token);
+        const userId = user._id;
         setLike(postData.post.likes.includes(userId));
         setFollow(postData.post.followers.includes(userId));
         setIsLogin(true);
+        if (userId === postData.userData._id) {
+          setIsAuthor(true);
+        }
       }
     } catch (error) {
       console.log(error);
@@ -162,7 +206,7 @@ function Post() {
       <div id="post-detail-container">
         {post ? (
           <>
-            {isLogin ? (
+            {isLogin && !isAuthor ? (
               <div id="post-details">
                 <div className="post-detail-icons">
                   <Checkbox
@@ -198,6 +242,27 @@ function Post() {
                   {' '}
                   {post.created_dt.slice(0, -4)}
                 </p>
+                {isAuthor
+                && (
+                <>
+                  <IconButton
+                    id="post-edit-btn"
+                    aria-label="edit post"
+                    component="label"
+                    onClick={handleEdit}
+                  >
+                    <EditIcon style={{ color: 'black' }} />
+                  </IconButton>
+                  <IconButton
+                    id="post-delete-btn"
+                    aria-label="delete post"
+                    component="label"
+                    onClick={handleDelete}
+                  >
+                    <DeleteIcon style={{ color: 'var(--main-record-color)' }} />
+                  </IconButton>
+                </>
+                )}
               </div>
 
               <hr style={{ width: '95%', border: '1px solid var(--third-color)' }} />

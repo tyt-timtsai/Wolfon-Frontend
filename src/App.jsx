@@ -136,6 +136,15 @@ function App() {
 
       <Route
         element={(
+          <NewPost
+            socket={socket}
+          />
+        )}
+        path="/post/edit/:id"
+      />
+
+      <Route
+        element={(
           <Community
             socket={socket}
           />

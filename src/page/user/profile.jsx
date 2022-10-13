@@ -8,6 +8,7 @@ import {
   IconButton,
   Button,
 } from '@mui/material';
+import Swal from 'sweetalert2';
 import CircularProgress from '@mui/material/CircularProgress';
 import EditIcon from '@mui/icons-material/Edit';
 import constants from '../../global/constants';
@@ -56,9 +57,7 @@ function Profile() {
         constants.UPLOAD_IMAGE_API,
         formData,
         {
-          headers: {
-            authorization: `Bearer ${window.localStorage.getItem('JWT')}`,
-          },
+          headers: { authorization: token },
         },
       ).then((res) => {
         window.localStorage.setItem('JWT', res.data.data);
@@ -81,9 +80,7 @@ function Profile() {
         constants.UPLOAD_IMAGE_API,
         formData,
         {
-          headers: {
-            authorization: `Bearer ${window.localStorage.getItem('JWT')}`,
-          },
+          headers: { authorization: token },
         },
       ).then((res) => {
         window.localStorage.setItem('JWT', res.data.data);
@@ -104,11 +101,10 @@ function Profile() {
   };
 
   const applyFriend = () => {
-    axios.post(constants.APPLY_FRIEND_API, { id: user.id }, {
+    axios.post(constants.APPLY_FRIEND_API, { id: user._id }, {
       headers: { authorization: token },
     })
       .then((res) => {
-        console.log(res);
         window.localStorage.setItem('JWT', res.data.data);
         setIsApply(!isApply);
       }).catch((err) => {
@@ -117,11 +113,10 @@ function Profile() {
   };
 
   const cancelApply = () => {
-    axios.put(constants.CANCEL_APPLY_API, { id: user.id, action: 'cancel' }, {
+    axios.put(constants.CANCEL_APPLY_API, { id: user._id, action: 'cancel' }, {
       headers: { authorization: token },
     })
       .then((res) => {
-        console.log(res);
         window.localStorage.setItem('JWT', res.data.data);
         setIsApply(!isApply);
       }).catch((err) => {
@@ -135,10 +130,20 @@ function Profile() {
         authorization: window.localStorage.getItem('JWT'),
       },
     }).then((res) => {
-      console.log(res);
       callback(res.data.data);
     }).catch((err) => {
       console.log(err);
+      if (err.response.status === 403) {
+        window.localStorage.removeItem('JWT');
+        Swal.fire({
+          title: 'Token Expired',
+          text: 'Please login again',
+          icon: 'error',
+          confirmButtonText: 'OK',
+        }).then(() => {
+          navigate('/user/login');
+        });
+      }
     });
   }
 
@@ -148,17 +153,26 @@ function Profile() {
         authorization: window.localStorage.getItem('JWT'),
       },
     }).then((res) => {
-      console.log(res);
       setUser(res.data.data);
     }).catch((err) => {
       console.log(err);
+      if (err.response.status === 400) {
+        Swal.fire({
+          title: 'Not Found',
+          text: 'User not found or URL is wrong',
+          icon: 'error',
+          confirmButtonText: 'Go Back',
+        }).then(() => {
+          navigate(-1);
+        });
+      }
     });
   }
 
   function followUser() {
     axios.post(
       constants.FOLLOW_USER_API,
-      { id: user.id },
+      { id: user._id },
       { headers: { authorization: token } },
     ).then((res) => {
       console.log(res);
@@ -171,7 +185,7 @@ function Profile() {
   function unFollowUser() {
     axios.delete(constants.FOLLOW_USER_API, {
       headers: { authorization: token },
-      data: { id: user.id },
+      data: { id: user._id },
     }).then((res) => {
       console.log(res);
       window.localStorage.setItem('JWT', res.data.data);
@@ -191,13 +205,13 @@ function Profile() {
 
   useEffect(() => {
     if (token && userData && user) {
-      if (userData.friends.includes(user.id)) {
+      if (userData.friends.includes(user._id)) {
         setIsFriend(true);
       }
-      if (userData.apply_friends.includes(user.id)) {
+      if (userData.apply_friends.includes(user._id)) {
         setIsApply(true);
       }
-      if (userData.follows.includes(user.id)) {
+      if (userData.follows.includes(user._id)) {
         setIsFollow(true);
       }
     }
@@ -214,8 +228,8 @@ function Profile() {
   }, [params]);
 
   useEffect(() => {
-    if (userData) {
-      if (userData.id === user.id) {
+    if (userData && user) {
+      if (userData._id === user._id) {
         setIsOwn(true);
       }
     }
@@ -242,16 +256,31 @@ function Profile() {
         default:
           break;
       }
-      axios.post(url, { id: user.id })
-        .then((res) => {
-          setAssets(res.data.data.reverse());
-          setIsFetching(false);
-        }).catch((err) => {
-          console.log(err);
-          setIsFetching(false);
-        });
+      if (isOwn) {
+        axios.get(url, {
+          headers: { authorization: token },
+        })
+          .then((res) => {
+            setAssets(res.data.data.reverse());
+            setIsFetching(false);
+          }).catch((err) => {
+            console.log(err);
+            setIsFetching(false);
+          });
+      } else {
+        axios.post(url, { id: user._id }, {
+          headers: { authorization: token },
+        })
+          .then((res) => {
+            setAssets(res.data.data.reverse());
+            setIsFetching(false);
+          }).catch((err) => {
+            console.log(err);
+            setIsFetching(false);
+          });
+      }
     }
-  }, [user, category]);
+  }, [user, category, isOwn]);
   return (
     <>
       <Header />

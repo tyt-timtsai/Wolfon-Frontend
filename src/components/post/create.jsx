@@ -5,7 +5,7 @@ import Tiptap from './TipTap';
 import './create.css';
 
 function CreatePost({
-  post, setPost, postPost, setContent,
+  post, setPost, updatePost, postPost, content, setContent, isEdit, setIsEdit, setPostId,
 }) {
   const [preview, setPreview] = useState(false);
 
@@ -33,6 +33,7 @@ function CreatePost({
             style: { color: 'var(--main-content-color)' },
           }}
           onChange={handleInputChange('title')}
+          value={post.title || ''}
         />
         <TextField
           required
@@ -48,16 +49,25 @@ function CreatePost({
             style: { color: 'var(--main-content-color)' },
           }}
           onChange={handleInputChange('subtitle')}
+          value={post.subtitle || ''}
         />
       </div>
       <Tiptap
+        content={content}
         setContent={setContent}
+        setPost={setPost}
+        setIsEdit={setIsEdit}
+        setPostId={setPostId}
       />
       <div id="create-post-button-container">
         <Button type="button" variant={preview ? 'contained' : 'outlined'} onClick={handlePreview}>{preview ? 'Close' : 'Preview'}</Button>
-        <Button type="button" variant="contained" onClick={postPost}>Submit</Button>
+        {isEdit ? (
+          <Button type="button" variant="contained" onClick={updatePost}>Update</Button>
+        ) : (
+          <Button type="button" variant="contained" onClick={postPost}>Submit</Button>
+        )}
       </div>
-      { preview
+      { preview && post.content
         ? (
           <Paper elevation={6} id="post-preview">
             <div id="post-detail-content-header">
@@ -70,7 +80,6 @@ function CreatePost({
             <div className="ProseMirror">
               {parser(post.content)}
             </div>
-
           </Paper>
         )
         : null }

@@ -11,14 +11,16 @@ import constants from '../../global/constants';
 
 function NewPost() {
   const navigate = useNavigate();
+  const [postId, setPostId] = useState('');
+  const [isEdit, setIsEdit] = useState(false);
+  const [content, setContent] = useState('');
   const [post, setPost] = useState({
     title: '',
     subtitle: '',
     content: '',
   });
-  const [content, setContent] = useState('');
 
-  const postPost = () => {
+  function validation() {
     if (validator.isEmpty(post.title)) {
       return Swal.fire({
         title: 'Error!',
@@ -43,6 +45,11 @@ function NewPost() {
         confirmButtonText: 'OK',
       });
     }
+    return 0;
+  }
+
+  const postPost = () => {
+    validation();
     return axios.post(constants.CREATE_POST_API, { data: post }, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
@@ -52,7 +59,39 @@ function NewPost() {
         window.localStorage.setItem('JWT', res.data.data.token);
         navigate(`/post/${res.data.data.id}`);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.response.status === 403) {
+          window.localStorage.removeItem('JWT');
+          navigate('/user/login');
+        }
+      });
+  };
+
+  const updatePost = () => {
+    validation();
+    return axios.patch(`${constants.UPDATE_POST_API}/${postId}`, {
+      postId, title: post.title, subtitle: post.subtitle, content: post.content,
+    }, {
+      headers: {
+        authorization: window.localStorage.getItem('JWT'),
+      },
+    })
+      .then(() => {
+        Swal.fire({
+          title: 'Success!',
+          text: 'Updated post successful',
+          icon: 'success',
+          confirmButtonText: 'OK',
+        });
+        navigate(`/post/${postId}`);
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err.response.status === 403) {
+          window.localStorage.removeItem('JWT');
+          navigate('/user/login');
+        }
+      });
   };
 
   useEffect(() => {
@@ -73,7 +112,12 @@ function NewPost() {
         post={post}
         setPost={setPost}
         postPost={postPost}
+        updatePost={updatePost}
+        content={content}
         setContent={setContent}
+        isEdit={isEdit}
+        setIsEdit={setIsEdit}
+        setPostId={setPostId}
       />
       <Footer />
     </>

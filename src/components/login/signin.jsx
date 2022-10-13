@@ -40,7 +40,6 @@ function signIn() {
   };
 
   const signin = () => {
-    console.log(userData);
     const dataArray = Object.values(userData);
     if (dataArray.some((value) => value === '')) {
       return Swal.fire({
@@ -53,7 +52,6 @@ function signIn() {
     return (
       axios.post(constants.SIGNIN_API, { data: userData })
         .then((res) => {
-          console.log(res);
           setUserData({
             email: userData.email,
             password: '',

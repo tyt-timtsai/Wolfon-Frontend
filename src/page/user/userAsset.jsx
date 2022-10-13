@@ -90,7 +90,6 @@ function UserAsset() {
         authorization: token,
       },
     }).then((res) => {
-      console.log(res.data.data);
       const { friends, pendingFriends } = res.data.data;
       setAssets({
         friends,
@@ -114,7 +113,6 @@ function UserAsset() {
         authorization: token,
       },
     }).then((res) => {
-      console.log(res.data.data);
       setAssets(res.data.data.follows.reverse());
       setIsFetching(false);
     }).catch((err) => {
@@ -134,7 +132,6 @@ function UserAsset() {
         authorization: token,
       },
     }).then((res) => {
-      console.log(res.data.data);
       setAssets(res.data.data.followers.reverse());
       setIsFetching(false);
     }).catch((err) => {
@@ -158,7 +155,6 @@ function UserAsset() {
         },
       })
         .then((res) => {
-          console.log(res.data.data);
           setUserData(res.data.data);
         })
         .catch((err) => {
@@ -226,54 +222,54 @@ function UserAsset() {
             <>
               {category === 'live' && assets != null ? (
                 <div className="asset-live-container">
-                  {assets ? assets.map((live) => (
+                  {assets[0] ? assets.map((live) => (
                     <UserLiveItem
                       live={live}
                       key={live._id}
                     />
-                  )) : null}
+                  )) : <p className="no-assets-text">No Live</p>}
                 </div>
               ) : null}
 
               {category === 'post' && assets != null ? (
                 <div className="post-list-item-container">
-                  {assets ? assets.map((post) => (
+                  {assets[0] ? assets.map((post) => (
                     <PostList
                       key={post._id}
                       post={post}
                     />
-                  )) : <p className="friend-list-label">No Post</p>}
+                  )) : <p className="no-assets-text">No Post</p>}
                 </div>
               ) : null}
 
               {category === 'likePost' && assets != null ? (
                 <div className="post-list-item-container">
-                  {assets ? assets.map((post) => (
+                  {assets[0] ? assets.map((post) => (
                     <PostList
                       key={post._id}
                       post={post}
                     />
-                  )) : <p className="friend-list-label">No Like Post</p>}
+                  )) : <p className="no-assets-text">No Like Post</p>}
                 </div>
               ) : null}
 
               {category === 'followPost' && assets != null ? (
                 <div className="post-list-item-container">
-                  {assets ? assets.map((post) => (
+                  {assets[0] ? assets.map((post) => (
                     <PostList
                       key={post._id}
                       post={post}
                     />
-                  )) : <p className="friend-list-label">No Follow Post</p>}
+                  )) : <p className="no-assets-text">No Follow Post</p>}
                 </div>
               ) : null}
 
               {category === 'friend' && assets != null ? (
                 <div className="friend-list-item-container">
-                  {assets && assets.pendingFriends.length > 0
+                  {assets[0] && assets.pendingFriends.length > 0
                     ? (
                       <>
-                        <p className="friend-list-label">好友申請</p>
+                        <p className="friend-list-label">Applicants</p>
                         <div className="friend-list-items">
                           {assets.pendingFriends.map((friend) => (
                             <UserFriendItem
@@ -288,10 +284,10 @@ function UserAsset() {
                       </>
                     )
                     : null}
-                  {assets && assets.friends.length > 0
+                  {assets[0] && assets.friends.length > 0
                     ? (
                       <>
-                        <p className="friend-list-label">好友</p>
+                        <p className="friend-list-label">Friends</p>
                         <div className="friend-list-items">
                           {assets.friends.map((friend) => (
                             <UserFriendItem
@@ -303,13 +299,13 @@ function UserAsset() {
                         </div>
                       </>
                     )
-                    : <p className="friend-list-label">目前尚無好友</p>}
+                    : <p className="no-assets-text">No Friend</p>}
                 </div>
               ) : null}
 
               {category === 'follow' && assets != null ? (
                 <div className="friend-list-item-container">
-                  {assets && assets.length > 0
+                  {assets[0] && assets.length > 0
                     ? (
                       <>
                         <p className="friend-list-label">Follow Users</p>
@@ -318,7 +314,7 @@ function UserAsset() {
                             <UserFriendItem
                               key={user._id}
                               friend={user}
-                              isFriend={userData.friends.includes(user.id)}
+                              isFriend={userData.friends.includes(user._id)}
                               assets={assets}
                               setAssets={setAssets}
                             />
@@ -326,13 +322,13 @@ function UserAsset() {
                         </div>
                       </>
                     )
-                    : null}
+                    : <p className="no-assets-text">No Follow</p>}
                 </div>
               ) : null}
 
               {category === 'follower' && assets != null ? (
                 <div className="friend-list-item-container">
-                  {assets && assets.length > 0
+                  {assets[0] && assets.length > 0
                     ? (
                       <>
                         <p className="friend-list-label">Followers</p>
@@ -341,7 +337,7 @@ function UserAsset() {
                             <UserFriendItem
                               key={user._id}
                               friend={user}
-                              isFriend={userData.friends.includes(user.id)}
+                              isFriend={userData.friends.includes(user._id)}
                               assets={assets}
                               setAssets={setAssets}
                             />
@@ -349,7 +345,7 @@ function UserAsset() {
                         </div>
                       </>
                     )
-                    : null}
+                    : <p className="no-assets-text">No Follower</p>}
                 </div>
               ) : null}
             </>

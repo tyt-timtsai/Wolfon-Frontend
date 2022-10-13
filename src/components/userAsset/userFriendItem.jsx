@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import {
   Card, CardContent, Button, Avatar,
@@ -19,26 +20,26 @@ function UserFriendItem({
 
   const acceptFriend = () => {
     console.log('axios accept');
-    axios.patch(constants.ACCEPT_APPLY_API, { id: friend.id }, {
+    axios.patch(constants.ACCEPT_APPLY_API, { id: friend._id }, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },
     }).then((res) => {
       window.localStorage.setItem('JWT', res.data.data);
-      const pendingFriends = assets.pendingFriends.filter((item) => item.id !== friend.id);
+      const pendingFriends = assets.pendingFriends.filter((item) => item._id !== friend._id);
       setAssets({ pendingFriends, friends: [...assets.friends, friend] });
     }).catch((err) => {
       console.log(err);
     });
   };
   const rejectFriend = () => {
-    axios.put(constants.CANCEL_APPLY_API, { id: friend.id, action: 'reject' }, {
+    axios.put(constants.CANCEL_APPLY_API, { id: friend._id, action: 'reject' }, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
       },
     }).then((res) => {
       window.localStorage.setItem('JWT', res.data.data);
-      const pendingFriends = assets.pendingFriends.filter((item) => item.id !== friend.id);
+      const pendingFriends = assets.pendingFriends.filter((item) => item._id !== friend._id);
       setAssets({ pendingFriends, friends: [...assets.friends] });
     }).catch((err) => {
       console.log(err);
@@ -46,12 +47,12 @@ function UserFriendItem({
   };
   const toProfile = () => {
     console.log('to profile');
-    navigate(`/user/${friend.id}`);
+    navigate(`/user/${friend._id}`);
   };
 
   return (
     // eslint-disable-next-line no-underscore-dangle
-    <Card className="user-friend-item-container" sx={cardStyle} key={friend.id}>
+    <Card className="user-friend-item-container" sx={cardStyle} key={friend._id}>
       <CardContent>
         <div className="user-friend-item-header">
           <Avatar alt={friend.name} src={`${constants.IMAGE_URL}/${friend.photo}`} sx={{ width: 56, height: 56 }} />

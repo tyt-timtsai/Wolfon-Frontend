@@ -38,6 +38,7 @@ const FOLLOW_USER_API = `${API_URL}/user/follow`;
 // Live API
 const GET_LIVE_API = `${API_URL}/live`;
 const CREATE_LIVE_API = `${API_URL}/live`;
+const DELETE_LIVE_API = `${API_URL}/live`;
 const SEARCH_LIVE_API = `${API_URL}/live/search`;
 const UPLOAD_SCEEENSHOT_API = `${API_URL}/live/screenshot`;
 const UPLOAD_LIVE_API = `${API_URL}/live/upload`;
@@ -48,9 +49,11 @@ const GET_CODE_API = `${API_URL}/code`;
 const GET_VERSION_API = `${API_URL}/code`;
 
 // Post API
-const GET_POST_API = `${API_URL}`;
-const GET_ALL_POST_API = `${API_URL}/post/all`;
 const CREATE_POST_API = `${API_URL}/post`;
+const GET_POST_API = `${API_URL}`;
+const GET_ALL_POST_API = `${API_URL}/post`;
+const DELETE_POST_API = `${API_URL}/post`;
+const UPDATE_POST_API = `${API_URL}/post`;
 const LIKE_POST_API = `${API_URL}/post/like`;
 const FOLLOW_POST_API = `${API_URL}/post/follow`;
 
@@ -84,6 +87,7 @@ export default {
   // LIVE
   GET_LIVE_API,
   CREATE_LIVE_API,
+  DELETE_LIVE_API,
   SEARCH_LIVE_API,
   UPLOAD_LIVE_API,
   UPLOAD_SCEEENSHOT_API,
@@ -92,9 +96,11 @@ export default {
   GET_CODE_API,
   GET_VERSION_API,
   // POST
+  CREATE_POST_API,
   GET_POST_API,
   GET_ALL_POST_API,
-  CREATE_POST_API,
+  DELETE_POST_API,
+  UPDATE_POST_API,
   LIKE_POST_API,
   FOLLOW_POST_API,
 };

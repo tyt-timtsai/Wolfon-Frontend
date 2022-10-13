@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -23,8 +24,8 @@ function PostButton({ post }) {
     <Card
       className="post-list-cards"
       sx={cardStyle}
-      key={post.id}
-      onClick={() => navigate(`/post/${post.id}`)}
+      key={post._id}
+      onClick={() => navigate(`/post/${post._id}`)}
     >
       {post.updated_dt && (
       <CardContent className="post-list-cards-container">

@@ -33,6 +33,16 @@
                 "ignoreReadBeforeAssign": false
             }
         ],
+        "camelcase": [
+            "error",
+            {
+                "ignoreGlobals" : true,
+                "allow": [
+                    "_id"
+                ]
+            }
+        ],
+        // "no-underscore-dangle": ["error", { "allow": [ "_", "_id" ] }],
         "prefer-destructuring": ["error", {"object": true, "array": false}],
         "react/no-unknown-property": [0, { "ignore": "ignore" }],
         "react/prop-types": [0,{
