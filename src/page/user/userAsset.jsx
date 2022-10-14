@@ -54,8 +54,6 @@ function UserAsset() {
   }
 
   function getLikePost() {
-    console.log('get like post');
-
     axios.get(constants.GET_USER_LIKE_API, {
       headers: {
         authorization: token,
@@ -70,7 +68,6 @@ function UserAsset() {
   }
 
   function getFollowPost() {
-    console.log('get follow post');
     axios.get(constants.GET_USER_FOLLOW_POST_API, {
       headers: {
         authorization: token,
@@ -107,7 +104,6 @@ function UserAsset() {
   }
 
   function getFollow() {
-    console.log('getFollow');
     axios.get(constants.GET_USER_FOLLOW_API, {
       headers: {
         authorization: token,
@@ -126,7 +122,6 @@ function UserAsset() {
   }
 
   function getFollower() {
-    console.log('getFollow');
     axios.get(constants.GET_USER_FOLLOWER_API, {
       headers: {
         authorization: token,
@@ -148,7 +143,6 @@ function UserAsset() {
     if (!token) {
       navigate('/user/login');
     } else {
-      console.log('get profile');
       axios.get(constants.PROFILE_API, {
         headers: {
           authorization: token,
@@ -169,7 +163,6 @@ function UserAsset() {
   }, []);
 
   useEffect(() => {
-    console.log(params);
     setAssets(null);
     setCategory(params.id);
   }, [params]);
@@ -203,6 +196,7 @@ function UserAsset() {
         break;
     }
   }, [category]);
+  console.log(assets);
   return (
     <>
       <Header />
@@ -266,7 +260,7 @@ function UserAsset() {
 
               {category === 'friend' && assets != null ? (
                 <div className="friend-list-item-container">
-                  {assets[0] && assets.pendingFriends.length > 0
+                  {assets.pendingFriends[0] && assets.pendingFriends.length >= 0
                     ? (
                       <>
                         <p className="friend-list-label">Applicants</p>
@@ -284,7 +278,7 @@ function UserAsset() {
                       </>
                     )
                     : null}
-                  {assets[0] && assets.friends.length > 0
+                  {assets.friends[0] && assets.friends.length > 0
                     ? (
                       <>
                         <p className="friend-list-label">Friends</p>

@@ -19,8 +19,8 @@ import './signin.css';
 function signIn() {
   const navigate = useNavigate();
   const [userData, setUserData] = useState({
-    email: 'sam22@gmail.com',
-    password: '',
+    email: 'user01@gmail.com',
+    password: '123456',
     showPassword: false,
   });
 

@@ -19,7 +19,6 @@ function UserFriendItem({
   };
 
   const acceptFriend = () => {
-    console.log('axios accept');
     axios.patch(constants.ACCEPT_APPLY_API, { id: friend._id }, {
       headers: {
         authorization: window.localStorage.getItem('JWT'),
