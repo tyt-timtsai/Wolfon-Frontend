@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -25,11 +26,11 @@ function LiveListItem({ live }) {
   }, []);
 
   const handleJoin = () => {
-    navigate(`/live/${live.room_id}`);
+    navigate(`/live/${live._id}`);
   };
 
   const handleReview = () => {
-    navigate(`/live/review/${live.room_id}`);
+    navigate(`/live/review/${live._id}`);
   };
 
   return (
@@ -51,7 +52,7 @@ function LiveListItem({ live }) {
         title={live.streamer}
         subheader={(
           <Typography variant="caption" align="center" sx={{ color: 'var(--main-content-color)' }}>
-            September 14, 2016
+            {live.created_dt}
           </Typography>
         )}
       />

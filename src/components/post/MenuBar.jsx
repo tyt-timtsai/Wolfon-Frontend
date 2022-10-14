@@ -9,12 +9,13 @@ import {
   BsListUl,
   BsCodeSlash,
   BsCodeSquare,
-  BsFillArrowLeftSquareFill,
-  BsFillArrowRightSquareFill,
+  BsArrowCounterclockwise,
+  BsArrowClockwise,
+  BsCardImage,
 } from 'react-icons/bs';
 import './menubar.css';
 
-function MenuBar({ editor }) {
+function MenuBar({ editor, setLink, addImage }) {
   if (!editor) {
     return null;
   }
@@ -73,6 +74,12 @@ function MenuBar({ editor }) {
         </button>
         <button
           type="button"
+          onClick={addImage}
+        >
+          <BsCardImage />
+        </button>
+        <button
+          type="button"
           onClick={() => editor.chain().focus().toggleBulletList().run()}
           className={editor.isActive('bulletList') ? 'is-active' : ''}
         >
@@ -108,24 +115,24 @@ function MenuBar({ editor }) {
         </button>
         <button
           type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 4 }).run()}
-          className={editor.isActive('heading', { level: 4 }) ? 'is-active' : ''}
-        >
-          h4
-        </button>
-        <button
-          type="button"
-          onClick={() => editor.chain().focus().toggleHeading({ level: 5 }).run()}
-          className={editor.isActive('heading', { level: 5 }) ? 'is-active' : ''}
-        >
-          h5
-        </button>
-        <button
-          type="button"
           onClick={() => editor.chain().focus().toggleHeading({ level: 6 }).run()}
           className={editor.isActive('heading', { level: 6 }) ? 'is-active' : ''}
         >
           h6
+        </button>
+        <button
+          type="button"
+          onClick={setLink}
+          className={editor.isActive('link') ? 'is-active' : ''}
+        >
+          setLink
+        </button>
+        <button
+          type="button"
+          onClick={() => editor.chain().focus().unsetLink().run()}
+          disabled={!editor.isActive('link')}
+        >
+          unsetLink
         </button>
 
       </div>
@@ -134,13 +141,13 @@ function MenuBar({ editor }) {
           type="button"
           onClick={() => editor.chain().focus().undo().run()}
         >
-          <BsFillArrowLeftSquareFill />
+          <BsArrowCounterclockwise />
         </button>
         <button
           type="button"
           onClick={() => editor.chain().focus().redo().run()}
         >
-          <BsFillArrowRightSquareFill />
+          <BsArrowClockwise />
         </button>
       </div>
     </div>

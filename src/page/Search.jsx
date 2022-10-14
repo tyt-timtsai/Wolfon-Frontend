@@ -69,7 +69,7 @@ function Search() {
     setIsFetching(true);
     try {
       const result = await axios.get(`${constants.SERVER_URL}/api/v1/${type}/search?keyword=${search}`);
-      setResults(result.data.data);
+      setResults(result.data.data.reverse());
     } catch (err) {
       console.log(err);
     }
@@ -112,7 +112,7 @@ function Search() {
           </Box>
         ) : (
           <div id="search-result-container">
-            {results && type === 'post' ? results.reverse().map((post) => (
+            {results && type === 'post' ? results.map((post) => (
               <PostList
                 key={post._id}
                 post={post}
@@ -121,13 +121,13 @@ function Search() {
 
             {results && type === 'user' ? results.map((user) => (
               <SearchUserItem
-                key={user.id}
+                key={user._id}
                 user={user}
                 userData={userData}
               />
             )) : null}
 
-            {results && type === 'live' ? results.reverse().map((live) => (
+            {results && type === 'live' ? results.map((live) => (
               <LiveListItem
                 live={live}
                 key={live._id}

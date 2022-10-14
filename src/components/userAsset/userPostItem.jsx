@@ -26,7 +26,7 @@ function UserPostItem({ post }) {
 
   return (
     // eslint-disable-next-line no-underscore-dangle
-    <Card className="post-list-cards" sx={cardStyle} key={post.id} onClick={() => navigate(`/post/${post.id}`)}>
+    <Card className="post-list-cards" sx={cardStyle} key={post._id} onClick={() => navigate(`/post/${post._id}`)}>
       <CardContent>
         <div className="user-post-item-update">
           <Typography variant="body2">

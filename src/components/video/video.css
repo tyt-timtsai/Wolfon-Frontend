@@ -10,7 +10,7 @@
 
 #video {
     width: 1280px;
-    height: auto;
+    max-height: 810px;
 }
 
 #video-btn {

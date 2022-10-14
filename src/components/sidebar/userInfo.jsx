@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
@@ -47,7 +48,7 @@ function UserInfo({ userData, isSetting, isPost }) {
     setFile(null);
   }, []);
   return (
-    <Paper elevation={2} sx={{ maxWidth: 256 }} id="home-left-sidebar">
+    <Paper elevation={2} id="home-left-sidebar">
       {isSetting ? (
         <>
           <Avatar
@@ -79,7 +80,7 @@ function UserInfo({ userData, isSetting, isPost }) {
             alt="User"
             src={userData.photo ? `${constants.IMAGE_URL}/${userData.photo}` : null}
             id="sidebar-avatar"
-            onClick={() => navigate(`/user/${userData.id}`)}
+            onClick={() => navigate(`/user/${userData._id}`)}
           />
           )}
         </div>
@@ -121,7 +122,7 @@ function UserInfo({ userData, isSetting, isPost }) {
       <Button
         variant="contained"
         style={{ marginTop: 2 }}
-        onClick={() => navigate(`/user/${userData.id}`)}
+        onClick={() => navigate(`/user/${userData._id}`)}
       >
         Author Profile
       </Button>

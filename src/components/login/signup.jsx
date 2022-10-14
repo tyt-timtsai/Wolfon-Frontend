@@ -28,9 +28,6 @@ function SignUp() {
   });
 
   const handleChange = (prop) => (e) => {
-    if (prop === 'email') {
-      console.log(e.target.value);
-    }
     setUserData({ ...userData, [prop]: e.target.value });
   };
 

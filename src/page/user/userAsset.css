@@ -43,6 +43,7 @@
 }
 
 #user-asset-content-container {
+    position: relative;
     margin-top: 30px;
     width: 100%;
 }
@@ -75,6 +76,14 @@
 .friend-list-label {
     margin-bottom: 20px;
     font-size: 18px;
+}
+
+.no-assets-text {
+    position: absolute;
+    top: 5%;
+    right: 0;
+    width: 100%;
+    text-align: center;
 }
 
 .btn-active {

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Swal from 'sweetalert2';
@@ -88,7 +89,7 @@ function LiveCreate() {
         confirmButtonText: '進入直播頁面',
         confirmButtonColor: 'var(--main-button-color)',
       }).then(() => {
-        navigate(`/live/streamer/${result.data.liveData.room_id}`);
+        navigate(`/live/streamer/${result.data.liveData._id}`);
       });
     } catch (error) {
       console.log(error);

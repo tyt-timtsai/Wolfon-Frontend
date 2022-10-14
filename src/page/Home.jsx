@@ -55,7 +55,6 @@ function Home() {
         },
       })
         .then((res) => {
-          console.log(res.data.data);
           setUserData(res.data.data);
         })
         .catch((err) => {

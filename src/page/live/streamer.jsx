@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -45,7 +46,7 @@ function LiveStreamer({ socket, room, setRoom }) {
     if (tag && content) {
       axios.post(`${constants.GET_CODE_API}/${room}`, newTag)
         .then((res) => {
-          socket.emit('addTag', newTag);
+          socket.emit('addTag', newTag, room);
           console.log(res);
           Swal.fire({
             title: 'Success!',
@@ -110,8 +111,16 @@ function LiveStreamer({ socket, room, setRoom }) {
     axios.get(`${constants.GET_LIVE_API}?id=${room}`)
       .then((res) => {
         console.log(res.data);
-
-        setLiveData(res.data.liveData);
+        if (res.data.liveData == null) {
+          Swal.fire({
+            title: 'Error!',
+            text: 'Not Found',
+            icon: 'error',
+            confirmButtonText: 'Back',
+            confirmButtonColor: 'var(--main-record-color)',
+          }).then(() => navigate(-1));
+        }
+        return setLiveData(res.data.liveData);
       }).catch((err) => {
         console.log(err);
       });
