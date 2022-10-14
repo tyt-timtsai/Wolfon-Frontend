@@ -16,9 +16,7 @@ function LiveReview({ socket, room, setRoom }) {
   const [liveData, setLiveData] = useState(null);
 
   useEffect(() => {
-    console.log(params.id);
     axios.get(`${constants.GET_LIVE_API}?id=${params.id}`).then((res) => {
-      console.log(res.data.liveData);
       setLiveData(res.data.liveData);
     }).catch((err) => {
       console.log(err);

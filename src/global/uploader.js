@@ -27,7 +27,7 @@ export default class Uploader {
   }
 
   async initialize() {
-    console.log('Start multipart upload ...');
+    // console.log('Start multipart upload ...');
     try {
       // adding the the file extension (if present) to fileName
       let { fileName } = this;
@@ -35,19 +35,16 @@ export default class Uploader {
       if (ext) {
         fileName += `.${ext}`;
       }
-      console.log(fileName);
       // retrieving the pre-signed URLs
       const numberOfparts = Math.ceil(this.file.size / this.chunkSize);
-      console.log(numberOfparts);
 
       const multipartUpload = {
         fileName,
         parts: numberOfparts,
       };
 
-      console.log('Get multipart upload urls...');
+      // console.log('Get multipart upload urls...');
       const urlsResponse = await axios.post(`${constants.SERVER_URL}/api/v1/live/upload`, multipartUpload);
-      console.log(urlsResponse);
       this.fileId = urlsResponse.data.fileId;
       this.fileKey = urlsResponse.data.fileKey;
       const newParts = urlsResponse.data.parts;
@@ -61,23 +58,23 @@ export default class Uploader {
 
   sendNext() {
     const activeConnections = Object.keys(this.activeConnections).length;
-    console.log(activeConnections);
-    console.log(this.activeConnections);
+    // console.log(activeConnections);
+    // console.log(this.activeConnections);
     if (activeConnections >= this.threadsQuantity) {
-      console.log('bigger');
+      // console.log('bigger');
       return;
     }
     if (!this.parts.length) {
       if (!activeConnections) {
         this.complete();
       }
-      console.log('return');
+      // console.log('return');
       return;
     }
 
     const part = this.parts.pop();
-    console.log(part);
-    console.log(this.file);
+    // console.log(part);
+    // console.log(this.file);
     if (this.file && part) {
       const sentSize = (part.PartNumber - 1) * this.chunkSize;
       const chunk = this.file.slice(sentSize, sentSize + this.chunkSize);
@@ -126,7 +123,7 @@ export default class Uploader {
       };
 
       const completeResult = await axios.post(`${constants.SERVER_URL}/api/v1/live/complete`, completeUploadData);
-      console.log('Complete multipart upload ...');
+      // console.log('Complete multipart upload ...');
       this.url = completeResult.data.Location;
     }
   }
@@ -139,7 +136,7 @@ export default class Uploader {
             reject(new Error('Failed chunk upload'));
             return;
           }
-          console.log('Upload successfully');
+          // console.log('Upload successfully');
           resolve();
         })
         .catch((error) => {
@@ -199,10 +196,10 @@ export default class Uploader {
         xhr.onreadystatechange = () => {
           if (xhr.readyState === 4 && xhr.status === 200) {
             let ETag;
-            console.log(xhr.getAllResponseHeaders());
+            // console.log(xhr.getAllResponseHeaders());
             if (xhr.getAllResponseHeaders().indexOf('etag') > 0) {
               ETag = xhr.getResponseHeader('etag');
-              console.log(ETag);
+              // console.log(ETag);
 
               const uploadedPart = {
                 PartNumber: part.PartNumber,
@@ -211,7 +208,7 @@ export default class Uploader {
               this.uploadedParts.push(uploadedPart);
               resolve(xhr.status);
               delete this.activeConnections[part.PartNumber - 1];
-              console.log('connections deleted');
+              // console.log('connections deleted');
             }
           }
         };

@@ -97,7 +97,6 @@ function SignUp() {
     return (
       axios.post(constants.SIGNUP_API, { data: userData })
         .then((res) => {
-          console.log(res);
           window.localStorage.setItem('JWT', res.data.data);
           navigate('/user/profile');
         })

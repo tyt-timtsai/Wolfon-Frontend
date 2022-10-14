@@ -99,7 +99,7 @@ function NewPost() {
   }, [content]);
 
   useEffect(() => {
-    console.log('start useEffect');
+    // console.log('start useEffect');
     const jwt = window.localStorage.getItem('JWT');
     if (!jwt) {
       navigate('/user/login');

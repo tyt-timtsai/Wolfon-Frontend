@@ -21,13 +21,13 @@ function Video({
  */
   function connectIO() {
     socket.on('answer', async (desc) => {
-      console.log('收到 answer');
+      // console.log('收到 answer');
       // 設定對方的配置
       await peerConn.setRemoteDescription(desc);
     });
 
     socket.on('ice_candidate', async (data) => {
-      console.log('收到 ice_candidate');
+      // console.log('收到 ice_candidate');
       const candidate = new RTCIceCandidate({
         sdpMLineIndex: data.label,
         candidate: data.candidate,
@@ -55,7 +55,7 @@ function Video({
     // 找尋到 ICE 候選位置後，送去 Server 與另一位配對
     peerConn.onicecandidate = (e) => {
       if (e.candidate) {
-        console.log('發送 ICE');
+        // console.log('發送 ICE');
         // 發送 ICE
         socket.emit('ice_candidate', room, {
           label: e.candidate.sdpMLineIndex,
@@ -124,7 +124,7 @@ function Video({
       },
     })
       .then((res) => {
-        console.log(res.data);
+        // (res.data);
         setUserData(res.data.data);
       })
       .catch((err) => {

@@ -45,7 +45,6 @@ function UserFriendItem({
     });
   };
   const toProfile = () => {
-    console.log('to profile');
     navigate(`/user/${friend._id}`);
   };
 

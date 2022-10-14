@@ -196,7 +196,6 @@ function UserAsset() {
         break;
     }
   }, [category]);
-  console.log(assets);
   return (
     <>
       <Header />

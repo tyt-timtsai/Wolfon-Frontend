@@ -53,7 +53,6 @@ function Search() {
           authorization: window.localStorage.getItem('JWT'),
         },
       }).then((res) => {
-        console.log(res.data.data);
         setUserData(res.data.data);
       }).catch((err) => {
         console.log(err);

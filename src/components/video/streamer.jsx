@@ -127,7 +127,7 @@ function Streamer({
     // 監聽 ICE 連接狀態
     peerConn.oniceconnectionstatechange = (e) => {
       if (e.target.iceConnectionState === 'disconnected') {
-        console.log('remote disconnected');
+        // console.log('remote disconnected');
       }
     };
     return peerConn;
@@ -161,7 +161,7 @@ function Streamer({
    */
   function connectIO() {
     socket.on('ice_candidate', async (data, id) => {
-      console.log('收到 ice_candidate');
+      // console.log('收到 ice_candidate');
       const candidate = new RTCIceCandidate({
         sdpMLineIndex: data.label,
         candidate: data.candidate,
@@ -170,10 +170,9 @@ function Streamer({
     });
 
     socket.on('offer', async (desc, id) => {
-      console.log('收到 offer');
+      // console.log('收到 offer');
       const pc = initPeerConnection();
       PCs[id] = pc;
-      console.log(PCs);
       setPeerConnections(PCs);
       // 設定對方的配置
       await pc.setRemoteDescription(desc);
@@ -214,7 +213,7 @@ function Streamer({
       };
       recorder.start(10);
     } else {
-      console.log('Please start streaming first.');
+      // console.log('Please start streaming first.');
     }
     setIsStreaming(true);
   };
@@ -238,7 +237,7 @@ function Streamer({
       downloadRecord(blob);
       setFile(blob);
     } else {
-      console.log('Video is not recording.');
+      // console.log('Video is not recording.');
     }
   };
 
@@ -307,7 +306,7 @@ function Streamer({
           if (newPercentage !== percentage) {
             percentage = newPercentage;
             setProgress(percentage);
-            console.log(`${percentage}%`);
+            // console.log(`${percentage}%`);
           }
         })
         .onError((error) => {
@@ -322,7 +321,7 @@ function Streamer({
   // 觀看者離開時刪除 Peer
   useEffect(() => {
     socket.on('leave', async (id) => {
-      console.log(peerConnections);
+      // console.log(peerConnections);
 
       setPeerConnections((current) => {
         const copy = { ...current };
@@ -330,7 +329,7 @@ function Streamer({
         return copy;
       });
     });
-    console.log(peerConnections);
+    // console.log(peerConnections);
   }, [peerConnections]);
 
   useEffect(() => (() => socket.close()), [socket]);

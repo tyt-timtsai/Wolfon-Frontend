@@ -33,8 +33,8 @@ function UserLiveItem({ live }) {
         authorization: window.localStorage.getItem('JWT'),
       },
     }).then((res) => {
-      console.log(res);
       window.localStorage.setItem('JWT', res.data.data);
+      navigate(0);
     }).catch((err) => {
       console.log(err);
     });
@@ -50,7 +50,6 @@ function UserLiveItem({ live }) {
       denyButtonText: 'No',
     }).then((result) => {
       if (result.isConfirmed) {
-        console.log('delete');
         deleteLive();
       }
     });

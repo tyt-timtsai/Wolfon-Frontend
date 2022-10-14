@@ -77,14 +77,12 @@ function TipTap({
       confirmButtonText: 'Add',
       showLoaderOnConfirm: true,
     }).then((result) => {
-      console.log(result);
       if (result.isConfirmed) {
         Swal.fire('Add Link!', '', 'success');
         return result.value;
       }
       return null;
     });
-    console.log(url);
 
     if (url === null) {
       return;
@@ -111,14 +109,12 @@ function TipTap({
       confirmButtonText: 'Add',
       showLoaderOnConfirm: true,
     }).then((result) => {
-      console.log(result);
       if (result.isConfirmed) {
         Swal.fire('Add Link!', '', 'success');
         return result.value;
       }
       return null;
     });
-    console.log(url);
 
     if (url) {
       editor.chain().focus().setImage({ src: url }).run();
@@ -128,7 +124,6 @@ function TipTap({
   function getPost() {
     axios.get(`${constants.GET_POST_API}/post/${params.id}`)
       .then((res) => {
-        console.log(res.data.data);
         const postData = res.data.data.post;
         setPost({
           title: postData.title,

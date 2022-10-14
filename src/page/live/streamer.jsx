@@ -45,9 +45,8 @@ function LiveStreamer({ socket, room, setRoom }) {
     }
     if (tag && content) {
       axios.post(`${constants.GET_CODE_API}/${room}`, newTag)
-        .then((res) => {
+        .then(() => {
           socket.emit('addTag', newTag, room);
-          console.log(res);
           Swal.fire({
             title: 'Success!',
             text: '直播版本成功',
@@ -65,15 +64,12 @@ function LiveStreamer({ socket, room, setRoom }) {
 
   // Get viewer's code
   const getViewerCode = (e) => {
-    console.log(e.target.value);
     socket.emit('getCode', e.target.value, socket.id);
   };
 
   // Get newest version
   const getNewestVersion = () => {
-    console.log(version);
     if (version.length > 0) {
-      console.log(version[version.length - 1]);
       axios.get(`${constants.GET_VERSION_API}/${room}?tag=${version[version.length - 1].version}`)
         .then((res) => {
           if (mode !== res.data.data.language) {
@@ -110,7 +106,6 @@ function LiveStreamer({ socket, room, setRoom }) {
   function getLive() {
     axios.get(`${constants.GET_LIVE_API}?id=${room}`)
       .then((res) => {
-        console.log(res.data);
         if (res.data.liveData == null) {
           Swal.fire({
             title: 'Error!',
@@ -145,13 +140,10 @@ function LiveStreamer({ socket, room, setRoom }) {
 
   useEffect(() => {
     socket.on('viewer', (id, name) => {
-      console.log(id);
-      console.log(name);
       setViewers((prev) => [...prev, { id, name }]);
     });
 
     socket.on('passCode', (viewerCode) => {
-      console.log(viewerCode);
       setCode(viewerCode);
     });
   }, [socket]);

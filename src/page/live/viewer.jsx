@@ -25,7 +25,6 @@ function LiveViewer({ socket, room, setRoom }) {
   };
 
   useEffect(() => {
-    console.log(params.id);
     const token = window.localStorage.getItem('JWT');
     if (!token) {
       navigate('/user/login');

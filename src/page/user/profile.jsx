@@ -49,7 +49,7 @@ function Profile() {
 
   const uploadAvatar = () => {
     if (file && user && isOwn) {
-      console.log('upload');
+      // console.log('upload');
       const formData = new FormData();
       formData.append('type', 'avatar');
       formData.append('image', file);
@@ -72,7 +72,7 @@ function Profile() {
 
   const uploadBackground = () => {
     if (file && user && isOwn) {
-      console.log('upload');
+      // console.log('upload');
       const formData = new FormData();
       formData.append('type', 'background');
       formData.append('image', file);
@@ -175,7 +175,6 @@ function Profile() {
       { id: user._id },
       { headers: { authorization: token } },
     ).then((res) => {
-      console.log(res);
       window.localStorage.setItem('JWT', res.data.data);
     }).catch((err) => {
       console.log(err);
@@ -187,7 +186,6 @@ function Profile() {
       headers: { authorization: token },
       data: { id: user._id },
     }).then((res) => {
-      console.log(res);
       window.localStorage.setItem('JWT', res.data.data);
     }).catch((err) => {
       console.log(err);

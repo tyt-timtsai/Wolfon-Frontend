@@ -97,7 +97,6 @@ function Editor({
   // ============== 版本控制 ===============
   // Use version tag
   const changeVersion = (e) => {
-    console.log(e.target.value);
     if (e.target.value) {
       axios.get(`${constants.GET_VERSION_API}/${room}?tag=${e.target.value}`)
         .then((res) => {
@@ -123,22 +122,18 @@ function Editor({
       axios.get(`${constants.GET_CODE_API}/${room}`)
         .then((res) => {
           setVersion([]);
-          console.log(res.data.data);
           if (res.data.data) {
             const tags = [];
             res.data.data.tags.forEach((data) => {
               if (!data.from) {
                 tags.push({ version: data.tag });
                 if (data.child) {
-                  console.log(data.tag);
                   data.child.forEach((child) => {
-                    console.log(child);
                     tags.push({ version: child, from: data.tag });
                   });
                 }
               }
             });
-            console.log(tags);
             setVersion(tags);
           }
         })
@@ -166,8 +161,6 @@ function Editor({
         code,
       };
       const result = await axios.post(constants.GET_CODE_API, data);
-      console.log(typeof result.data);
-      console.log(result.data);
       if (typeof result.data !== 'string') {
         setTerminal(JSON.stringify(result.data));
       } else {
@@ -191,8 +184,7 @@ function Editor({
     socket.on('addTag', (newTag) => {
       setVersion((prev) => [...prev, { version: newTag.tag }]);
     });
-    socket.on('getCode', (id) => {
-      console.log(id);
+    socket.on('getCode', () => {
       socket.emit('passCode', editor.current.editor.getValue());
     });
     return (() => socket.close());

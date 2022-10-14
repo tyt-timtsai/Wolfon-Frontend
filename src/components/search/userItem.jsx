@@ -23,7 +23,6 @@ function SearchUserItem({ user, userData }) {
       { id: user._id },
       { headers: { authorization: token } },
     ).then((res) => {
-      console.log(res);
       window.localStorage.setItem('JWT', res.data.data);
     }).catch((err) => {
       console.log(err);
@@ -35,7 +34,6 @@ function SearchUserItem({ user, userData }) {
       headers: { authorization: token },
       data: { id: user._id },
     }).then((res) => {
-      console.log(res);
       window.localStorage.setItem('JWT', res.data.data);
     }).catch((err) => {
       console.log(err);
@@ -56,7 +54,6 @@ function SearchUserItem({ user, userData }) {
       headers: { authorization: token },
     })
       .then((res) => {
-        console.log(res);
         window.localStorage.setItem('JWT', res.data.data);
         setIsApply(!isApply);
       }).catch((err) => {
@@ -69,7 +66,6 @@ function SearchUserItem({ user, userData }) {
       headers: { authorization: token },
     })
       .then((res) => {
-        console.log(res);
         window.localStorage.setItem('JWT', res.data.data);
         setIsApply(!isApply);
       }).catch((err) => {
@@ -93,11 +89,6 @@ function SearchUserItem({ user, userData }) {
       }
     }
   }, [isApply]);
-
-  // For test
-  useEffect(() => {
-    console.log(isMe);
-  }, [isMe]);
 
   return (
     <div className="search-user-item">

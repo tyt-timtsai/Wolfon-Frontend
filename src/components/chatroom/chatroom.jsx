@@ -41,7 +41,6 @@ function Chatroom({ socket, room, userData }) {
           authorization: window.localStorage.getItem('JWT'),
         },
       });
-      console.log(result);
       imageUrl = result.data.data.url;
     }
 

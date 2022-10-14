@@ -49,7 +49,6 @@ function LiveCreate() {
   };
 
   const handleUpload = (e) => {
-    console.log(e.target.files[0]);
     setImage(e.target.files[0]);
   };
 
@@ -80,7 +79,6 @@ function LiveCreate() {
     };
     try {
       const result = await axios.post(constants.CREATE_LIVE_API, formData, header);
-      console.log(result);
       setOpen(false);
       Swal.fire({
         title: 'Success!',
