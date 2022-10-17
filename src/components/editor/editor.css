@@ -1,0 +1,82 @@
+#editor-container {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+}
+
+
+#editor-btn-container {
+    margin-top: 10px;
+    padding: 20px;
+    box-sizing: border-box;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    width: 100%;
+    max-height: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    background-color: var(--secondary-bg-color)
+}
+
+#tag-container {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+#tag-input {
+    width: 162px;
+}
+
+#editor-btns {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 5px;
+}
+
+.editor-selector{
+    width: 190px;
+}
+
+#run-btn,
+#tag-btn {
+    height: 40px;
+    width: 20%;
+}
+
+#editors {
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    border: 1px solid #fff;
+    border-radius: 10px;
+}
+
+.editor {
+    /* border: 1px solid rgb(147, 147, 147); */
+    border-radius: 10px;
+}
+
+.terminal {
+    border-radius: 0 0 10px 10px;
+    border-top: 1px solid var(--border-color);
+}
+
+.terminal .ace_cursor {
+    display: none !important;
+}
+
+/* MUI */
+

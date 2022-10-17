@@ -1,0 +1,98 @@
+#post-detail-container {
+    margin-top: 30px;
+    min-height: 90vh;
+    width: var(--main-content-width);
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+#post-detail-content{
+    font-family: 'Source Code Pro', monospace;
+    width: 100%;
+    padding: 20px;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 10px;
+    background-color: var(--secondary-bg-color);
+}
+
+#post-detail-content h1, h3, p{
+    margin: 0;
+}
+
+#post-detail-content h3 {
+    color: var(--secondary-color);
+    font-weight: 500;
+}
+
+#post-detail-content-header {
+    position: relative;
+    padding: 10px 20px;
+}
+
+#post-published {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+    color: var(--third-color);
+}
+
+#post-edit-btn {
+    position: absolute;
+    top: 50px;
+    right: 80px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--main-color);
+    z-index: 100;
+}
+
+#post-delete-btn {
+    position: absolute;
+    top: 50px;
+    right: 30px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--main-color);
+    z-index: 100;
+}
+
+#post-edit-btn:hover,
+#post-delete-btn:hover {
+    background-color: var(--third-color);
+}
+
+#post-details {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 30px;
+}
+
+#post-details p {
+    margin: 0;
+}
+
+.post-detail-icons {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#post-detail-author {
+    padding: 15px;
+    width: 300px;
+    border: 1px solid var(--border-color);
+    background-color: var(--secondary-bg-color);
+}
+
+.post-like-and-follow {
+    color: var(--secondary-color);
+}

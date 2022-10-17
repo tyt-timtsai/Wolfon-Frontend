@@ -1,0 +1,24 @@
+#live-list-header {
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--secondary-color);
+    width: var(--main-content-width);
+    text-align: center;
+}
+
+#live-list-container {
+    margin-top: 20px;
+    width: 100%;
+    min-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.live-list-item-container {
+    width: var(--main-content-width);
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}

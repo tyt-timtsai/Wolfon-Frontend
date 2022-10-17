@@ -1,0 +1,31 @@
+#create-live-header {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+#create-live-img-preview {
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 10px;
+}
+
+#create-live-upload {
+    margin-top: 10px;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    word-break: break-all;
+}
+
+#create-live-img-name {
+    font-size: 14px;
+}
+
+/* MUI */
+
+.css-1t8l2tu-MuiInputBase-input-MuiOutlinedInput-input {
+    color: var(--main-color) !important;
+}

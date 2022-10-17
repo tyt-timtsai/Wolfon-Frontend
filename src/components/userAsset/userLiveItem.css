@@ -1,0 +1,34 @@
+#user-live-card {
+    position: relative;
+    width: 100%;
+    color: var(--main-content-color);
+    /* background: rgba(255, 255, 255, 0.90); */
+    background: var(--secondary-bg-color);
+    border-radius: 8px;
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5.8px);
+    -webkit-backdrop-filter: blur(5.8px);
+    border: 1px solid var(--border-color);
+}
+
+.live-list-item-container {
+    width: var(--main-content-width);
+    display: grid;
+    justify-items: center;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.live-delete-btn {
+    position: absolute !important;
+    top: 10px;
+    right: 10px;
+    width: 30px;
+    height: 30px;
+    background-color: var(--main-color) !important;
+    z-index: 100;
+}
+
+.live-delete-btn:hover {
+    background-color: var(--third-color) !important;
+}

@@ -1,0 +1,137 @@
+/* Global Variables */
+:root {
+    /* Size */
+    --main-content-width: 70vw;
+
+    /* Font */
+    --main-color: #F8FAFC;
+    --secondary-color:rgb(212, 212, 212);
+    --third-color: rgb(153, 153, 157);
+    --link-color: rgb(244, 244, 245);
+
+    --main-focus-color:#0288d1;
+    --main-record-color: #E11D48;
+    /* Button */
+    --main-button-color:#0288d1;
+
+    /* Animation */
+    --main-transition: all 0.2s linear;
+    --hover-color-2:rgba(157, 199, 213, 0.3);
+
+    /* Background */
+    --main-bg-color: #000;
+    --secondary-bg-color: #1c1c1c;
+    --border-color: rgb(54, 54, 56);
+    --main-bg-gradient:linear-gradient(135deg, rgba(208,178,194,0.4920343137254902) 0%, rgba(255,255,255,1) 49%, rgba(210,214,242,0.5704656862745099) 100%);
+
+    /* MUI Palette */
+    --mui-blue-1: #e3f2fd;
+    --mui-blue-2: #90caf9;
+    --mui-blue-3: #42a5f5;
+    --mui-red: #f44336;
+    --mui-green: #81c784;
+    
+}
+
+/* Global tags */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+p { 
+    color: var(--main-color);
+}
+
+input {
+    color: var(--main-color) !important;
+}
+
+@media screen and (min-width: 900px) and (max-width: 1600px) {
+    :root {
+        --main-content-width: 80vw;
+    }
+  }
+
+
+/* Global id */
+#root {
+    background: var(--main-bg-color);
+    /* background: var(--main-bg-gradient); */
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Source Code Pro', monospace;
+}
+
+/* Global Class */
+.full-width-btn {
+    width: 100%;
+}
+
+.border-right {
+    border-right: 1px solid var(--third-color);
+}
+
+/* .btn-active {
+    color: var(--main-bg-color);
+    background-color: var(--secondary-color);
+} */
+
+/* MUI */
+/* Chatroom */
+.css-mbfek {
+    color: var(--main-color) !important;
+}
+
+/* .css-1n4twyu-MuiInputBase-input-MuiOutlinedInput-input {
+    color: var(--main-color) !important;
+} */
+
+.css-wb57ya-MuiFormControl-root-MuiTextField-root{
+    background-color: var(--secondary-bg-color);
+}
+
+.css-83ijpv-MuiTypography-root {
+    color: var(--main-color) !important;
+}
+
+/* Editor */
+.css-182didf,
+.css-u9osun,
+.css-1636szt,
+.css-cktaik {
+    color: var(--main-color) !important;
+}
+
+.MuiOutlinedInput-notchedOutline {
+    border-color: var(--main-color) !important;
+    border-width: 1px !important;
+  }
+
+.css-1yjjitx-MuiSwitch-track {
+    background-color: var(--main-color) !important;
+}
+
+.css-hfutr2-MuiSvgIcon-root-MuiSelect-icon {
+    color: var(--main-color) !important;
+}
+
+.css-1sumxir-MuiFormLabel-root-MuiInputLabel-root,
+.css-1pysi21-MuiFormLabel-root-MuiInputLabel-root,
+.css-1yk1gt9-MuiInputBase-root-MuiOutlinedInput-root-MuiSelect-root {
+    color: var(--main-color) !important;
+}
+
+/* SweetAlert2 */
+.swal2-container {
+    z-index: 20000 !important;
+  }
+
+.swal2-input {
+    color: var(--main-bg-color) !important;
+}
